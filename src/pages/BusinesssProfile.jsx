@@ -161,6 +161,22 @@ const BusinesssProfile = () => {
     }
   }
 
+
+
+  useEffect(() => {
+    if (data?.working_days_hours) {
+      const dateResult = data.working_days_hours.split(' - ');
+      if (dateResult.length === 2) {
+        setValue([
+          dayjs(dateResult[0]),
+          dayjs(dateResult[1]),
+        ]);
+      }
+    }
+  }, [data?.working_days_hours]);
+
+
+
   // location start
   // const [locationValues, setLocationValues] = useState(initialState)
   const [locationPlaceId, setLocationPlaceId] = useState(null)
@@ -245,7 +261,7 @@ const BusinesssProfile = () => {
         {/*   */}
         <Formik enableReinitialize={true} initialValues={values} validationSchema={schema} onSubmit={(values, { resetForm }) => handleSubmit(values, resetForm)}>
           {({ values, errors, handleChange, handleSubmit }) => (
-            <form className='card-box-shadow px-5 py-4 mb-4' onSubmit={handleSubmit}>
+            <form className='card-box-shadow px-5 py-4 mb-4' onSubmit={handleSubmit} autocomplete="false">
               <p className='cuisines-title text-center'>BUSINESS INFORMATION</p>
               <Divider
                 className='mt-2'
@@ -312,25 +328,6 @@ const BusinesssProfile = () => {
                 <Grid item xs={6}>
                   <div className="">
                     <p className="business-profile-name">Working days/hours</p>
-                    {/* <CssTextField
-                      value={values.working_days_hours}
-                      onChange={handleChange}
-                      name="working_days_hours"
-                      variant="outlined"
-                      placeholder="Eg. Monday - Saturday (9A - 10PM) - Date and Time Picker"
-                      className='mt-0'
-                      style={{ width: '100%' }}
-                      InputLabelProps={{
-                        style: { color: '#777777', fontSize: '10px' },
-                      }}
-                      InputProps={{
-                        style: {
-                          borderRadius: '8px',
-                          backgroundColor: '#FFFFFF',
-                        }
-                      }}
-                    /> */}
-
                     <div className="business-date-picker">
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DemoContainer components={['DateTimeRangePicker', 'DateTimeRangePicker']}>
@@ -341,106 +338,14 @@ const BusinesssProfile = () => {
                           />
                         </DemoContainer>
                       </LocalizationProvider>
-                      {values.working_days_hours && values.working_days_hours}
+                      {/* <span style={{ color: '#57636c', fontSize: '10px' }}>{values.working_days_hours && values.working_days_hours}</span> */}
                     </div>
-                    {/* {errors.working_days_hours && <small className='text-danger mt-2 ms-1'>{errors.working_days_hours}</small>} */}
                   </div>
-
-                 
-                  {/* <div>
-                    <p className="business-profile-name">Street Name</p>
-                    <CssTextField
-                      value={values.street_name}
-                      onChange={handleChange}
-                      name="street_name"
-                      variant="outlined"
-                      placeholder="Eg. 8th Cross Street"
-                      className='mt-0'
-                      style={{ width: '100%' }}
-                      InputLabelProps={{
-                        style: { color: '#777777', fontSize: '10px' },
-                      }}
-                      InputProps={{
-                        style: {
-                          borderRadius: '8px',
-                          backgroundColor: '#FFFFFF',
-                        }
-                      }}
-                    />
-                    {errors.street_name && <small className='text-danger mt-2 ms-1'>{errors.street_name}</small>}
-                  </div> */}
-
-                  {/* <div className="mt-3">
-                    <p className="business-profile-name">Area</p>
-                    <CssTextField
-                      value={values.area}
-                      onChange={handleChange}
-                      name="area"
-                      variant="outlined"
-                      placeholder="Eg. Near Kalyan Nagar post"
-                      className='mt-0'
-                      style={{ width: '100%' }}
-                      InputLabelProps={{
-                        style: { color: '#777777', fontSize: '10px' },
-                      }}
-                      InputProps={{
-                        style: {
-                          borderRadius: '8px',
-                          backgroundColor: '#FFFFFF',
-                        }
-                      }}
-                    />
-                    {errors.area && <small className='text-danger mt-2 ms-1'>{errors.area}</small>}
-                  </div> */}
-
-                  {/* <div className="mt-3">
-                    <p className="business-profile-name">City</p>
-                    <CssTextField
-                      value={values.city}
-                      onChange={handleChange}
-                      name="city"
-                      variant="outlined"
-                      placeholder="Eg. Bangalore"
-                      className='mt-0'
-                      style={{ width: '100%' }}
-                      InputLabelProps={{
-                        style: { color: '#777777', fontSize: '10px' },
-                      }}
-                      InputProps={{
-                        style: {
-                          borderRadius: '8px',
-                          backgroundColor: '#FFFFFF',
-                        }
-                      }}
-                    />
-                    {errors.city && <small className='text-danger mt-2 ms-1'>{errors.city}</small>}
-                  </div> */}
-
-                  {/* <div className="mt-3">
-                    <p className="business-profile-name">Pin Code</p>
-                    <CssTextField
-                      value={values.pincode}
-                      onChange={handleChange}
-                      name="pincode"
-                      variant="outlined"
-                      placeholder="Eg. 624 301"
-                      className='mt-0'
-                      style={{ width: '100%' }}
-                      InputLabelProps={{
-                        style: { color: '#777777', fontSize: '10px' },
-                      }}
-                      InputProps={{
-                        style: {
-                          borderRadius: '8px',
-                          backgroundColor: '#FFFFFF',
-                        }
-                      }}
-                    />
-                    {errors.pincode && <small className='text-danger mt-2 ms-1'>{errors.pincode}</small>}
-                  </div> */}
-
-
                 </Grid>
+
+
+
+
               </Grid>
 
 
@@ -450,6 +355,7 @@ const BusinesssProfile = () => {
                     <p className="business-profile-name">Address</p>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                       <textarea
+                        autocomplete="false"
                         required
                         style={{ height: '65px' }}
                         onChange={(evt) => {

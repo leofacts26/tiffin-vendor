@@ -1113,14 +1113,14 @@ code {
   overflow-y: scroll !important;
 }
 
-.outlet-container::-webkit-scrollbar {
+/* .outlet-container::-webkit-scrollbar {
   display: none;
 }
 
 .outlet-container {
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
+} */
 
 /* right side fixed end  */
 

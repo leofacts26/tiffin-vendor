@@ -356,7 +356,7 @@ const Branches = () => {
         aria-labelledby="customized-dialog-title"
         open={open}
       >
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autocomplete="off">
           <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
             <h2 className='branches-modal-title'>Enter Your New Branches details</h2>
           </DialogTitle>
@@ -440,6 +440,7 @@ const Branches = () => {
             />
 
             <CssTextField
+              autocomplete="false"
               required
               onChange={(evt) => {
                 setSelectedLocation(null);
