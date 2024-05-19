@@ -83,7 +83,7 @@ const BusinesssProfile = () => {
   const { vendor_id } = useSelector((state) => state?.user?.vendorId)
   const [loading, setLoading] = useState(false)
   // const [date, setDate] = useState(null)
-  const [data, updateBusinessProfile] = useBusinessProfile('/get-vendor-business-profile', accessToken)
+  const [data, updateBusinessProfile, fetchBusinessProfile] = useBusinessProfile('/get-vendor-business-profile', accessToken)
   const [value, setValue] = useState([
     dayjs(''),
     dayjs(''),
@@ -102,9 +102,9 @@ const BusinesssProfile = () => {
       working_since: data?.working_since || "",
       about_description: data?.about_description,
       business_email: data?.business_email,
-      business_phone_number: data?.business_phone_number,
+      business_phone_number: data?.business_phone_number?.slice(4,14),
       landline_number: data?.landline_number,
-      whatsapp_business_phone_number: data?.whatsapp_business_phone_number,
+      whatsapp_business_phone_number: data?.whatsapp_business_phone_number?.slice(4,14),
       website_link: data?.website_link,
       twitter_id: data?.twitter_id,
       instagram_link: data?.instagram_link,
@@ -128,12 +128,14 @@ const BusinesssProfile = () => {
   const schema = Yup.object().shape({
     vendor_service_name: Yup.string().required('Name is required.'),
     point_of_contact_name: Yup.string().required('contact person name is required.'),
+    business_phone_number: Yup.string()
+      .required('Business phone number is required')
     // working_days_hours: Yup.string().required('working days hours is required.'),
-    about_description: Yup.string().required('about description is required.'),
-    business_email: Yup.string().required('Business email is required.'),
-    working_since: Yup.string()
-      .matches(/^\d{4}$/, 'Year must be exactly 4 digits Eg: 2024')
-      .required('Working since is required.'),
+    // about_description: Yup.string().required('about description is required.'),
+    // business_email: Yup.string().required('Business email is required.'),
+    // working_since: Yup.string()
+    //   .matches(/^\d{4}$/, 'Year must be exactly 4 digits Eg: 2024')
+    //   .required('Working since is required.'),
   });
 
   const handleSubmit = async (values, resetForm) => {
@@ -155,6 +157,7 @@ const BusinesssProfile = () => {
       }
       await updateBusinessProfile(data, vendor_id);
       setLoading(false);
+      fetchBusinessProfile()
     } catch (error) {
       setLoading(false);
       console.error('Error while updating business profile:', error);
@@ -301,13 +304,13 @@ const BusinesssProfile = () => {
                   </div>
 
                   <div className="mt-5">
-                    <p className="business-profile-name">Conatct person Name</p>
+                    <p className="business-profile-name">Contact person Name</p>
                     <CssTextField
                       value={values.point_of_contact_name}
                       onChange={handleChange}
                       name="point_of_contact_name "
                       variant="outlined"
-                      placeholder="Enter Conatct person name"
+                      placeholder="Enter Contact person name"
                       className='mt-0'
                       style={{ width: '100%' }}
                       InputLabelProps={{
@@ -495,7 +498,7 @@ const BusinesssProfile = () => {
                       InputLabelProps={{
                         style: { color: '#777777', fontSize: '10px' },
                       }}
-                      inputProps={{ maxLength: 14 }}
+                      inputProps={{ maxLength: 10 }}
                       InputProps={{
                         style: {
                           borderRadius: '8px',
@@ -503,6 +506,7 @@ const BusinesssProfile = () => {
                         }
                       }}
                     />
+                    {errors.business_phone_number && <small className='text-danger mt-2 ms-1'>{errors.business_phone_number}</small>} 
                   </div>
 
                   <div className="mt-3">
@@ -536,7 +540,7 @@ const BusinesssProfile = () => {
                       name="whatsapp_business_phone_number"
                       variant="outlined"
                       className='mt-0'
-                      inputProps={{ maxLength: 14 }}
+                      inputProps={{ maxLength: 10 }}
                       style={{ width: '100%' }}
                       InputLabelProps={{
                         style: { color: '#777777', fontSize: '10px' },
