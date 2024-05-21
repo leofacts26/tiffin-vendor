@@ -61,11 +61,8 @@ const KycUpdate = ({ activeStep, setActiveStep }) => {
             .max(15, 'GSTIN number must not exceed 15 characters'),
         pan_number: Yup.string()
             .required('PAN number is required')
-            .matches(/^[A-Z0-9]*$/, 'PAN number must contain only uppercase letters and numbers')
-            .test('no-special-characters', 'Invalid number', value => /^[A-Z0-9]*$/.test(value))
-            .test('uppercase-letters', 'Character types should be in Caps', value => /^[A-Z0-9]*$/.test(value.toUpperCase()))
-            .min(10, 'PAN number must be at least 10 characters long')
-            .max(10, 'PAN number must not exceed 10 characters'),
+            .matches(/^[A-Z]{5}[0-9]{4}[A-Z]$/, 'PAN number must be in the format AAAAA9999A and in uppercase')
+            .length(10, 'PAN number must be exactly 10 characters long'),
         fssai_document_filename: Yup.string()
             .matches(/^[A-Z0-9]*$/, 'FSSAI number must contain only uppercase letters and numbers')
             .min(14, 'FSSAI must be at least 14 characters long')
@@ -175,7 +172,7 @@ const KycUpdate = ({ activeStep, setActiveStep }) => {
                         />
                         {errors.gstin_number && <small className='text-danger mt-2 ms-0'>{errors.gstin_number}</small>}
 
-                        <h4 className='ct-box-profile-title mt-1'>Please Enter Your FSSAI Licence Number</h4>
+                        <h4 className='ct-box-profile-title mt-1'>Please Enter Your FSSAI License Number</h4>
                         <CssTextFieldTwo
                             value={values.fssai_document_filename}
                             name="fssai_document_filename"
