@@ -24,7 +24,7 @@ const Subscription = () => {
 
                   <Stack direction="row" justifyContent="space-between" alignItems="center">
                       <p className="subscription-type">Vendor Type:</p>
-                      <h4 className="subscription-red">Catering Service</h4>
+                      <h4 className="subscription-red">Tiffin Service</h4>
                   </Stack>
 
                   <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">

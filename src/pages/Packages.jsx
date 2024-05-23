@@ -264,9 +264,9 @@ const Packages = () => {
                                         onChange={(e) => setStartPrice(e.target.value)}
                                         id="outlined-number"
                                         variant="outlined"
-                                        placeholder="Enter Minimum Capacity - Eg: 100plates"
+                                        placeholder="Eg. 125"
                                         className='text-center mx-auto'
-                                        style={{ width: '100%' }}
+                                        style={{ width: '50%' }}
                                         InputLabelProps={{
                                             style: { color: '#777777', fontSize: '10px' },
                                         }}

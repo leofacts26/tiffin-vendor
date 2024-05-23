@@ -19,6 +19,8 @@ import { api, BASE_URL } from "../api/apiConfig";
 import LoaderSpinner from "../components/LoaderSpinner";
 import { useLocation } from "react-router-dom";
 import { MenuItem, Select } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
 
 
 import dayjs from 'dayjs';
@@ -26,6 +28,8 @@ import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimeRangePicker } from '@mui/x-date-pickers-pro/DateTimeRangePicker';
+
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 
 
 const CssTextField = styled(TextField)(({ theme }) => ({
@@ -91,6 +95,7 @@ const BusinesssProfile = () => {
   const formattedValues = value?.map(date => date?.format('YYYY-MM-DD HH:mm:ss'));
   const working_days_hours_time = formattedValues?.join(' - ');
 
+  console.log(data, "data");
 
   useEffect(() => {
     setValues((prevValues) => ({
@@ -102,13 +107,17 @@ const BusinesssProfile = () => {
       working_since: data?.working_since || "",
       about_description: data?.about_description,
       business_email: data?.business_email,
-      business_phone_number: data?.business_phone_number?.slice(4,14),
+      business_phone_number: data?.business_phone_number?.slice(4, 14),
       landline_number: data?.landline_number,
-      whatsapp_business_phone_number: data?.whatsapp_business_phone_number?.slice(4,14),
+      whatsapp_business_phone_number: data?.whatsapp_business_phone_number?.slice(4, 14),
       website_link: data?.website_link,
       twitter_id: data?.twitter_id,
       instagram_link: data?.instagram_link,
       facebook_link: data?.facebook_link,
+      start_day: data?.start_day,
+      working_days_end: data?.end_day,
+      working_hours_end: "10:00:00 AM",
+      working_hours_start: "10:22:22 PM",
 
       city_id: data?.city_id,
       pincode: data?.pincode,
@@ -153,7 +162,9 @@ const BusinesssProfile = () => {
       }
       const data = {
         ...values,
-        working_days_hours: working_days_hours_time
+        // working_days_hours: working_days_hours_time
+        // working_days_start: values?.start_day,
+        // working_days_end: values?.end_day,
       }
       await updateBusinessProfile(data, vendor_id);
       setLoading(false);
@@ -166,17 +177,17 @@ const BusinesssProfile = () => {
 
 
 
-  useEffect(() => {
-    if (data?.working_days_hours) {
-      const dateResult = data.working_days_hours.split(' - ');
-      if (dateResult.length === 2) {
-        setValue([
-          dayjs(dateResult[0]),
-          dayjs(dateResult[1]),
-        ]);
-      }
-    }
-  }, [data?.working_days_hours]);
+  // useEffect(() => {
+  //   if (data?.working_days_hours) {
+  //     const dateResult = data.working_days_hours.split(' - ');
+  //     if (dateResult.length === 2) {
+  //       setValue([
+  //         dayjs(dateResult[0]),
+  //         dayjs(dateResult[1]),
+  //       ]);
+  //     }
+  //   }
+  // }, [data?.working_days_hours]);
 
 
 
@@ -254,6 +265,7 @@ const BusinesssProfile = () => {
   }
   // loc end 
 
+  console.log(values, "VALUESSSSSSS");
 
 
   return (
@@ -287,7 +299,7 @@ const BusinesssProfile = () => {
                       onChange={handleChange}
                       name="vendor_service_name"
                       variant="outlined"
-                      placeholder="Enter Your Catering Service Name"
+                      placeholder="Enter Your Tiffin Service Name"
                       className='mt-0'
                       style={{ width: '100%' }}
                       InputLabelProps={{
@@ -303,7 +315,12 @@ const BusinesssProfile = () => {
                     {errors.vendor_service_name && <small className='text-danger mt-2 ms-1'>{errors.vendor_service_name}</small>}
                   </div>
 
-                  <div className="mt-5">
+
+                </Grid>
+
+
+                <Grid item xs={6}>
+                  <div className="mt-0">
                     <p className="business-profile-name">Contact person Name</p>
                     <CssTextField
                       value={values.point_of_contact_name}
@@ -326,30 +343,98 @@ const BusinesssProfile = () => {
                     {errors.point_of_contact_name && <small className='text-danger mt-2 ms-1'>{errors.point_of_contact_name}</small>}
                   </div>
                 </Grid>
+              </Grid>
 
 
-                <Grid item xs={6}>
-                  <div className="">
+
+              <Grid container spacing={2} style={{ display: 'flex', justifyContent: 'center' }}>
+                <Grid item xs={8} >
+                  <div className="mt-5">
                     <p className="business-profile-name">Working days/hours</p>
-                    <div className="business-date-picker">
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DemoContainer components={['DateTimeRangePicker', 'DateTimeRangePicker']}>
-                          <DateTimeRangePicker
-                            required
-                            value={value}
-                            onChange={(newValue) => setValue(newValue)}
+                    <Stack direction="row" justifyContent="start" alignItems="center" spacing={2}>
+                      <Box>
+                        <FormControl>
+                          <InputLabel id="demo-simple-select-label">Monday</InputLabel>
+                          <Select
+                            style={{ width: '150px' }}
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            label="startDate"
+                            name="start_day"
+                            value={values?.start_day}
+                            onChange={handleChange}
+                          >
+                            <MenuItem value="Monday">Monday</MenuItem>
+                            <MenuItem value="Tuesday">Tuesday</MenuItem>
+                            <MenuItem value="Wednesday">Wednesday</MenuItem>
+                            <MenuItem value="Thursday">Thursday</MenuItem>
+                            <MenuItem value="Friday">Friday</MenuItem>
+                            <MenuItem value="Saturday">Saturday</MenuItem>
+                            <MenuItem value="Sunday">Sunday</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Box>
+
+                      <Box sx={{ width: '150px' }}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <TimePicker
+                            label="Select Time"
+                            // value={startTime ? dayjs(startTime, 'hh:mm:ss A') : null}
+                            // onChange={(newValue) => {
+                            //   handleStartTimeChange(newValue, setStartTime);
+                            // }}
+                            renderInput={(params) => <TextField
+                              {...params}
+                            />}
                           />
-                        </DemoContainer>
-                      </LocalizationProvider>
-                      {/* <span style={{ color: '#57636c', fontSize: '10px' }}>{values.working_days_hours && values.working_days_hours}</span> */}
-                    </div>
+                        </LocalizationProvider>
+                      </Box>
+
+                      <span>-</span>
+
+                      <Box>
+                        <FormControl>
+                          <InputLabel id="demo-simple-select-label1">Monday</InputLabel>
+                          <Select
+                            style={{ width: '150px' }}
+                            labelId="demo-simple-select-label1"
+                            id="demo-simple-select1"
+                            label="endDate"
+                            name="working_days_end"
+                            value={values?.working_days_end}
+                            onChange={handleChange}
+                          >
+                            <MenuItem value="Monday">Monday</MenuItem>
+                            <MenuItem value="Tuesday">Tuesday</MenuItem>
+                            <MenuItem value="Wednesday">Wednesday</MenuItem>
+                            <MenuItem value="Thursday">Thursday</MenuItem>
+                            <MenuItem value="Friday">Friday</MenuItem>
+                            <MenuItem value="Saturday">Saturday</MenuItem>
+                            <MenuItem value="Sunday">Sunday</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Box>
+
+                      <Box sx={{ width: '150px' }}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <TimePicker
+                            label="Select Time"
+                            // value={endTime ? dayjs(endTime, 'hh:mm:ss A') : null}
+                            // onChange={(newValue) => {
+                            //   handleEndTimeChange(newValue, setEndTime);
+                            // }}
+                            renderInput={(params) => <TextField
+                              {...params}
+                              sx={{ gridColumn: "span 1" }}
+                            />}
+                          />
+                        </LocalizationProvider>
+                      </Box>
+                    </Stack>
                   </div>
                 </Grid>
-
-
-
-
               </Grid>
+
 
 
               <Grid container spacing={2} style={{ display: 'flex', justifyContent: 'center' }}>
@@ -506,7 +591,7 @@ const BusinesssProfile = () => {
                         }
                       }}
                     />
-                    {errors.business_phone_number && <small className='text-danger mt-2 ms-1'>{errors.business_phone_number}</small>} 
+                    {errors.business_phone_number && <small className='text-danger mt-2 ms-1'>{errors.business_phone_number}</small>}
                   </div>
 
                   <div className="mt-3">

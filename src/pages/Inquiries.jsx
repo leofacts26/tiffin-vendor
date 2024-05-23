@@ -152,10 +152,19 @@ const Inquiries = () => {
                 <DatePicker
                   value={selectedDate && dayjs(selectedDate)}
                   onChange={date => setSelectedDate(date)}
-                  sx={{ width: 260, height: 20 }}
+                  sx={{ width: 260, height: 20, color: '#fff' }}
                   slotProps={{
                     field: { clearable: true, onClear: () => setCleared(true) },
                   }}
+                  PaperProps={{
+                    sx: {
+                      "& .MuiPickersDay-root": {
+                        "&.Mui-selected": {
+                          backgroundColor: '#000000',
+                          color: '#fff'
+                        },
+                      },
+                    }}}
                 />
               </LocalizationProvider>
             </div>

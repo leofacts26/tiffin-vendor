@@ -86,7 +86,7 @@ const ProfileSteps = () => {
     // validationSchema 
     const validationSchema = Yup.object().shape({
         vendor_service_name: Yup.string().required('Your name is required'),
-        point_of_contact_name: Yup.string().required('Catering service name is required'),
+        point_of_contact_name: Yup.string().required('Tiffin service name is required'),
         business_phone_number: Yup.string()
             .required('Business phone number is required')
             .matches(/^[0-9]{10}$/, 'Business phone number must contain exactly 10 digits'),
@@ -153,7 +153,7 @@ const ProfileSteps = () => {
         <>
             <Container maxWidth="lg">
                 <div className='mt-3 bg-primary'>
-                    <h1 className='ct-heading'>catering Service</h1>
+                    <h1 className='ct-heading'>Tiffin Service</h1>
                 </div>
                 <Grid container spacing={2} className='box-negative'>
                     <Grid item xs={12} sm={6.5} md={4.5} lg={4.5}>
@@ -164,8 +164,8 @@ const ProfileSteps = () => {
                                         const stepProps = {};
                                         const labelProps = {};
                                         return (
-                                            <Step key={label} {...stepProps}>
-                                                <StepLabel {...labelProps}>{label}</StepLabel>
+                                            <Step key={label} {...stepProps} className='steps-box'>
+                                                <StepLabel {...labelProps} className='step-label'>{label}</StepLabel>
                                             </Step>
                                         );
                                     })}

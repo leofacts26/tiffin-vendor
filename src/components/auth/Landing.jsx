@@ -17,7 +17,7 @@ const Landing = () => {
                     <p className='text-center landing-para'>Please choose your service below</p>
                     <Stack direction="column" justifyContent="center" className='text-center'>
                         <Link to="/create-account" className='mb-4 mt-5'> <Button variant="contained" className='ct-box-btn-catering'>Catering Service</Button> </Link>
-                        <Button variant="contained" className='ct-box-btn-tiffin'>Tiffin Service</Button>
+                        <Button variant="contained" className='ct-box-btn-tiffin' style={{color: '#ffffff'}}>Tiffin Service</Button>
                     </Stack>
                 </div>
                 </Stack>

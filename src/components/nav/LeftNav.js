@@ -33,7 +33,7 @@ const leftnav = [
 
   { "title": "Services" },
   { "id": "4", "name": "Cuisines", "icon": <RestaurantRoundedIcon className="ln-icon" />, "url": "/dashboard/cuisines" },
-  { "id": "5", "name": "occasions", "icon": <CelebrationRoundedIcon className="ln-icon" />, "url": "/dashboard/occasions" },
+  // { "id": "5", "name": "occasions", "icon": <CelebrationRoundedIcon className="ln-icon" />, "url": "/dashboard/occasions" },
   { "id": "6", "name": "packages", "icon": <WebAssetRoundedIcon className="ln-icon" />, "url": "/dashboard/packages" },
 
   { "title": "Profiles" },
@@ -67,7 +67,7 @@ const LeftNav = () => {
           <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer} className="mobile-menu">
             <MenuIcon />
           </IconButton>
-          <RestaurantMenuIcon style={{ color: '#fff' }} />  <h2 className="ln-title ms-2">Catering Service</h2>
+          <RestaurantMenuIcon style={{ color: '#fff' }} />  <h2 className="ln-title ms-2">Tiffin Service</h2>
         </Stack>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between" className="mobile-none">

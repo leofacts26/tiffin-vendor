@@ -270,7 +270,7 @@ const EnterLocationManually = () => {
         <>
             <Container maxWidth="lg">
                 <div className='mt-3 bg-primary'>
-                    <h1 className='ct-heading'>catering Service</h1>
+                    <h1 className='ct-heading'>Tiffin Service</h1>
                 </div>
                 <Grid container spacing={2} className='box-negative'>
                     <Grid item xs={12} sm={6.5} md={4.5} lg={4.5}>

@@ -44,7 +44,7 @@ function App() {
             <Route path='/dashboard/reviews' element={<Reviews />} />
 
             <Route path='/dashboard/cuisines' element={<Cuisines />} />
-            <Route path='/dashboard/occasions' element={<Occasions />} />
+            {/* <Route path='/dashboard/occasions' element={<Occasions />} /> */}
             <Route path='/dashboard/packages' element={<Packages />} />
 
             <Route path='/dashboard/businesss-profile' element={<BusinesssProfile />} />

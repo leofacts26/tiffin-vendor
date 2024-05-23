@@ -1973,3 +1973,10 @@ textarea:-webkit-autofill:active {
   color: var(--primarytext) !important;
 }
 
+.steps-box .MuiStepIcon-text{
+     color: #ffffff !important;
+}
+
+.css-1qhhw2v-MuiButtonBase-root-MuiPickersDay-root.Mui-selected{
+  color: #fff !important;
+}
