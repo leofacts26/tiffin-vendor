@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux'
 import useBusinessProfile from "../hooks/useBusinessProfile";
 import { vendor_type } from "../constant";
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
+import { format, parse, isValid } from 'date-fns';
 
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
@@ -88,14 +89,25 @@ const BusinesssProfile = () => {
   const [loading, setLoading] = useState(false)
   // const [date, setDate] = useState(null)
   const [data, updateBusinessProfile, fetchBusinessProfile] = useBusinessProfile('/get-vendor-business-profile', accessToken)
-  const [value, setValue] = useState([
-    dayjs(''),
-    dayjs(''),
-  ]);
-  const formattedValues = value?.map(date => date?.format('YYYY-MM-DD HH:mm:ss'));
-  const working_days_hours_time = formattedValues?.join(' - ');
+  // const [value, setValue] = useState([
+  //   dayjs(''),
+  //   dayjs(''),
+  // ]);
+  // const formattedValues = value?.map(date => date?.format('YYYY-MM-DD HH:mm:ss'));
+  // const working_days_hours_time = formattedValues?.join(' - ');
 
-  console.log(data, "data");
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [formattedStartTime, setFormattedStartTime] = useState('');
+  const [formattedEndTime, setFormattedEndTime] = useState('');
+
+  const formatTime = (time) => {
+    return time ? dayjs(time).format('hh:mm:ss A') : null;
+  };
+
+  // console.log(data, "data");
 
   useEffect(() => {
     setValues((prevValues) => ({
@@ -160,11 +172,12 @@ const BusinesssProfile = () => {
       if (values.business_phone_number) {
         values.business_phone_number = formattedBusinessPhoneNumber;
       }
-      const data = {
+     const data = {
         ...values,
-        // working_days_hours: working_days_hours_time
-        // working_days_start: values?.start_day,
-        // working_days_end: values?.end_day,
+        working_hours_start: formattedStartTime || startTime,
+        working_hours_end: formattedEndTime || endTime,
+        working_days_start: startDate,
+        working_days_end: endDate,
       }
       await updateBusinessProfile(data, vendor_id);
       setLoading(false);
@@ -177,17 +190,43 @@ const BusinesssProfile = () => {
 
 
 
-  // useEffect(() => {
-  //   if (data?.working_days_hours) {
-  //     const dateResult = data.working_days_hours.split(' - ');
-  //     if (dateResult.length === 2) {
-  //       setValue([
-  //         dayjs(dateResult[0]),
-  //         dayjs(dateResult[1]),
-  //       ]);
-  //     }
-  //   }
-  // }, [data?.working_days_hours]);
+  useEffect(() => {
+    if (data) {
+      setStartDate(data.start_day);
+      setEndDate(data.end_day);
+  
+      // Helper function to parse and format time
+      const formatTime = (timeString) => {
+        const parsedTime = parse(timeString, 'hh:mm:ss a', new Date());
+        if (isValid(parsedTime)) {
+          return format(parsedTime, 'hh:mm:ss a');
+        } else {
+          console.error('Invalid time format', timeString);
+          return '';
+        }
+      };
+  
+      // Set the original times and format them
+      if (data.start_time) {
+        setStartTime(data.start_time);
+        setFormattedStartTime(formatTime(data.start_time));
+      } else {
+        setStartTime('');
+        setFormattedStartTime('');
+      }
+  
+      if (data.end_time) {
+        setEndTime(data.end_time);
+        setFormattedEndTime(formatTime(data.end_time));
+      } else {
+        setEndTime('');
+        setFormattedEndTime('');
+      }
+    }
+
+  }, [data])
+
+
 
 
 
@@ -265,8 +304,31 @@ const BusinesssProfile = () => {
   }
   // loc end 
 
-  console.log(values, "VALUESSSSSSS");
+  const handleStartTimeChange = (newValue, setTime) => {
+    if (newValue && newValue.isValid()) { // Check if newValue exists and is valid
+      const formattedTime = formatTime(newValue);
+      setTime(formattedTime);
+    } else {
+      setTime(null); // Set null if newValue is invalid
+    }
+  };
 
+  const handleEndTimeChange = (newValue, setTime) => {
+    if (newValue && newValue.isValid()) { // Check if newValue exists and is valid
+      const formattedTime = formatTime(newValue);
+      setTime(formattedTime);
+    } else {
+      setTime(null); // Set null if newValue is invalid
+    }
+  };
+
+  const handleStartChange = (event) => {
+    setStartDate(event.target.value);
+  };
+
+  const handleEndChange = (event) => {
+    setEndDate(event.target.value);
+  };
 
   return (
     <>
@@ -349,8 +411,10 @@ const BusinesssProfile = () => {
 
               <Grid container spacing={2} style={{ display: 'flex', justifyContent: 'center' }}>
                 <Grid item xs={8} >
+
                   <div className="mt-5">
                     <p className="business-profile-name">Working days/hours</p>
+
                     <Stack direction="row" justifyContent="start" alignItems="center" spacing={2}>
                       <Box>
                         <FormControl>
@@ -359,10 +423,9 @@ const BusinesssProfile = () => {
                             style={{ width: '150px' }}
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
+                            value={startDate}
                             label="startDate"
-                            name="start_day"
-                            value={values?.start_day}
-                            onChange={handleChange}
+                            onChange={handleStartChange}
                           >
                             <MenuItem value="Monday">Monday</MenuItem>
                             <MenuItem value="Tuesday">Tuesday</MenuItem>
@@ -379,10 +442,10 @@ const BusinesssProfile = () => {
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <TimePicker
                             label="Select Time"
-                            // value={startTime ? dayjs(startTime, 'hh:mm:ss A') : null}
-                            // onChange={(newValue) => {
-                            //   handleStartTimeChange(newValue, setStartTime);
-                            // }}
+                            value={startTime ? dayjs(startTime, 'hh:mm:ss A') : null} // Parse startTime if it exists
+                            onChange={(newValue) => {
+                              handleStartTimeChange(newValue, setStartTime);
+                            }}
                             renderInput={(params) => <TextField
                               {...params}
                             />}
@@ -399,10 +462,9 @@ const BusinesssProfile = () => {
                             style={{ width: '150px' }}
                             labelId="demo-simple-select-label1"
                             id="demo-simple-select1"
+                            value={endDate}
                             label="endDate"
-                            name="working_days_end"
-                            value={values?.working_days_end}
-                            onChange={handleChange}
+                            onChange={handleEndChange}
                           >
                             <MenuItem value="Monday">Monday</MenuItem>
                             <MenuItem value="Tuesday">Tuesday</MenuItem>
@@ -419,10 +481,10 @@ const BusinesssProfile = () => {
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <TimePicker
                             label="Select Time"
-                            // value={endTime ? dayjs(endTime, 'hh:mm:ss A') : null}
-                            // onChange={(newValue) => {
-                            //   handleEndTimeChange(newValue, setEndTime);
-                            // }}
+                            value={endTime ? dayjs(endTime, 'hh:mm:ss A') : null} // Parse startTime if it exists
+                            onChange={(newValue) => {
+                              handleEndTimeChange(newValue, setEndTime);
+                            }}
                             renderInput={(params) => <TextField
                               {...params}
                               sx={{ gridColumn: "span 1" }}
