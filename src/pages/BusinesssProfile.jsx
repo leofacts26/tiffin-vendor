@@ -174,8 +174,10 @@ const BusinesssProfile = () => {
       }
      const data = {
         ...values,
-        working_hours_start: formattedStartTime || startTime,
-        working_hours_end: formattedEndTime || endTime,
+        working_hours_start: startTime || formattedStartTime,
+        working_hours_end: endTime || formattedEndTime,
+        // working_hours_start: formattedStartTime || startTime,
+        // working_hours_end: formattedEndTime || endTime,
         working_days_start: startDate,
         working_days_end: endDate,
       }
@@ -192,8 +194,8 @@ const BusinesssProfile = () => {
 
   useEffect(() => {
     if (data) {
-      setStartDate(data.start_day);
-      setEndDate(data.end_day);
+      setStartDate(data?.start_day);
+      setEndDate(data?.end_day);
   
       // Helper function to parse and format time
       const formatTime = (timeString) => {
@@ -207,17 +209,17 @@ const BusinesssProfile = () => {
       };
   
       // Set the original times and format them
-      if (data.start_time) {
-        setStartTime(data.start_time);
-        setFormattedStartTime(formatTime(data.start_time));
+      if (data?.start_time) {
+        setStartTime(data?.start_time);
+        setFormattedStartTime(formatTime(data?.start_time));
       } else {
         setStartTime('');
         setFormattedStartTime('');
       }
   
-      if (data.end_time) {
-        setEndTime(data.end_time);
-        setFormattedEndTime(formatTime(data.end_time));
+      if (data?.end_time) {
+        setEndTime(data?.end_time);
+        setFormattedEndTime(formatTime(data?.end_time));
       } else {
         setEndTime('');
         setFormattedEndTime('');
