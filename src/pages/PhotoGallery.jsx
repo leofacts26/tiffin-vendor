@@ -6,17 +6,19 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useFetchPhotoGallery from "../hooks/useFetchPhotoGallery";
 import BrandedLogo from "../components/gallery/BrandedLogo";
 import MainBannerLogo from "../components/gallery/MainBannerLogo";
 import PackageMenuCards from "../components/gallery/PackageMenuCards";
 import ServicePhotos from "../components/gallery/ServicePhotos";
 import OtherPhotos from "../components/gallery/OtherPhotos";
+import { setMultiImageDelete } from "../features/user/userSlice";
 
 
 const PhotoGallery = () => {
   const { isLoading } = useSelector((state) => state.user);
+  const dispatch = useDispatch()
 
   // const [gallery, setGallery] = useState([])
   const {
@@ -222,7 +224,7 @@ const PhotoGallery = () => {
           <MainBannerLogo />
 
           {/* Package / Menu Card Photos  */}
-           <div className="mt-2">
+          <div className="mt-2">
             <p className='cuisines-title text-center'>Package / Menu Card Photos</p>
             <Divider
               className='mt-2 mb-4'
@@ -252,7 +254,7 @@ const PhotoGallery = () => {
                                 style={{ display: 'none' }}
                                 onChange={(e) => onReUploadPackageMenu(e, item)}
                               />
-                              <label htmlFor="onReUploadPackageMenu">
+                              <label htmlFor="onReUploadPackageMenu" onClick={()=> dispatch(setMultiImageDelete(item))}>
                                 <span variant="contained" component="span" disabled={isLoading}>
                                   {<EditIcon className="pg-img-icon" />}
                                 </span>
@@ -298,11 +300,11 @@ const PhotoGallery = () => {
               </>
 
             </Stack>
-          </div> 
+          </div>
           {/* <PackageMenuCards /> */}
 
           {/* Service Photos start */}
-          {/* <div className="mt-2">
+          <div className="mt-2">
             <p className='cuisines-title text-center'>Service Photos</p>
             <Divider
               className='mt-2 mb-4'
@@ -330,10 +332,10 @@ const PhotoGallery = () => {
                                 multiple
                                 type="file"
                                 style={{ display: 'none' }}
-                                onChange={(e) => onReUploadEditService(e, item)}
+                                onChange={(e) => onReUploadEditService(e)}
                               />
                               <label htmlFor="onReUploadEditService">
-                                <span variant="contained" component="span" disabled={isLoading}>
+                                <span variant="contained" component="span" disabled={isLoading} onClick={()=> dispatch(setMultiImageDelete(item))}>
                                   {<EditIcon className="pg-img-icon" />}
                                 </span>
                               </label>
@@ -376,8 +378,8 @@ const PhotoGallery = () => {
               </>
 
             </Stack>
-          </div> */}
-          <ServicePhotos />
+          </div>
+          {/* <ServicePhotos /> */}
 
           {/* Other Photos */}
           {/* <div className="mt-2">
