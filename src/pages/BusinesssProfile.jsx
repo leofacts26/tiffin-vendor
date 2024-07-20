@@ -13,7 +13,6 @@ import useBusinessProfile from "../hooks/useBusinessProfile";
 import { vendor_type } from "../constant";
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 import { format, parse, isValid } from 'date-fns';
-
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { api, BASE_URL } from "../api/apiConfig";
@@ -22,14 +21,11 @@ import { useLocation } from "react-router-dom";
 import { MenuItem, Select } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-
-
 import dayjs from 'dayjs';
 import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimeRangePicker } from '@mui/x-date-pickers-pro/DateTimeRangePicker';
-
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 
 
@@ -52,8 +48,8 @@ const CssTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
-const formatPhoneNumber = (phoneNumber) => {
 
+const formatPhoneNumber = (phoneNumber) => {
   let formatedNumber = "";
   if (phoneNumber.startsWith('+91-')) {
     formatedNumber += phoneNumber;
@@ -62,50 +58,28 @@ const formatPhoneNumber = (phoneNumber) => {
   }
   console.log(formatedNumber, "formatedNumber");
   return formatedNumber
-
 };
 
-
-// const initialState = {
-//   street_name: '',
-//   area: '',
-//   pincode: '',
-//   latitude: '',
-//   longitude: '',
-//   address: '',
-//   city: '',
-//   state: '',
-//   country: '',
-//   formatted_address: '',
-//   map_location_link: '',
-//   place_id: '',
-//   city_id: ''
-// }
 
 const BusinesssProfile = () => {
   const [values, setValues] = useState({})
   const { accessToken } = useSelector((state) => state.user)
   const { vendor_id } = useSelector((state) => state?.user?.vendorId)
   const [loading, setLoading] = useState(false)
-  // const [date, setDate] = useState(null)
   const [data, updateBusinessProfile, fetchBusinessProfile] = useBusinessProfile('/get-vendor-business-profile', accessToken)
-  // const [value, setValue] = useState([
-  //   dayjs(''),
-  //   dayjs(''),
-  // ]);
-  // const formattedValues = value?.map(date => date?.format('YYYY-MM-DD HH:mm:ss'));
-  // const working_days_hours_time = formattedValues?.join(' - ');
 
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+
+
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
-  const [formattedStartTime, setFormattedStartTime] = useState('');
-  const [formattedEndTime, setFormattedEndTime] = useState('');
+  // const [formattedStartTime, setFormattedStartTime] = useState('');
+  // const [formattedEndTime, setFormattedEndTime] = useState('');
 
-  const formatTime = (time) => {
-    return time ? dayjs(time).format('hh:mm:ss A') : null;
-  };
+  // const formatTime = (time) => {
+  //   return time ? dayjs(time).format('hh:mm:ss A') : null;
+  // };
 
   // console.log(data, "data");
 
@@ -151,16 +125,19 @@ const BusinesssProfile = () => {
     point_of_contact_name: Yup.string().required('Contact person name is required.'),
     business_phone_number: Yup.string()
       .required('Business phone number is required')
-    // working_days_hours: Yup.string().required('working days hours is required.'),
-    // about_description: Yup.string().required('about description is required.'),
-    // business_email: Yup.string().required('Business email is required.'),
-    // working_since: Yup.string()
-    //   .matches(/^\d{4}$/, 'Year must be exactly 4 digits Eg: 2024')
-    //   .required('Working since is required.'),
   });
 
+  useEffect(() => {
+    if (data) {
+      setStartDate(data?.start_day);
+      setEndDate(data?.end_day);
+      setStartTime(data.start_time ? dayjs(data.start_time, 'HH:mm:ss') : null);
+      setEndTime(data.end_time ? dayjs(data.end_time, 'HH:mm:ss') : null);
+    }
+  }, [data])
+
   const handleSubmit = async (values, resetForm) => {
-    console.log(values, "values");
+    // console.log(values, "values");
     const formattedBusinessPhoneNumber = formatPhoneNumber(values.business_phone_number);
     const formattedwhatsapp_business_phone_number = values.whatsapp_business_phone_number ? formatPhoneNumber(values.whatsapp_business_phone_number) : '';
 
@@ -172,10 +149,15 @@ const BusinesssProfile = () => {
       if (values.business_phone_number) {
         values.business_phone_number = formattedBusinessPhoneNumber;
       }
-     const data = {
+
+      const formattedStartTime = startTime ? dayjs(startTime).format('hh:mm:ss A') : '';
+      const formattedEndTime = endTime ? dayjs(endTime).format('hh:mm:ss A') : '';
+
+
+      const data = {
         ...values,
-        working_hours_start: startTime || formattedStartTime,
-        working_hours_end: endTime || formattedEndTime,
+        working_hours_start: formattedStartTime || startTime,
+        working_hours_end: formattedEndTime || endTime,
         // working_hours_start: formattedStartTime || startTime,
         // working_hours_end: formattedEndTime || endTime,
         working_days_start: startDate,
@@ -192,45 +174,39 @@ const BusinesssProfile = () => {
 
 
 
-  useEffect(() => {
-    if (data) {
-      setStartDate(data?.start_day);
-      setEndDate(data?.end_day);
-  
-      // Helper function to parse and format time
-      const formatTime = (timeString) => {
-        const parsedTime = parse(timeString, 'hh:mm:ss a', new Date());
-        if (isValid(parsedTime)) {
-          return format(parsedTime, 'hh:mm:ss a');
-        } else {
-          console.error('Invalid time format', timeString);
-          return '';
-        }
-      };
-  
-      // Set the original times and format them
-      if (data?.start_time) {
-        setStartTime(data?.start_time);
-        setFormattedStartTime(formatTime(data?.start_time));
-      } else {
-        setStartTime('');
-        setFormattedStartTime('');
-      }
-  
-      if (data?.end_time) {
-        setEndTime(data?.end_time);
-        setFormattedEndTime(formatTime(data?.end_time));
-      } else {
-        setEndTime('');
-        setFormattedEndTime('');
-      }
-    }
+  // useEffect(() => {
+  //   if (data) {
+  //     setStartDate(data?.start_day);
+  //     setEndDate(data?.end_day);
 
-  }, [data])
+  //     const formatTime = (timeString) => {
+  //       const parsedTime = parse(timeString, 'hh:mm:ss a', new Date());
+  //       if (isValid(parsedTime)) {
+  //         return format(parsedTime, 'hh:mm:ss a');
+  //       } else {
+  //         console.error('Invalid time format', timeString);
+  //         return '';
+  //       }
+  //     };
 
+  //     if (data?.start_time) {
+  //       setStartTime(data?.start_time);
+  //       setFormattedStartTime(formatTime(data?.start_time));
+  //     } else {
+  //       setStartTime('');
+  //       setFormattedStartTime('');
+  //     }
 
+  //     if (data?.end_time) {
+  //       setEndTime(data?.end_time);
+  //       setFormattedEndTime(formatTime(data?.end_time));
+  //     } else {
+  //       setEndTime('');
+  //       setFormattedEndTime('');
+  //     }
+  //   }
 
-
+  // }, [data])
 
   // location start
   // const [locationValues, setLocationValues] = useState(initialState)
@@ -239,9 +215,23 @@ const BusinesssProfile = () => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   // location end 
 
-  // console.log(locationPlaceId, "locationPlaceId");
-  // console.log(selectedLocation, "selectedLocation");
-  // console.log(values, "values");
+
+  const handleStartChange = (event) => {
+    setStartDate(event.target.value);
+  };
+
+  const handleEndChange = (event) => {
+    setEndDate(event.target.value);
+  };
+
+  const handleStartTimeChange = (newValue) => {
+    setStartTime(newValue);
+  };
+
+  const handleEndTimeChange = (newValue) => {
+    setEndTime(newValue);
+  };
+
 
   // loc start
   const {
@@ -306,31 +296,31 @@ const BusinesssProfile = () => {
   }
   // loc end 
 
-  const handleStartTimeChange = (newValue, setTime) => {
-    if (newValue && newValue.isValid()) { // Check if newValue exists and is valid
-      const formattedTime = formatTime(newValue);
-      setTime(formattedTime);
-    } else {
-      setTime(null); // Set null if newValue is invalid
-    }
-  };
+  // const handleStartTimeChange = (newValue, setTime) => {
+  //   if (newValue && newValue.isValid()) {
+  //     const formattedTime = formatTime(newValue);
+  //     setTime(formattedTime);
+  //   } else {
+  //     setTime(null); 
+  //   }
+  // };
 
-  const handleEndTimeChange = (newValue, setTime) => {
-    if (newValue && newValue.isValid()) { // Check if newValue exists and is valid
-      const formattedTime = formatTime(newValue);
-      setTime(formattedTime);
-    } else {
-      setTime(null); // Set null if newValue is invalid
-    }
-  };
+  // const handleEndTimeChange = (newValue, setTime) => {
+  //   if (newValue && newValue.isValid()) {
+  //     const formattedTime = formatTime(newValue);
+  //     setTime(formattedTime);
+  //   } else {
+  //     setTime(null); 
+  //   }
+  // };
 
-  const handleStartChange = (event) => {
-    setStartDate(event.target.value);
-  };
+  // const handleStartChange = (event) => {
+  //   setStartDate(event.target.value);
+  // };
 
-  const handleEndChange = (event) => {
-    setEndDate(event.target.value);
-  };
+  // const handleEndChange = (event) => {
+  //   setEndDate(event.target.value);
+  // };
 
   return (
     <>
@@ -444,7 +434,7 @@ const BusinesssProfile = () => {
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <TimePicker
                             label="Select Time"
-                            value={startTime ? dayjs(startTime, 'hh:mm:ss A') : null} // Parse startTime if it exists
+                            value={startTime ? dayjs(startTime, 'hh:mm:ss A') : null}
                             onChange={(newValue) => {
                               handleStartTimeChange(newValue, setStartTime);
                             }}
@@ -483,7 +473,7 @@ const BusinesssProfile = () => {
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <TimePicker
                             label="Select Time"
-                            value={endTime ? dayjs(endTime, 'hh:mm:ss A') : null} // Parse startTime if it exists
+                            value={endTime ? dayjs(endTime, 'hh:mm:ss A') : null}
                             onChange={(newValue) => {
                               handleEndTimeChange(newValue, setEndTime);
                             }}
@@ -494,6 +484,7 @@ const BusinesssProfile = () => {
                           />
                         </LocalizationProvider>
                       </Box>
+
                     </Stack>
                   </div>
                 </Grid>
