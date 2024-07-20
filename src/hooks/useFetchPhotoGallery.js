@@ -377,16 +377,111 @@ const useFetchPhotoGallery = (handleBoxClose) => {
     }
 
     // Package / Menu 
+    // const onUploadBannerPackageMenu = async (event) => {
+    //     dispatch(setIsLoading(true))
+    //     const { file, url } = await getCroppedImg(
+    //         photoURL,
+    //         croppedAreaPixels,
+    //         rotation
+    //     );
+    //     const formData = new FormData();
+    //     formData.append('id', '');
+    //     formData.append('image', file);
+    //     formData.append('action_type', 'insert')
+
+    //     try {
+    //         toast.loading('Uploading Image...');
+    //         const response = await api.post(`${BASE_URL}/upload-vendor-menu-image`, formData, {
+    //             headers: {
+    //                 'Content-Type': 'multipart/form-data',
+    //                 Authorization: `Bearer ${accessToken}`,
+    //             },
+    //         });
+    //         getVendorImages();
+    //         toast.success(successToast(response))
+    //     } catch (error) {
+    //         console.log(error);
+    //         toast.error(datavalidationerror(error))
+    //     } finally {
+    //         dispatch(setIsLoading(false))
+    //         toast.dismiss();
+    //         handleClose();
+    //         handleBrandClose()
+    //     }
+    // }
+
+    // const onReUploadPackageMenu = async () => {
+    //     dispatch(setIsLoading(true))
+    //     const { file, url } = await getCroppedImg(
+    //         photoURL,
+    //         croppedAreaPixels,
+    //         rotation
+    //     );
+    //     const formData = new FormData();
+    //     formData.append('id', parseInt(multiImageDelete?.id && multiImageDelete?.id));
+    //     formData.append('image', file);
+    //     formData.append('action_type', 'replace')
+    //     try {
+    //         toast.loading('Uploading Image...');
+    //         const response = await api.post(`${BASE_URL}/upload-vendor-menu-image`, formData, {
+    //             headers: {
+    //                 'Content-Type': 'multipart/form-data',
+    //                 Authorization: `Bearer ${accessToken}`,
+    //             },
+    //         });
+    //         getVendorImages();
+    //         toast.success(successToast(response))
+    //     } catch (error) {
+    //         console.log(error);
+    //         toast.error(datavalidationerror(error))
+    //     } finally {
+    //         dispatch(setIsLoading(false))
+    //         toast.dismiss();
+    //         handleClose();
+    //         handleBrandClose()
+    //     }
+    // }
+
+    // const onHandleRemovePackageMenu = async () => {
+    //     const formData = new FormData();
+    //     formData.append('id', parseInt(multiImageDelete?.id && multiImageDelete?.id));
+    //     formData.append('action_type', 'remove')
+
+    //     dispatch(setIsLoading(true))
+    //     try {
+    //         toast.loading('Removing Image...');
+    //         const response = await api.post(`${BASE_URL}/upload-vendor-menu-image`, formData, {
+    //             headers: {
+    //                 Authorization: `Bearer ${accessToken}`,
+    //             },
+    //         });
+    //         toast.success(successToast(response));
+    //         getVendorImages();
+    //     } catch (error) {
+    //         console.log(error);
+    //         toast.error(datavalidationerror(error));
+    //     } finally {
+    //         dispatch(setIsLoading(false))
+    //         toast.dismiss();
+    //         handleBrandClose()
+    //     }
+    // }
+
     const onUploadBannerPackageMenu = async (event) => {
         dispatch(setIsLoading(true))
-        const { file, url } = await getCroppedImg(
-            photoURL,
-            croppedAreaPixels,
-            rotation
-        );
+        // const { file, url } = await getCroppedImg(
+        //     photoURL,
+        //     croppedAreaPixels,
+        //     rotation
+        // );
+        // const formData = new FormData();
+        // formData.append('id', '');
+        // formData.append('image', file);
+        // formData.append('action_type', 'insert')
+
         const formData = new FormData();
         formData.append('id', '');
-        formData.append('image', file);
+        formData.append('image', event.target.files[0]);
         formData.append('action_type', 'insert')
 
         try {
@@ -410,17 +505,19 @@ const useFetchPhotoGallery = (handleBoxClose) => {
         }
     }
 
-    const onReUploadPackageMenu = async () => {
+    const onReUploadPackageMenu = async (event) => {
         dispatch(setIsLoading(true))
-        const { file, url } = await getCroppedImg(
-            photoURL,
-            croppedAreaPixels,
-            rotation
-        );
+        // const { file, url } = await getCroppedImg(
+        //     photoURL,
+        //     croppedAreaPixels,
+        //     rotation
+        // );
+
         const formData = new FormData();
         formData.append('id', parseInt(multiImageDelete?.id && multiImageDelete?.id));
-        formData.append('image', file);
+        formData.append('image', event.target.files[0]);
         formData.append('action_type', 'replace')
+
         try {
             toast.loading('Uploading Image...');
             const response = await api.post(`${BASE_URL}/upload-vendor-menu-image`, formData, {
@@ -442,9 +539,9 @@ const useFetchPhotoGallery = (handleBoxClose) => {
         }
     }
 
-    const onHandleRemovePackageMenu = async () => {
+    const onHandleRemovePackageMenu = async (item) => {
         const formData = new FormData();
-        formData.append('id', parseInt(multiImageDelete?.id && multiImageDelete?.id));
+        formData.append('id', parseInt(item?.id && item?.id));
         formData.append('action_type', 'remove')
 
         dispatch(setIsLoading(true))
