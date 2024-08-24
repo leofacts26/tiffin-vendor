@@ -17,7 +17,7 @@ const Subscription = () => {
     dispatch(fetchActiveSubscription())
   }, [])
 
-  console.log(activeSubscriptionList, "activeSubscriptionList activeSubscriptionList");
+  // console.log(activeSubscriptionList, "activeSubscriptionList activeSubscriptionList"); 
 
 
 
