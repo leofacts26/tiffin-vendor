@@ -5,8 +5,20 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import DoneIcon from '@mui/icons-material/Done';
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchActiveSubscription } from "../features/subscriptionSlice";
 
 const Subscription = () => {
+  const dispatch = useDispatch();
+  const { activeSubscriptionList } = useSelector((state) => state.subscription)
+
+  useEffect(() => {
+    dispatch(fetchActiveSubscription())
+  }, [])
+
+  console.log(activeSubscriptionList, "activeSubscriptionList activeSubscriptionList");
+
 
 
   return (
@@ -23,51 +35,51 @@ const Subscription = () => {
                 <div className="px-4">
 
                   <Stack direction="row" justifyContent="space-between" alignItems="center">
-                      <p className="subscription-type">Vendor Type:</p>
-                      <h4 className="subscription-red">Tiffin Service</h4>
+                    <p className="subscription-type">Vendor Type:</p>
+                    <h4 className="subscription-red">Tiffin Service</h4>
                   </Stack>
 
                   <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                      <p className="subscription-type">Subscription Status:</p>
-                     <Stack direction="row" spacing={1} alignItems="center">
-                     <DoneIcon style={{fontSize: '18px', color: '#459412'}} /> <h4 className="subscription-green"> Active</h4>
-                     </Stack>
+                    <p className="subscription-type">Subscription Status:</p>
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <DoneIcon style={{ fontSize: '18px', color: '#459412' }} /> <h4 className="subscription-green"> Active</h4>
+                    </Stack>
                   </Stack>
 
                   <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                      <p className="subscription-type">Subscription Plan:</p>
-                      <Button variant="contained" className="subscribe-btn">Branded</Button>
+                    <p className="subscription-type">Subscription Plan:</p>
+                    <Button variant="contained" className="subscribe-btn">Branded</Button>
                   </Stack>
 
                   <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                      <p className="subscription-type">Subscription Type:</p>
-                      <h4 className="subscription-dark">Annual</h4>
+                    <p className="subscription-type">Subscription Type:</p>
+                    <h4 className="subscription-dark">Annual</h4>
                   </Stack>
 
                   <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                      <p className="subscription-type">Subscription Charges:</p>
-                      <h4 className="subscription-dark">12,000</h4>
+                    <p className="subscription-type">Subscription Charges:</p>
+                    <h4 className="subscription-dark">12,000</h4>
                   </Stack>
 
                   <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                      <p className="subscription-type">Date of Subscription:</p>
-                      <h4 className="subscription-dark">Jun 24, 2024</h4>
+                    <p className="subscription-type">Date of Subscription:</p>
+                    <h4 className="subscription-dark">Jun 24, 2024</h4>
                   </Stack>
 
                   <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                      <p className="subscription-type">Expiry Date:</p>
-                      <h4 className="subscription-dark">Oct 12, 2025</h4>
+                    <p className="subscription-type">Expiry Date:</p>
+                    <h4 className="subscription-dark">Oct 12, 2025</h4>
                   </Stack>
 
                   <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3 mb-4">
-                      <p className="subscription-type">Remaining Days:</p>
-                      <h4 className="subscription-dark">235 Days</h4>
+                    <p className="subscription-type">Remaining Days:</p>
+                    <h4 className="subscription-dark">235 Days</h4>
                   </Stack>
 
 
-               <Link to="/dashboard/subscription-plan" className="text-decoration-none">
-               <Button variant="contained" className="inquiries-btn mx-auto taxt-center"> Upgrade Subscription </Button>
-               </Link> 
+                  <Link to="/dashboard/subscription-plan" className="text-decoration-none">
+                    <Button variant="contained" className="inquiries-btn mx-auto taxt-center"> Upgrade Subscription </Button>
+                  </Link>
 
 
 
