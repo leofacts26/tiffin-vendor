@@ -6,7 +6,29 @@ import toast from 'react-hot-toast';
 const initialState = {
   isLoading: false,
   activeSubscriptionList: null,
+  subscriptionData: [],
 }
+
+
+// fetchSubscriptionTypes 
+export const fetchSubscriptionTypes = createAsyncThunk(
+  "homepage/fetchSubscriptionTypes",
+  async (user, thunkAPI) => {
+    try {
+      const response = await api.get(
+        `${BASE_URL}/rz-get-razorpay-plans?vendor_type=Caterer`,
+        {
+          headers: {
+            authorization: `Bearer ${thunkAPI.getState()?.user?.accessToken}`,
+          },
+        }
+      );
+      return response?.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
 
 
 // fetchActiveSubscription  
@@ -50,6 +72,18 @@ export const subscriptionSlice = createSlice({
         state.activeSubscriptionList = payload;
       })
       .addCase(fetchActiveSubscription.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(datavalidationerror(payload));
+      })
+      // fetchSubscriptionTypes
+      .addCase(fetchSubscriptionTypes.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchSubscriptionTypes.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.subscriptionData = payload;
+      })
+      .addCase(fetchSubscriptionTypes.rejected, (state, { payload }) => {
         state.isLoading = false;
         toast.error(datavalidationerror(payload));
       })

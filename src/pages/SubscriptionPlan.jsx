@@ -2,11 +2,12 @@ import TopHeader from "../components/global/TopHeader"
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
+import { useState } from "react";
+import MonthlyPlan from "../components/global/MonthlyPlan";
 import YearlyPlan from "../components/global/YearlyPlan";
 
-
-
 const SubscriptionPlan = () => {
+    const [active, setActive] = useState(false)
     return (
         <>
             <TopHeader title="Business Profile" description="below is a business overview" />
@@ -16,10 +17,10 @@ const SubscriptionPlan = () => {
                     <p className="branches-desc text-center">Choose your subscription types</p>
                     <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} className="mt-3 mb-4">
                         <h2 className="sub-plan-yearly">Monthly</h2>
-                        <Switch defaultChecked />
+                        <Switch defaultChecked={active} onClick={() => setActive(!active)} />
                         <h2 className="sub-plan-yearly">Yearly</h2>
                     </Stack>
-                    <YearlyPlan />
+                    {active ? <YearlyPlan /> : <MonthlyPlan />}
                 </div>
             </Container>
         </>
