@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchSubscriptionTypes } from "../../features/subscriptionSlice";
+import { calculateOrderTotal, fetchSubscriptionTypes, setDiscountedData, setSubscribeData } from "../../features/subscriptionSlice";
 import { useEffect } from "react";
 import LoadingAnimation from '../LoadingAnimation';
 import Stack from '@mui/material/Stack';
@@ -19,6 +19,21 @@ const MonthlyPlan = () => {
   }, []);
 
   // console.log(subscriptionData, "subscriptionData");
+
+  const onHandleSubscribe = async (item) => {
+    await dispatch(setSubscribeData(item))
+    const subscriptionDuration = "monthly";
+    const newItem = {
+      ...item,
+      subscriptionDuration
+    }
+    const response = await dispatch(calculateOrderTotal(newItem));
+    if (response?.payload?.status === "success") {
+      await dispatch(setDiscountedData(response?.payload))
+      navigate('/dashboard/subscription-plan-details');
+    }
+  }
+
 
   if (isLoading) {
     return <LoadingAnimation center />
@@ -59,7 +74,7 @@ const MonthlyPlan = () => {
 
                 <Link to="javascript:void(0)" className="text-decoration-none mt-3">
                   <Button variant="contained" className={`sub-plan-btn mx-auto taxt-center ${color}`}
-                    // onClick={() => onHandleSubscribe(item)}
+                    onClick={() => onHandleSubscribe(item)}
                   > Subscribe Now </Button>
                 </Link>
                 <br />
