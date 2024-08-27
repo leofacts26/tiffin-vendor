@@ -1403,6 +1403,7 @@ code {
   text-transform: capitalize !important;
   padding: 2px 16px;
   height: 25px !important;
+  color: #ffffff !important;
 }
 
 .subscription-dark {

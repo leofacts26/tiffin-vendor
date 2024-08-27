@@ -39,6 +39,7 @@ export const fetchActiveSubscription = createAsyncThunk(
   "homepage/fetchActiveSubscription",
   async (user, thunkAPI) => {
     const { vendor_id } = thunkAPI.getState().user.vendorId;
+    // console.log(vendor_id, "vendor_id GTT");
     try {
       const response = await api.get(
         `${BASE_URL}/rz-get-current-active-and-queued-subscriptions?vendorId=${vendor_id}`,
