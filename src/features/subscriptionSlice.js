@@ -86,13 +86,24 @@ export const calculateOrderTotal = createAsyncThunk(
 export const createOneTimePayment = createAsyncThunk(
   "homepage/createOneTimePayment",
   async (data, thunkAPI) => {
+    const { couponCode } = thunkAPI.getState().subscription.discoundedData;
+    const { subscriptionTypeId } = thunkAPI.getState().subscription.subscribeData;
+
+    const id = Number(subscriptionTypeId)
+    const subscriptionDuration = "monthly";
+    const updatedData = {
+      subscriptionTypeId: id,
+      subscriptionDuration,
+      couponCode: couponCode
+    }
     try {
-      const response = await api.post(`/rz-create-one-time-payment`, data, {
+      const response = await api.post(`/rz-create-one-time-payment`, updatedData, {
         headers: {
           authorization: `Bearer ${thunkAPI.getState()?.user?.accessToken}`,
         },
       });
       toast.success(`${response.data.status ? response.data.status : response.data.couponCode !== null && 'Coupon Code Applied'} `)
+      // console.log(response, "responseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponse");
       return response;
     } catch (error) {
       console.log(error);
@@ -100,7 +111,6 @@ export const createOneTimePayment = createAsyncThunk(
     }
   }
 );
-
 
 
 export const createRecurringTimePayment = createAsyncThunk(

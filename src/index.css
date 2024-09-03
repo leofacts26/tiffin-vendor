@@ -2197,3 +2197,11 @@ textarea:-webkit-autofill:active {
 .text-danger {
   color: var(--accent2) !important;
 }
+
+.checkbox-enabled {
+  color: green !important; /* Color for enabled state */
+}
+
+.checkbox-disabled {
+  color: rgba(0, 0, 0, 0.26) !important; /* Color for disabled state */
+}
