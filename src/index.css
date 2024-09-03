@@ -581,6 +581,15 @@ code {
   margin-bottom: 40px;
 }
 
+.ct-box-details {
+  box-shadow: var(--card-box-shadow);
+  border-radius: var(--radiusOne);
+  background-color: var(--primarybg);
+  padding-top: 20px;
+  padding-bottom: 50px;
+  margin-bottom: 40px;
+}
+
 .ct-box-title {
   text-align: center;
   font-size: 22px;
@@ -2181,9 +2190,10 @@ textarea:-webkit-autofill:active {
   border-top: 2px solid #0000000f;
 }
 
-.text-success{
+.text-success {
   color: var(--accent3) !important;
 }
-.text-danger{
+
+.text-danger {
   color: var(--accent2) !important;
 }
