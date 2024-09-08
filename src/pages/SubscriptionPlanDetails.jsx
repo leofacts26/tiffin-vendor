@@ -89,6 +89,8 @@ const SubscriptionPlanDetails = () => {
     // Determine whether to create a one-time payment or recurring payment
     if (!recurringPayments) {
       result = await dispatch(createRecurringTimePayment(recurringMonthlydata));
+    } else if (discoundedData?.is_one_recurring_subscription_already_present === false && recurringPayments) {
+      result = await dispatch(createRecurringTimePayment(recurringMonthlydata));
     } else {
       result = await dispatch(createOneTimePayment());
     }
@@ -106,7 +108,7 @@ const SubscriptionPlanDetails = () => {
     let options;
     // console.log(options, "options top");
 
-    if (!recurringPayments) {
+    if (!recurringPayments || (discoundedData?.is_one_recurring_subscription_already_present === false && recurringPayments)) {
       // subscription payment case 
       const {
         id: subscriptionId,
