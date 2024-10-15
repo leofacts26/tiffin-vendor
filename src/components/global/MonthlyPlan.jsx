@@ -63,8 +63,8 @@ const MonthlyPlan = () => {
                   </div>
                   <p className="sub-plan-brand mb-3 mt-3">List as {item?.subscriptionType} Caterer</p>
                   <p className="sub-plan-para">Benifits:</p>
-                  {item?.benefits.map((benefit, index) => (
-                    <p className="sub-plan-para" key={index}>- {benefit}</p>
+                  {item?.benefits && Object.entries(item.benefits).map(([key, benefit], index) => (
+                    <p className="sub-plan-para" key={key}>- {benefit}</p>
                   ))}
                   <br />
                 </div>
