@@ -27,6 +27,8 @@ import ResetPasswordSettings from "../components/settings/ResetPasswordSettings"
 import FssaiPhoto from "../components/gallery/FssaiPhoto";
 import PanCard from "../components/gallery/PanCard";
 import { api, BASE_URL } from "../api/apiConfig";
+import AadharCardNumber from "../components/settings/AadharCardNumber";
+import FssaiCardNumber from "../components/settings/FssaiCardNumber";
 
 const Settings = () => {
   const { accessToken } = useSelector((state) => state.user)
@@ -271,165 +273,12 @@ const Settings = () => {
                     </Accordion>
                   </div>
 
-                  {/* <div>
-                    <Accordion className="faq-bg" >
-                      <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1-content"
-                        id="panel1-header"
-                      >
-                        <p className="settings-faq-title" style={{ fontSize: '14px', fontWeight: '500' }}> PAN Card </p>
-                      </AccordionSummary>
-                      <AccordionDetails>
-                        {
-                          settings['vendor-encp'] !== undefined ? (
-                            <>
-                              {settings['vendor-encp']?.map((logo, index) => (
-                                <img
-                                  className="img-fluid mx-auto"
-                                  style={{ width: '100%', height: '200px', objectFit: 'contain' }}
-                                  key={logo?.id}
-                                  src={logo?.image_name[0]?.medium}
-                                  alt={`Brand Logo ${index}`}
-                                />
-                              ))}
-                            </>
-                          ) : (
-                            <>
-                              <Stack direction="row" justifyContent="center">
-                                <img
-                                  style={{ width: '200px' }}
-                                  src={'https://img.freepik.com/premium-vector/illustration-upload_498740-5719.jpg'}
-                                  alt={`Brand Logo`}
-                                />
-                              </Stack>
-                            </>
-                          )
-                        }
+                  <AadharCardNumber />
 
-                        <p className="settings-small mt-1">Upload PAN Card</p>
-
-                        <div className="mt-3 text-center">
-                          {settings['vendor-encp']?.length && settings['vendor-encp']?.length > 0 ? (
-                            <>
-                              <input
-                                accept="image/*"
-                                id="onReUploadPancard"
-                                multiple
-                                type="file"
-                                style={{ display: 'none' }}
-                                onChange={onReUploadPancard}
-                              />
-                              <label htmlFor="onReUploadPancard">
-
-                                <Button variant="contained" component="span" className="upload-btn" disabled={isLoading}>
-                                  <CloudUploadIcon style={{ fontSize: '14px' }} className="me-2" />  Re Upload </Button>
-                              </label>
-                            </>
-                          ) : (
-                            <>
-                              <input
-                                accept="image/*"
-                                id="onUploadPancard"
-                                multiple
-                                type="file"
-                                style={{ display: 'none' }}
-                                onChange={onUploadPancard}
-                              />
-                              <label htmlFor="onUploadPancard">
-                                <Button variant="contained" component="span" className="upload-btn" disabled={isLoading}>
-                                  <CloudUploadIcon style={{ fontSize: '14px' }} className="me-2" />Upload</Button>
-                              </label>
-                            </>
-                          )}
-                        </div>
-
-                      </AccordionDetails>
-                    </Accordion>
-                  </div> */}
-
-                  <PanCard />
-
-                  <GstnNumber />
-
-                  {/* <div>
-                    <Accordion className="faq-bg" >
-                      <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1-content"
-                        id="panel1-header"
-                      >
-                        <p className="settings-faq-title" style={{ fontSize: '14px', fontWeight: '500' }}> FSSAI Licence </p>
-                      </AccordionSummary>
-                      <AccordionDetails>
-                        {
-                          settings['vendor-encf'] !== undefined ? (
-                            <>
-                              {settings['vendor-encf']?.map((logo, index) => (
-                                <img
-                                  className="img-fluid mx-auto"
-                                  style={{ width: '100%', height: '200px', objectFit: 'contain' }}
-                                  key={logo?.id}
-                                  src={logo?.image_name[0]?.medium}
-                                  alt={`Brand Logo ${index}`}
-                                />
-                              ))}
-                            </>
-                          ) : (
-                            <>
-                              <Stack direction="row" justifyContent="center">
-                                <img
-                                  style={{ width: '200px' }}
-                                  src={'https://img.freepik.com/premium-vector/illustration-upload_498740-5719.jpg'}
-                                  alt={`Brand Logo`}
-                                />
-                              </Stack>
-                            </>
-                          )
-                        }
-
-                        <p className="settings-small mt-1">Upload FSSAI Licence</p>
-
-                        <div className="mt-3 text-center">
-                          {settings['vendor-encf']?.length && settings['vendor-encf']?.length > 0 ? (
-                            <>
-                              <input
-                                accept="image/*"
-                                id="onReUploadFssai"
-                                multiple
-                                type="file"
-                                style={{ display: 'none' }}
-                                onChange={onReUploadFssai}
-                              />
-                              <label htmlFor="onReUploadFssai">
-
-                                <Button variant="contained" component="span" className="upload-btn" disabled={isLoading}>
-                                  <CloudUploadIcon style={{ fontSize: '14px' }} className="me-2" />  Re Upload </Button>
-                              </label>
-                            </>
-                          ) : (
-                            <>
-                              <input
-                                accept="image/*"
-                                id="onUploadFssai"
-                                multiple
-                                type="file"
-                                style={{ display: 'none' }}
-                                onChange={onUploadFssai}
-                              />
-                              <label htmlFor="onUploadFssai">
-                                <Button variant="contained" component="span" className="upload-btn" disabled={isLoading}>
-                                  <CloudUploadIcon style={{ fontSize: '14px' }} className="me-2" />Upload</Button>
-                              </label>
-                            </>
-                          )}
-                        </div>
-
-                      </AccordionDetails>
-                    </Accordion>
-                  </div> */}
+                  
 
                   <FssaiPhoto />
+                  <FssaiCardNumber />
 
                   <Divider
                     className='mt-3'
