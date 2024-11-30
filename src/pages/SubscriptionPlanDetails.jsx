@@ -86,12 +86,12 @@ const SubscriptionPlanDetails = () => {
     // Declare result variable
     let result;
 
-    // Determine whether to create a one-time payment or recurring payment
-    if (!recurringPayments) {
-      result = await dispatch(createRecurringTimePayment(recurringMonthlydata));
-    } else if (discoundedData?.is_one_recurring_subscription_already_present === false && recurringPayments) {
+    // Updated logic for one-time or recurring payment
+    if (recurringPayments && discoundedData?.is_one_recurring_subscription_already_present === false) {
+      // Call recurring payment only if no existing recurring subscription
       result = await dispatch(createRecurringTimePayment(recurringMonthlydata));
     } else {
+      // Fallback to one-time payment
       result = await dispatch(createOneTimePayment());
     }
 
