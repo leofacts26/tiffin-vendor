@@ -124,7 +124,7 @@ const Settings = () => {
 
                   <p className="company-change-password mt-3 mb-3">Documents</p>
 
-                  <div>
+                  {/* <div>
                     <Accordion className="faq-bg" >
                       <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
@@ -136,7 +136,6 @@ const Settings = () => {
                       <AccordionDetails>
                         <Stack direction="row" spacing={2} flexDirection="row">
                           <div>
-                            {/* <p className="settings-small mb-1">Front</p> */}
                             {
                               settings['vendor-enca'] !== undefined ? (
                                 <>
@@ -162,7 +161,6 @@ const Settings = () => {
                                 </>
                               )
                             }
-                            {/* <p className="settings-small mt-1">Back</p> */}
 
                             <div className="mt-3 text-center">
                               {settings['vendor-enca']?.length && settings['vendor-enca']?.length > 0 ? (
@@ -202,7 +200,6 @@ const Settings = () => {
                           </div>
 
                           <div>
-                            {/* <p className="settings-small mb-1">Front</p> */}
                             {
                               settings['vendor-enca-back'] !== undefined ? (
                                 <>
@@ -228,7 +225,6 @@ const Settings = () => {
                                 </>
                               )
                             }
-                            {/* <p className="settings-small mt-1">Back</p> */}
 
                             <div className="mt-3 text-center">
                               {settings['vendor-enca-back']?.length && settings['vendor-enca-back']?.length > 0 ? (
@@ -271,9 +267,9 @@ const Settings = () => {
                         </Stack>
                       </AccordionDetails>
                     </Accordion>
-                  </div>
+                  </div> */}
 
-                  <AadharCardNumber />
+                  {/* <AadharCardNumber /> */}
 
                   
 

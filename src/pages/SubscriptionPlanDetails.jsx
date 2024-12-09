@@ -286,7 +286,7 @@ const SubscriptionPlanDetails = () => {
                         <Stack direction="column">
                           <div className="coupon-flex">
                             <span className='coupon-text'>
-                              {recurringPayments ? 'Monthly Subscription Enabled' : 'Monthly Subscription Not Enabled'}
+                              {recurringPayments ? 'One time Payment Enabled' : 'Monthly Recurring Activated'}
                             </span>
                             <Checkbox
                               disabled={discoundedData?.is_one_recurring_subscription_already_present}

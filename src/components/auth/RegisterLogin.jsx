@@ -133,12 +133,18 @@ const RegisterLogin = () => {
 
     // validation schema 
     const schema = Yup.object().shape({
-        point_of_contact_name: Yup.string().required('Name is required.'),
+        point_of_contact_name: Yup.string()
+            .required('Name is required.')
+            .matches(
+                /^[a-zA-Z\s]+$/,
+                'Name must only contain alphabets and spaces.'
+            )
+            .max(50, 'Name cannot exceed 50 characters.'),
         phone_number: Yup.string()
             .required('Phone number is required.')
             .matches(/^[0-9]+$/, 'Phone number must contain only digits')
             .min(10, 'Phone number must be at least 10 digits')
-            .max(10, 'Phone number must not exceed 15 digits'),
+            .max(15, 'Phone number must not exceed 15 digits'),
     });
 
     // onHandleRegisterSubmit 
@@ -292,7 +298,7 @@ const RegisterLogin = () => {
                                                             <button
                                                                 disabled={seconds > 0 || minutes > 0}
                                                                 style={{
-                                                                    color: seconds > 0 || minutes > 0 ? "#d9822b" : "#d9822b",
+                                                                    color: seconds > 0 || minutes > 0 ? "#57636c" : "#d9822b",
                                                                     margin: '0px auto', textAlign: 'center', border: 'none',
                                                                     background: '#fff', cursor: 'pointer'
                                                                 }}

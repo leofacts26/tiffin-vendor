@@ -574,7 +574,7 @@ code {
   box-shadow: var(--card-box-shadow);
   border-radius: var(--radiusOne);
   /* text-align: center; */
-  margin-top: -50px;
+  margin-top: -75px;
   background-color: var(--primarybg);
   padding-top: 20px;
   padding-bottom: 50px;
@@ -950,7 +950,7 @@ code {
 }
 
 .nav-bottom {
-  margin-top: 30px;
+  margin-top: 15px;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -1169,9 +1169,15 @@ code {
   text-transform: capitalize !important;
   color: #fff !important;
 }
-
+.add-inquiries-btn {
+  background-color: var(--accent3) !important;
+  border-radius: var(--radiusOne) !important;
+  font-size: 12px !important;
+  text-transform: capitalize !important;
+  color: #fff !important;
+}
 .inquiries-red-btn {
-  background-color: var(--secondary) !important;
+  background-color: var(--accent3) !important;
   color: #fff !important;
   border-radius: var(--radiusOne) !important;
   font-size: 12px !important;
@@ -1785,7 +1791,7 @@ code {
   color: var(--secondary) !important;
   font-weight: 500 !important;
   min-width: 15px !important;
-  margin-left: 30px !important;
+  /* margin-left: 30px !important; */
 }
 
 
@@ -2204,4 +2210,13 @@ textarea:-webkit-autofill:active {
 
 .checkbox-disabled {
   color: rgba(0, 0, 0, 0.26) !important; /* Color for disabled state */
+}
+
+
+.truncate-text {
+  display: inline-block;   
+  max-width: 17ch;         
+  white-space: nowrap;    
+  overflow: hidden;        
+  text-overflow: ellipsis; 
 }

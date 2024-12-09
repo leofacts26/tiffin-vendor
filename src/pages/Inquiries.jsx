@@ -22,6 +22,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import dayjs from 'dayjs';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+
 
 const CssTextField = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
@@ -152,19 +154,34 @@ const Inquiries = () => {
                 <DatePicker
                   value={selectedDate && dayjs(selectedDate)}
                   onChange={date => setSelectedDate(date)}
-                  sx={{ width: 260, height: 20, color: '#fff' }}
+                  format="DD MM YYYY"
+                  // sx={{ width: 260, height: 20, color: '#fff' }}
+                  // slotProps={{
+                  //   field: { clearable: true, onClear: () => setCleared(true) },
+                  // }}
+                  slots={{
+                    openPickerIcon: () => <CalendarMonthIcon style={{ color: '#d9822b' }} />,
+                  }}
+                  sx={{
+                    width: 260,
+                    height: 20,
+                    '.MuiInputAdornment-root': {
+                      color: 'c33332',
+                    },
+                  }}
                   slotProps={{
                     field: { clearable: true, onClear: () => setCleared(true) },
                   }}
-                  PaperProps={{
-                    sx: {
-                      "& .MuiPickersDay-root": {
-                        "&.Mui-selected": {
-                          backgroundColor: '#000000',
-                          color: '#fff'
-                        },
-                      },
-                    }}}
+
+                // PaperProps={{
+                //   sx: {
+                //     "& .MuiPickersDay-root": {
+                //       "&.Mui-selected": {
+                //         backgroundColor: '#000000',
+                //         color: '#fff'
+                //       },
+                //     },
+                //   }}}
                 />
               </LocalizationProvider>
             </div>

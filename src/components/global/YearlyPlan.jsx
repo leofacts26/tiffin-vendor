@@ -10,7 +10,7 @@ const YearlyPlan = () => {
     return (
         <>
             <Grid container spacing={2}>
-                <Grid item xs={12} sm={6} md={6} lg={3} xl={3} className='mb-3' style={{ display: 'flex', justifyContent: 'center', padding: '0px 5px' }}>
+                <Grid item xs={12} sm={6} md={6} lg={3} xl={3} className='mb-3' style={{ display: 'flex', justifyContent: 'center', padding: '0px 15px' }}>
                     <div className="subscription-plans-shadow">
                         <div className="sub-box-violet">
                             <div className="sub-box-violet-title">

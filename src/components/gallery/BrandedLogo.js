@@ -5,6 +5,10 @@ import Stack from '@mui/material/Stack';
 import { useDispatch, useSelector } from 'react-redux';
 import { Cancel } from '@mui/icons-material';
 import CropIcon from '@mui/icons-material/Crop';
+import UploadIcon from '@mui/icons-material/Upload';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+
 import {
     Box,
     Button,
@@ -170,16 +174,18 @@ const BrandedLogo = () => {
                             </Button>
                         </label> */}
 
-                        <Button variant="contained" component="span" className="cuisines-list-white-btn" onClick={handleClickBoxOpen}>
+                       <div>
+                       <Button variant="contained" component="span" className="cuisines-list-white-btn me-4" onClick={handleClickBoxOpen} startIcon={<UploadIcon />}>
                             Upload
                         </Button>
 
 
-                        <Button onClick={handleBrandClickOpen} variant="contained" component="span" className="cuisines-list-white-btn"
+                        <Button onClick={handleBrandClickOpen} variant="contained" component="span" className="cuisines-list-white-btn" startIcon={<DeleteIcon />}
                             disabled={isLoading || !(gallery['vendor-brand-logo']?.length && gallery['vendor-brand-logo']?.length > 0)}
                         >
                             Delete
                         </Button>
+                       </div>
 
                     </Stack>
                 </div>

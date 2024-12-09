@@ -23,6 +23,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import UploadIcon from '@mui/icons-material/Upload';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -172,16 +174,17 @@ const MainBannerLogo = () => {
                             </Button>
                         </label> */}
 
-                        <Button variant="contained" component="span" className="cuisines-list-white-btn" onClick={handleClickBoxOpen}>
-                            Upload
-                        </Button>
+                        <div>
+                            <Button variant="contained" component="span" className="cuisines-list-white-btn me-4" onClick={handleClickBoxOpen} startIcon={<UploadIcon />}>
+                                Upload
+                            </Button>
 
-
-                        <Button onClick={handleBrandClickOpen} variant="contained" component="span" className="cuisines-list-white-btn"
-                            disabled={isLoading || !(gallery['vendor-banner']?.length && gallery['vendor-banner']?.length > 0)}
-                        >
-                            Delete
-                        </Button>
+                            <Button onClick={handleBrandClickOpen} variant="contained" component="span" className="cuisines-list-white-btn" startIcon={<DeleteIcon />}
+                                disabled={isLoading || !(gallery['vendor-banner']?.length && gallery['vendor-banner']?.length > 0)}
+                            >
+                                Delete
+                            </Button>
+                        </div>
 
                     </Stack>
                 </div>
