@@ -32,10 +32,12 @@ import FssaiCardNumber from "../components/settings/FssaiCardNumber";
 
 const Settings = () => {
   const { accessToken } = useSelector((state) => state.user)
-  const vendorBusinessProfile = useGetVendor();
+  const { vendorBusinessProfile } = useGetVendor();
   const { isLoading } = useSelector((state) => state.user);
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+
+
 
   const {
     settings,
@@ -271,7 +273,7 @@ const Settings = () => {
 
                   {/* <AadharCardNumber /> */}
 
-                  
+
 
                   <FssaiPhoto />
                   <FssaiCardNumber />
