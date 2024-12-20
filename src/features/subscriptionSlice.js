@@ -10,6 +10,7 @@ const initialState = {
   discoundedData: null,
   subscribeData: null,
   couponCode: '',
+  calculaterOrderData: {}
 }
 
 
@@ -182,6 +183,18 @@ export const subscriptionSlice = createSlice({
         toast.success(successToast(payload));
       })
       .addCase(createOneTimePayment.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(datavalidationerror(payload));
+      })
+       // calculateOrderTotal 
+       .addCase(calculateOrderTotal.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(calculateOrderTotal.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.calculaterOrderData = payload;
+      })
+      .addCase(calculateOrderTotal.rejected, (state, { payload }) => {
         state.isLoading = false;
         toast.error(datavalidationerror(payload));
       })
