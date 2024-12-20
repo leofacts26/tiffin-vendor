@@ -1,130 +1,133 @@
+import * as React from 'react';
 import Grid from '@mui/material/Grid';
-import Divider from '@mui/material/Divider';
-import EditIcon from '@mui/icons-material/Edit';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { calculateOrderTotal, fetchSubscriptionTypes, setDiscountedData, setSubscribeData } from '../../features/subscriptionSlice';
+import { useEffect } from 'react';
+import Stack from '@mui/material/Stack';
+import { useNavigate } from 'react-router-dom';
+import LoadingAnimation from '../LoadingAnimation';
 
 
 const YearlyPlan = () => {
+    const navigate = useNavigate();
+    const { subscriptionData, isLoading } = useSelector((state) => state.subscription);
+    const dispatch = useDispatch();
+
+    console.log(subscriptionData, "subscriptionDatasubscriptionData");
+
+
+    useEffect(() => {
+        dispatch(fetchSubscriptionTypes());
+    }, []);
+
+    // onHandleSubscribe 
+    const onHandleSubscribe = async (item) => {
+        await dispatch(setSubscribeData(item))
+        const subscriptionDuration = "yearly";
+        const newItem = {
+            ...item,
+            subscriptionDuration
+        }
+        const response = await dispatch(calculateOrderTotal(newItem));
+        if (response?.payload?.status === "success") {
+            await dispatch(setDiscountedData(response?.payload))
+            navigate('/dashboard/subscription-plan-details');
+        }
+    }
+
+    if (isLoading) {
+        return <LoadingAnimation center />
+    }
+
     return (
         <>
-            <Grid container spacing={2}>
-                <Grid item xs={12} sm={6} md={6} lg={3} xl={3} className='mb-3' style={{ display: 'flex', justifyContent: 'center', padding: '0px 15px' }}>
-                    <div className="subscription-plans-shadow">
-                        <div className="sub-box-violet">
-                            <div className="sub-box-violet-title">
-                                <h3 className="sub-box-name">Branded Tiffin</h3>
-                            </div>
-                            <div className="sub-body px-2 pt-2">
-                                <div className="sub-price">
-                                    <h3 className="text-center"> ₹4000 / <sub className="sub-plan-month">month</sub></h3>
-                                </div>
-                                <p className="sub-plan-brand mb-3 mt-3">List as Branded Tiffin</p>
-                                <p className="sub-plan-para">Benifits:</p>
-                                <p className="sub-plan-para">- Gets clean dashboard </p>
-                                <p className="sub-plan-para">- Track your incomes </p>
-                                <p className="sub-plan-para">- Gets clean order PDF </p>
-                                <p className="sub-plan-para">- Includes calender feature so you never missout any info reading dates </p>
-                                <p className="sub-plan-para">- Gets notify via email, SMS, app notification </p>
-                                <p className="sub-plan-para">- Phone/chat feature with customers </p>
-                                <p className="sub-plan-para">- Data analysis/improvement recommendation</p>
-                                <br />
-                                <Link to="javascript:void(0)" className="text-decoration-none mt-3">
-                                    <Button variant="contained" className="sub-plan-btn mx-auto taxt-center"> Subscribe Now </Button>
-                                </Link>
-                                <br />
-                            </div>
-                        </div>
-                    </div>
+            {subscriptionData?.filter(item => item.plans?.length > 0).length > 0 ? (
+                <Grid container spacing={2}>
+                    {subscriptionData
+                        .filter(item => item.plans?.length > 0) // Filter subscriptions with plans
+                        .map((item, index) => {
+                            let color = '';
+                            const subscriptionType = item?.subscriptionType?.toLowerCase();
+    
+                            if (subscriptionType === 'normal') {
+                                color = 'normal-color';
+                            } else if (subscriptionType === 'popular') {
+                                color = 'popular-color';
+                            } else if (subscriptionType === 'branded') {
+                                color = 'branded-color';
+                            }
+    
+                            return (
+                                <Grid
+                                    item
+                                    xs={12}
+                                    sm={6}
+                                    md={6}
+                                    lg={4}
+                                    xl={4}
+                                    className="mb-3"
+                                    style={{ display: 'flex', justifyContent: 'center', padding: '0px 15px' }}
+                                    key={index}
+                                >
+                                    <Stack className="subscription-plans-shadow" justifyContent="space-between">
+                                        <div className="sub-box-violet">
+                                            <div
+                                                className={`sub-box-violet-title`}
+                                                style={{ backgroundColor: `${item.subscriptionTypeDisplayColor}` }}
+                                            >
+                                                <h3 className="sub-box-name">
+                                                    <span style={{ textTransform: 'capitalize' }}>
+                                                        {item?.subscriptionType}
+                                                    </span>{' '}
+                                                    Tiffin
+                                                </h3>
+                                            </div>
+                                            <div className="sub-body px-2 pt-2">
+                                                <div className="sub-price">
+                                                    <h3 className="text-center">
+                                                        {`₹ ${item?.yearlyCharges}`} /{' '}
+                                                        <sub className="sub-plan-month">Yearly</sub>
+                                                    </h3>
+                                                </div>
+                                                <p className="sub-plan-brand mb-3 mt-3">
+                                                    List as {item?.subscriptionType} Tiffin
+                                                </p>
+                                                <p className="sub-plan-para">Benefits:</p>
+                                                {item?.benefits &&
+                                                    Object.entries(item.benefits).map(([key, benefit], index) => (
+                                                        <p className="sub-plan-para" key={key}>
+                                                            - {benefit}
+                                                        </p>
+                                                    ))}
+                                                <br />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <Link to="javascript:void(0)" className="text-decoration-none mt-3">
+                                                <Button
+                                                    variant="contained"
+                                                    className={`sub-plan-btn mx-auto taxt-center`}
+                                                    style={{ backgroundColor: `${item.subscriptionTypeDisplayColor}` }}
+                                                    onClick={() => onHandleSubscribe(item)}
+                                                >
+                                                    Subscribe Now
+                                                </Button>
+                                            </Link>
+                                            <br />
+                                        </div>
+                                    </Stack>
+                                </Grid>
+                            );
+                        })}
                 </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={3} xl={3} className='mb-3' style={{ display: 'flex', justifyContent: 'center', padding: '0px 5px' }}>
-                    <div className="subscription-plans-shadow">
-                        <div className="sub-box-violet">
-                            <div className="sub-box-green-title">
-                                <h3 className="sub-box-name">Popular Tiffin</h3>
-                            </div>
-                            <div className="sub-body px-2 pt-2">
-                                <div className="sub-price">
-                                    <h3 className="text-center"> ₹3000 / <sub className="sub-plan-month">month</sub></h3>
-                                </div>
-                                <p className="sub-plan-brand mb-3 mt-3">List as Popular Tiffin</p>
-                                <p className="sub-plan-para">Benifits:</p>
-                                <p className="sub-plan-para">- Gets clean dashboard </p>
-                                <p className="sub-plan-para">- Track your incomes </p>
-                                <p className="sub-plan-para">- Gets clean order PDF </p>
-                                <p className="sub-plan-para">- Includes calender feature so you never missout any info reading dates </p>
-                                <p className="sub-plan-para">- Gets notify via email, SMS, app notification </p>
-                                <p className="sub-plan-para">- Phone/chat feature with customers </p>
-                                <p className="sub-plan-para">- Data analysis/improvement recommendation</p>
-                                <br />
-                                <Link to="javascript:void(0)" className="text-decoration-none mt-3">
-                                    <Button variant="contained" className="sub-plan-btn-green mx-auto taxt-center"> Subscribe Now </Button>
-                                </Link>
-                                <br />
-                            </div>
-                        </div>
-                    </div>
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={3} xl={3} className='mb-3' style={{ display: 'flex', justifyContent: 'center', padding: '0px 5px' }}>
-                    <div className="subscription-plans-shadow">
-                        <div className="sub-box-violet">
-                            <div className="sub-box-red-title">
-                                <h3 className="sub-box-name">Recommended Tiffin</h3>
-                            </div>
-                            <div className="sub-body px-2 pt-2">
-                                <div className="sub-price">
-                                    <h3 className="text-center"> ₹2000 / <sub className="sub-plan-month">month</sub></h3>
-                                </div>
-                                <p className="sub-plan-brand mb-3 mt-3">List as Recommended Tiffin</p>
-                                <p className="sub-plan-para">Benifits:</p>
-                                <p className="sub-plan-para">- Gets clean dashboard </p>
-                                <p className="sub-plan-para">- Track your incomes </p>
-                                <p className="sub-plan-para">- Gets clean order PDF </p>
-                                <p className="sub-plan-para">- Includes calender feature so you never missout any info reading dates </p>
-                                <p className="sub-plan-para">- Gets notify via email, SMS, app notification </p>
-                                <p className="sub-plan-para">- Phone/chat feature with customers </p>
-                                <p className="sub-plan-para">- Data analysis/improvement recommendation</p>
-                                <br />
-                                <Link to="javascript:void(0)" className="text-decoration-none mt-3">
-                                    <Button variant="contained" className="sub-plan-btn-red mx-auto taxt-center"> Subscribe Now </Button>
-                                </Link>
-                                <br />
-                            </div>
-                        </div>
-                    </div>
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={3} xl={3} className='mb-3' style={{ display: 'flex', justifyContent: 'center', padding: '0px 5px' }}>
-                    <div className="subscription-plans-shadow">
-                        <div className="sub-box-violet">
-                            <div className="sub-box-yellow-title">
-                                <h3 className="sub-box-name">Normal Tiffin</h3>
-                            </div>
-                            <div className="sub-body px-2 pt-2">
-                                <div className="sub-price">
-                                    <h3 className="text-center"> ₹1000 / <sub className="sub-plan-month">month</sub></h3>
-                                </div>
-                                <p className="sub-plan-brand mb-3 mt-3">List as Normal Tiffin</p>
-                                <p className="sub-plan-para">Benifits:</p>
-                                <p className="sub-plan-para">- Gets clean dashboard </p>
-                                <p className="sub-plan-para">- Track your incomes </p>
-                                <p className="sub-plan-para">- Gets clean order PDF </p>
-                                <p className="sub-plan-para">- Includes calender feature so you never missout any info reading dates </p>
-                                <p className="sub-plan-para">- Gets notify via email, SMS, app notification </p>
-                                <p className="sub-plan-para">- Phone/chat feature with customers </p>
-                                <p className="sub-plan-para">- Data analysis/improvement recommendation</p>
-                                <br />
-                                <Link to="javascript:void(0)" className="text-decoration-none mt-3">
-                                    <Button variant="contained" className="sub-plan-btn-yellow mx-auto taxt-center"> Subscribe Now </Button>
-                                </Link>
-                                <br />
-                            </div>
-                        </div>
-                    </div>
-                </Grid>
-            </Grid>
+            ) : (
+                <p>No yearly subscription plans available at the moment.</p>
+            )}
         </>
-    )
+    );
+    
 }
 
 export default YearlyPlan
