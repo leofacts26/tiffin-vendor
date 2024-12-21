@@ -103,6 +103,10 @@ const KycUpdate = ({ activeStep, setActiveStep }) => {
     };
 
 
+    const handleBack = () =>{
+        navigate('/')
+    }
+
 
 
     return (
@@ -195,14 +199,13 @@ const KycUpdate = ({ activeStep, setActiveStep }) => {
                         {errors.fssai_document_filename && <small className='text-danger mt-2 ms-0'>{errors.fssai_document_filename}</small>}
 
                         <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                            {/* <Button
+                            <Button
                                 color="inherit"
-                                disabled={activeStep === 0}
                                 onClick={handleBack}
-                                sx={{ mr: 1 }}
+                                sx={{ mr: 1, color: '#57636c' }}
                             >
-                                Back
-                            </Button> */}
+                                Skip
+                            </Button>
                             <Box sx={{ flex: '1 1 auto' }} />
 
                             <Button type='submit' className='ct-box-btn-profile-step' disabled={loading}>
