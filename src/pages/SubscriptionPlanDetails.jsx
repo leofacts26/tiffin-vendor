@@ -108,7 +108,7 @@ const SubscriptionPlanDetails = () => {
     let options;
     // console.log(options, "options top");
 
-    if (!recurringPayments || (discoundedData?.is_one_recurring_subscription_already_present === false && recurringPayments)) {
+    if ((discoundedData?.is_one_recurring_subscription_already_present === false && recurringPayments)) {
       // subscription payment case 
       const {
         id: subscriptionId,
@@ -123,7 +123,7 @@ const SubscriptionPlanDetails = () => {
       options = {
         key: "rzp_test_2M5D9mQwHZp8iP",
         subscription_id: subscriptionId,
-        amount: '1000', // Set a predefined amount or calculate based on the plan
+        amount: discoundedData.finalAmount, // Set a predefined amount or calculate based on the plan
         currency: "INR", // Assuming INR as currency
         name: "Caterings And Tiffins",
         description: "Subscription Payment",
@@ -167,7 +167,7 @@ const SubscriptionPlanDetails = () => {
         amount: amount.toString(),
         currency: currency,
         name: "Caterings And Tiffins",
-        description: "Test Transaction",
+        description: "One Time Payments",
         // image: { logo },
         order_id: id,
         handler: async function (response) {
