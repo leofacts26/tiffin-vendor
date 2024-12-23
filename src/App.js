@@ -40,7 +40,8 @@ function App() {
 
           <Route path="/" element={<Layout />}>
 
-            <Route index element={<DashboardComponent />} />
+            {/* <Route index element={<DashboardComponent />} /> */}
+            <Route index element={<Inquiries />} />
             <Route path='/dashboard/inquiries' element={<Inquiries />} />
             <Route path='/dashboard/reviews' element={<Reviews />} />
 
