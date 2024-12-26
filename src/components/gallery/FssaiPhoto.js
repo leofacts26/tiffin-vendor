@@ -25,6 +25,9 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import DeleteIcon from '@mui/icons-material/Delete';
+import UploadIcon from '@mui/icons-material/Upload';
+
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -151,7 +154,7 @@ const FssaiPhoto = () => {
                             )
                         }
 
-                        <p className="settings-small mt-1">Upload FSSAI license</p>
+                        {/* <p className="settings-small mt-1">Upload FSSAI license</p> */}
 
                         <div className="mt-3 text-center">
                             <input
@@ -164,7 +167,7 @@ const FssaiPhoto = () => {
                             />
                             <label htmlFor="vendor-encf">
                                 <Button variant="contained" component="span" className="cuisines-list-white-btn" disabled={isLoading}>
-                                    {settings['vendor-encf']?.length && settings['vendor-encf']?.length > 0 ? 'Re Upload' : 'Upload'}
+                                <UploadIcon />  {settings['vendor-encf']?.length && settings['vendor-encf']?.length > 0 ? 'Re Upload' : 'Upload'}
                                 </Button>
                             </label>
                         </div>
