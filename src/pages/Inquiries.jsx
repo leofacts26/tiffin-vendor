@@ -154,7 +154,7 @@ const Inquiries = () => {
                 <DatePicker
                   value={selectedDate && dayjs(selectedDate)}
                   onChange={date => setSelectedDate(date)}
-                  format="DD MM YYYY"
+                  format="DD/MM/YYYY"
                   // sx={{ width: 260, height: 20, color: '#fff' }}
                   // slotProps={{
                   //   field: { clearable: true, onClear: () => setCleared(true) },

@@ -2232,3 +2232,12 @@ textarea:-webkit-autofill:active {
   overflow: hidden;        
   text-overflow: ellipsis; 
 }
+
+.due-date{
+  font-size: 10px !important;
+  color: #57636c !important;
+}
+
+.text-gray{
+  color: #57636c
+}
