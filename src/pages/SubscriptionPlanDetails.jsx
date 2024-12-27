@@ -19,7 +19,16 @@ const SubscriptionPlanDetails = () => {
   const dispatch = useDispatch();
   const { subscribeData, discoundedData, couponCode, calculaterOrderData } = useSelector((state) => state.subscription);
   const [loading, setLoading] = useState(false);
-  const [recurringPayments, setRecurringPayments] = useState(discoundedData?.is_one_recurring_subscription_already_present);
+  const [recurringPayments, setRecurringPayments] = useState(true);
+
+  console.log(recurringPayments, "recurringPayments");
+
+
+  useEffect(() => {
+    if (discoundedData?.is_one_recurring_subscription_already_present === true) {
+      setRecurringPayments(discoundedData?.is_one_recurring_subscription_already_present)
+    }
+  }, [discoundedData?.is_one_recurring_subscription_already_present])
 
 
   useEffect(() => {
@@ -61,6 +70,14 @@ const SubscriptionPlanDetails = () => {
 
   async function displayRazorpay() {
     setLoading(true);
+
+    if (discoundedData?.is_one_recurring_subscription_already_present === false && discoundedData?.is_recurring_subscription_pending_for_authentication) {
+      toast.error("Subscription Payment is Pending, After Success you can proceed with OneTime Payment")
+      setLoading(false)
+      navigate('/dashboard/subscription')
+      return;
+    }
+
     const res = await loadScript(
       "https://checkout.razorpay.com/v1/checkout.js"
     );
@@ -229,7 +246,7 @@ const SubscriptionPlanDetails = () => {
                       </Stack>
                       <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} className="mb-3 mt-1">
                         <p>Subscription Type:</p> <p> {discoundedData?.subType ? discoundedData?.subType : 'N/A'} /  {" "}
-                          {discoundedData?.is_one_recurring_subscription_already_present ? 'Subscription' : 'One Time'} </p>
+                          {recurringPayments ? 'Subscription' : 'One Time'} </p>
                       </Stack>
 
                       <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} className="mb-1 mt-4">
@@ -291,19 +308,20 @@ const SubscriptionPlanDetails = () => {
                         <Stack direction="column">
                           <div className="coupon-flex">
                             <span className='coupon-text'>
-                              {recurringPayments ? 'One time Payment Enabled' : 'Monthly Recurring Activated'}
+                              {recurringPayments ? 'Monthly Recurring Activated' : 'One time Payment Enabled'}
                             </span>
                             <Checkbox
                               disabled={discoundedData?.is_one_recurring_subscription_already_present}
                               size="small" {...label}
                               checked={recurringPayments}
                               onChange={(e) => setRecurringPayments(e.target.checked)}
-                              className={!discoundedData?.is_one_recurring_subscription_already_present ? 'checkbox-disabled' : 'checkbox-enabled'}
+                              className={recurringPayments ? 'checkbox-enabled' : 'checkbox-disabled'}
                             />
                           </div>
                           <p className="due-date"> {discoundedData?.paymentTerms ? discoundedData?.paymentTerms : 'N/A'}</p>
                         </Stack>
                       </Stack>
+
                     </div>
                   </div>
                 </div>
