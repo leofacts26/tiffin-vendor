@@ -5,9 +5,16 @@ import Switch from '@mui/material/Switch';
 import { useState } from "react";
 import MonthlyPlan from "../components/global/MonthlyPlan";
 import YearlyPlan from "../components/global/YearlyPlan";
+import CustomTabs from "../components/CustomTabs";
 
 const SubscriptionPlan = () => {
-    const [active, setActive] = useState(false)
+    
+  const [activeTab, setActiveTab] = useState(0);
+
+  const handleTabChange = (event, newValue) => {
+    setActiveTab(newValue);
+  };
+
     return (
         <>
             <TopHeader title="Business Profile" description="below is a business overview" />
@@ -15,12 +22,23 @@ const SubscriptionPlan = () => {
                 <div className='card-box-shadow px-5 py-4 mb-4'>
                     <p className='sub-plan-title text-center'>SUBSCRIPTION PLANS</p>
                     <p className="branches-desc text-center">Choose your subscription types</p>
-                    <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} className="mt-3 mb-4">
-                        <h2 className="sub-plan-yearly">Monthly</h2>
-                        <Switch defaultChecked={active} onClick={() => setActive(!active)} />
-                        <h2 className="sub-plan-yearly">Yearly</h2>
+
+                    <Stack
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                        spacing={2}
+                        className="mt-3 mb-4"
+                    >
+                        <CustomTabs activeTab={activeTab} setActiveTab={setActiveTab} handleTabChange={handleTabChange} />
                     </Stack>
-                    {active ? <YearlyPlan /> : <MonthlyPlan />}
+                    <br />
+                    <div className="mt-4">
+                        {activeTab === 0 && <MonthlyPlan />}
+                        {activeTab === 1 && <YearlyPlan />}
+                    </div>
+
+
                 </div>
             </Container>
         </>

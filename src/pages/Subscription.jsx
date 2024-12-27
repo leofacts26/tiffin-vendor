@@ -36,8 +36,10 @@ const Subscription = () => {
 
       <Container maxWidth="lg">
         <div className='card-box-shadow px-5 py-4 mb-4'>
+        
           <div className='mt-3 bg-primary'>
           </div>
+
           <Grid container spacing={2} className='box-negative'>
             <Grid item xs={12} sm={6} md={6} lg={6}>
               <div className="ct-box ct-box-padding">
@@ -104,12 +106,10 @@ const Subscription = () => {
               </div>
             </Grid>
           </Grid>
-        </div>
-      </Container>
 
 
-      <Container maxWidth="lg">
-        {activeSubscriptionList?.queuedSubscriptions?.length > 0 && <hr className="mb-4" />}
+          <div>
+       {activeSubscriptionList?.queuedSubscriptions?.length > 0 && <hr className="mb-4" />}
         {activeSubscriptionList?.queuedSubscriptions?.length > 0 && <h3 className='top-header-title mb-3'>Queud Subscriptions</h3>}
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
@@ -119,22 +119,9 @@ const Subscription = () => {
                   <Grid item xs={12} md={6} lg={4}>
                     <div className="ct-box-details ct-box-padding">
                       <div className="px-4">
-                        <Stack direction="row" justifyContent="space-between" alignItems="center">
-                          <p className="subscription-type">Vendor Type:</p>
-                          <h4 className="subscription-red"> {itemData?.vendor_type} Service</h4>
-                        </Stack>
-
-
-                        <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                          <p className="subscription-type">Subscription Type (vendorId):</p>
-                          <h4 className="subscription-dark">
-                            {itemData?.vendor_id ? itemData?.vendor_id : 'N/A'}
-                          </h4>
-                        </Stack>
-
 
                         <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3 mb-4">
-                          <p className="subscription-type">Subscription Status:</p>
+                          <p className="subscription-type">Status:</p>
                           <Stack direction="row" spacing={1} alignItems="center">
                             {itemData?.status ? <DoneIcon style={{ fontSize: '18px', color: '#459412' }} /> :
                               <CloseIcon style={{ fontSize: '18px', color: '#a81e1e' }} />}
@@ -146,35 +133,19 @@ const Subscription = () => {
 
 
                         <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                          <p className="subscription-type">Carried Forward Days:</p>
+                          <p className="subscription-type">Purchased On</p>
                           <h4 className="subscription-dark">
-                            {itemData?.carried_forward_days ? itemData?.carried_forward_days : 'N/A'}
+                            {itemData?.start_date ? moment(itemData?.start_date).format('MMMM DD, YYYY') : 'N/A'}
                           </h4>
                         </Stack>
 
 
                         <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                          <p className="subscription-type">Discount Amount:</p>
+                          <p className="subscription-type">Subscription Plan:</p>
                           <h4 className="subscription-dark">
-                            {itemData?.discount_amount ? itemData?.discount_amount : 'N/A'}
+                            {itemData?.subscription_display_name ? itemData?.subscription_display_name : 'N/A'}
                           </h4>
                         </Stack>
-
-
-                        <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                          <p className="subscription-type">Payment ID:</p>
-                          <h4 className="subscription-dark">
-                            {itemData?.payment_id ? itemData?.payment_id : 'N/A'}
-                          </h4>
-                        </Stack>
-
-                        <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                          <p className="subscription-type">Razorpay Order ID:</p>
-                          <h4 className="subscription-dark">
-                            {itemData?.razorpay_order_id ? itemData?.razorpay_order_id : 'N/A'}
-                          </h4>
-                        </Stack>
-
 
                         <Stack direction="row" justifyContent="space-between" alignItems="center" className="my-3">
                           <p className="subscription-type">Subscription Type:</p>
@@ -183,44 +154,6 @@ const Subscription = () => {
                           </h4>
                         </Stack>
 
-
-                        <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                          <p className="subscription-type">Payment Status:</p>
-                          <h4 className="subscription-dark subscription-green">
-                            {itemData?.payment_status ? itemData?.payment_status : 'N/A'}
-                          </h4>
-                        </Stack>
-
-
-                        <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                          <p className="subscription-type">Subscription Display Name:</p>
-                          <h4 className="subscription-dark">
-                            {itemData?.subscription_display_name ? itemData?.subscription_display_name : 'N/A'}
-                          </h4>
-                        </Stack>
-
-
-
-                        <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                          <p className="subscription-type">Final Amount:</p>
-                          <h4 className="subscription-dark">
-                            {itemData?.final_amount ? itemData?.final_amount : 'N/A'}
-                          </h4>
-                        </Stack>
-
-                        <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                          <p className="subscription-type">Razorpay Final Amount:</p>
-                          <h4 className="subscription-dark">
-                            {itemData?.razorpay_final_amount ? itemData?.razorpay_final_amount : 'N/A'}
-                          </h4>
-                        </Stack>
-
-                        <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                          <p className="subscription-type">Sub Amount:</p>
-                          <h4 className="subscription-dark">
-                            {itemData?.sub_amount ? itemData?.sub_amount : 'N/A'}
-                          </h4>
-                        </Stack>
                       </div>
                     </div>
                   </Grid>
@@ -229,11 +162,10 @@ const Subscription = () => {
             }
           </Grid>
         </Box>
-      </Container>
+       </div>
 
-
-      <Container maxWidth="lg">
-        {activeSubscriptionList?.pendingSubscriptions?.length > 0 && <hr className="mb-4" />}
+       <div>
+       {activeSubscriptionList?.pendingSubscriptions?.length > 0 && <hr className="mb-4" />}
         {activeSubscriptionList?.pendingSubscriptions?.length > 0 && <h3 className='top-header-title mb-3'>Pending Subscriptions</h3>}
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
@@ -243,22 +175,10 @@ const Subscription = () => {
                   <Grid item xs={12} md={6} lg={4}>
                     <div className="ct-box-details ct-box-padding">
                       <div className="px-4">
-                        <Stack direction="row" justifyContent="space-between" alignItems="center">
-                          <p className="subscription-type">Vendor Type:</p>
-                          <h4 className="subscription-red"> {itemData?.vendor_type} Service</h4>
-                        </Stack>
-
-
-                        <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                          <p className="subscription-type">Subscription Type (vendorId):</p>
-                          <h4 className="subscription-dark">
-                            {itemData?.vendor_id ? itemData?.vendor_id : 'N/A'}
-                          </h4>
-                        </Stack>
 
 
                         <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3 mb-4">
-                          <p className="subscription-type">Subscription Status:</p>
+                          <p className="subscription-type"> Status:</p>
                           <Stack direction="row" spacing={1} alignItems="center">
                             {itemData?.status ? <DoneIcon style={{ fontSize: '18px', color: '#459412' }} /> :
                               <CloseIcon style={{ fontSize: '18px', color: '#a81e1e' }} />}
@@ -270,35 +190,19 @@ const Subscription = () => {
 
 
                         <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                          <p className="subscription-type">Carried Forward Days:</p>
+                          <p className="subscription-type">Purchased On</p>
                           <h4 className="subscription-dark">
-                            {itemData?.carried_forward_days ? itemData?.carried_forward_days : 'N/A'}
+                            {itemData?.start_date ? moment(itemData?.start_date).format('MMMM DD, YYYY') : 'N/A'}
                           </h4>
                         </Stack>
 
 
                         <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                          <p className="subscription-type">Discount Amount:</p>
+                          <p className="subscription-type">Subscription Plan:</p>
                           <h4 className="subscription-dark">
-                            {itemData?.discount_amount ? itemData?.discount_amount : 'N/A'}
+                            {itemData?.subscription_display_name ? itemData?.subscription_display_name : 'N/A'}
                           </h4>
                         </Stack>
-
-
-                        <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                          <p className="subscription-type">Payment ID:</p>
-                          <h4 className="subscription-dark">
-                            {itemData?.payment_id ? itemData?.payment_id : 'N/A'}
-                          </h4>
-                        </Stack>
-
-                        <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                          <p className="subscription-type">Razorpay Order ID:</p>
-                          <h4 className="subscription-dark">
-                            {itemData?.razorpay_order_id ? itemData?.razorpay_order_id : 'N/A'}
-                          </h4>
-                        </Stack>
-
 
                         <Stack direction="row" justifyContent="space-between" alignItems="center" className="my-3">
                           <p className="subscription-type">Subscription Type:</p>
@@ -307,44 +211,6 @@ const Subscription = () => {
                           </h4>
                         </Stack>
 
-
-                        <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                          <p className="subscription-type">Payment Status:</p>
-                          <h4 className="subscription-dark subscription-green">
-                            {itemData?.payment_status ? itemData?.payment_status : 'N/A'}
-                          </h4>
-                        </Stack>
-
-
-                        <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                          <p className="subscription-type">Subscription Display Name:</p>
-                          <h4 className="subscription-dark">
-                            {itemData?.subscription_display_name ? itemData?.subscription_display_name : 'N/A'}
-                          </h4>
-                        </Stack>
-
-
-
-                        <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                          <p className="subscription-type">Final Amount:</p>
-                          <h4 className="subscription-dark">
-                            {itemData?.final_amount ? itemData?.final_amount : 'N/A'}
-                          </h4>
-                        </Stack>
-
-                        <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                          <p className="subscription-type">Razorpay Final Amount:</p>
-                          <h4 className="subscription-dark">
-                            {itemData?.razorpay_final_amount ? itemData?.razorpay_final_amount : 'N/A'}
-                          </h4>
-                        </Stack>
-
-                        <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
-                          <p className="subscription-type">Sub Amount:</p>
-                          <h4 className="subscription-dark">
-                            {itemData?.sub_amount ? itemData?.sub_amount : 'N/A'}
-                          </h4>
-                        </Stack>
                       </div>
                     </div>
                   </Grid>
@@ -353,7 +219,15 @@ const Subscription = () => {
             }
           </Grid>
         </Box>
+       </div>
+
+
+
+        </div>
       </Container>
+
+
+    
 
 
 
