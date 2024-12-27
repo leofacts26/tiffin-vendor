@@ -2085,7 +2085,7 @@ textarea:-webkit-autofill:active {
 .search-wrapper {
   width: 96%;
   margin: auto;
-  border-radius: 40px;
+  /* border-radius: 40px; */
   background: transparent;
   box-shadow: 0 4px 20px -2px #e9e9e9;
   display: flex;
@@ -2097,7 +2097,7 @@ textarea:-webkit-autofill:active {
 
 .search-wrapper input {
   padding-left: 20px;
-  width: 330px;
+  width: 78%;
   height: 40px;
   padding: 10px 5px;
   float: left;
@@ -2240,4 +2240,8 @@ textarea:-webkit-autofill:active {
 
 .text-gray{
   color: #57636c
+}
+
+.coupon-small {
+  font-size: 10px !important;
 }

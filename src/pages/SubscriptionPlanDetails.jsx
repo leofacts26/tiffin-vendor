@@ -228,7 +228,8 @@ const SubscriptionPlanDetails = () => {
                         <p>Subscription Plan:</p> <p> {discoundedData?.subPlan ? discoundedData?.subPlan : 'N/A'} Caterer</p>
                       </Stack>
                       <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} className="mb-3 mt-1">
-                        <p>Subscription Type:</p> <p> {discoundedData?.subType ? discoundedData?.subType : 'N/A'} / One Time</p>
+                        <p>Subscription Type:</p> <p> {discoundedData?.subType ? discoundedData?.subType : 'N/A'} /  {" "}
+                          {discoundedData?.is_one_recurring_subscription_already_present ? 'Subscription' : 'One Time'} </p>
                       </Stack>
 
                       <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} className="mb-1 mt-4">
