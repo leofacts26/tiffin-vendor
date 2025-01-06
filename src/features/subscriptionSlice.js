@@ -10,7 +10,8 @@ const initialState = {
   discoundedData: null,
   subscribeData: null,
   couponCode: '',
-  calculaterOrderData: {}
+  calculaterOrderData: {},
+  cancelSubData: {}
 }
 
 
@@ -114,6 +115,28 @@ export const createOneTimePayment = createAsyncThunk(
 );
 
 
+export const cancelRecurringTimePayment = createAsyncThunk(
+  "homepage/cancelRecurringTimePayment",
+  async (data, thunkAPI) => {
+    console.log("Payload to API:", data);
+    try {
+      const response = await api.post(`/vendor-rz-cancel-subscription`, data, {
+        headers: {
+          authorization: `Bearer ${thunkAPI.getState()?.user?.accessToken}`,
+        },
+      });
+      return response.data.data;
+    } catch (error) {
+      console.error("Error creating subscription:", error.response?.data || error.message);
+
+      // Improved error message
+      toast.error(error.response?.data?.message || "Failed to create subscription");
+      return thunkAPI.rejectWithValue(error.response?.data);
+    }
+  }
+);
+
+
 export const createRecurringTimePayment = createAsyncThunk(
   "homepage/createRecurringTimePayment",
   async (data, thunkAPI) => {
@@ -186,8 +209,8 @@ export const subscriptionSlice = createSlice({
         state.isLoading = false;
         toast.error(datavalidationerror(payload));
       })
-       // calculateOrderTotal 
-       .addCase(calculateOrderTotal.pending, (state) => {
+      // calculateOrderTotal 
+      .addCase(calculateOrderTotal.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(calculateOrderTotal.fulfilled, (state, { payload }) => {
@@ -210,6 +233,18 @@ export const subscriptionSlice = createSlice({
         state.isLoading = false;
         toast.error(datavalidationerror(payload));
       })
+      // cancelRecurringTimePayment 
+      .addCase(cancelRecurringTimePayment.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(cancelRecurringTimePayment.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.cancelSubData = payload;
+      })
+      .addCase(cancelRecurringTimePayment.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(datavalidationerror(payload));
+      });
   },
 })
 

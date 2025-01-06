@@ -7,17 +7,18 @@ import { Link } from 'react-router-dom';
 import DoneIcon from '@mui/icons-material/Done';
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { fetchActiveSubscription } from "../features/subscriptionSlice";
+import { cancelRecurringTimePayment, fetchActiveSubscription } from "../features/subscriptionSlice";
 import moment from 'moment';
 import CloseIcon from '@mui/icons-material/Close';
 import Box from '@mui/material/Box';
+import toast from "react-hot-toast";
 
 
 const Subscription = () => {
   const { vendor_id } = useSelector((state) => state?.user?.vendorId)
 
   const dispatch = useDispatch();
-  const { activeSubscriptionList } = useSelector((state) => state.subscription)
+  const { activeSubscriptionList, cancelSubData } = useSelector((state) => state.subscription)
 
   useEffect(() => {
     dispatch(fetchActiveSubscription())
@@ -28,6 +29,53 @@ const Subscription = () => {
 
   const startFormattedDate = moment(activeSubscriptionList?.activeSubscription?.start_date).format("MMM DD, YYYY");
   const starendFormattedDate = moment(activeSubscriptionList?.activeSubscription?.end_date).format("MMM DD, YYYY");
+
+
+  const onHandleCancelSubscription = async (subId) => {
+
+    if (!subId) {
+      console.error("Subscription ID is required.");
+      return;
+    }
+
+    const data = {
+      subscription_id: subId
+    }
+
+    try {
+      const response = await dispatch(cancelRecurringTimePayment(data)).unwrap();
+      console.log(response, "chiru");
+
+      // Check if the cancellation was successful
+      if (response.status === "cancelled") {
+        toast.success("Subscription cancelled successfully!");
+      } else {
+        console.warn(
+          "Subscription not cancelled programmatically. Opening short_url for manual cancellation."
+        );
+
+        // Open the short_url for manual handling if available
+        if (response?.shortUrl) {
+          window.open(response?.shortUrl, "_blank");
+        } else {
+          console.error("Short URL is not available.");
+        }
+      }
+
+     await  dispatch(fetchActiveSubscription())
+    } catch (error) {
+      console.error("Error cancelling subscription:", error);
+
+      // Open the short_url as a fallback if API call fails
+      if (cancelSubData?.shortUrl) {
+        console.warn("Opening short_url for manual cancellation due to error.");
+        window.open(cancelSubData?.shortUrl, "_blank");
+      } else {
+        console.error("Short URL is not available for manual cancellation.");
+      }
+    }
+
+  }
 
 
   return (
@@ -96,9 +144,14 @@ const Subscription = () => {
                   </Stack>
 
 
-                  <Link to="/dashboard/subscription-plan" className="text-decoration-none">
-                    <Button variant="contained" className="inquiries-btn mx-auto taxt-center"> Upgrade Subscription </Button>
-                  </Link>
+                  {activeSubscriptionList?.activeSubscription === null ? <Link to={activeSubscriptionList?.pendingSubscriptions?.length !== 0 ? 'javascript:void(0)' : '/dashboard/subscription-plan'} className="text-decoration-none">
+                    <Button variant="contained" className="inquiries-btn mx-auto taxt-center" disabled={activeSubscriptionList?.pendingSubscriptions?.length !== 0}>
+                      Create Subscription
+                    </Button>
+                  </Link> : <Button variant="contained" className="inquiries-btn mx-auto taxt-center"
+                    onClick={() => onHandleCancelSubscription(activeSubscriptionList?.activeSubscription?.razorpay_subscription_id)}>
+                    Cancel Subscription
+                  </Button>}
 
 
 
