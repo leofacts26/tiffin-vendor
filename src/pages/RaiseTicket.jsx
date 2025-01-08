@@ -2,14 +2,12 @@
 import TopHeader from "../components/global/TopHeader"
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
-import Box from '@mui/material/Box';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { setIsLoading } from "../features/user/userSlice";
@@ -17,13 +15,55 @@ import { useDispatch, useSelector } from "react-redux";
 import { api, BASE_URL } from "../api/apiConfig";
 import toast from "react-hot-toast";
 import { datavalidationerror, successToast } from "../utils";
+import { Card, CardContent, Typography, Box, Chip, Stack } from "@mui/material";
+
+
 
 const initialState = {
     issue: '',
     comments: '',
 }
 
+
+const IssueCard = ({ ticket }) => {
+    return (
+        <Card
+            variant="outlined"
+            sx={{
+                borderRadius: 3,
+                mb: 2,
+                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+            }}
+        >
+            <CardContent>
+                <Stack direction="row" justifyContent="space-between" alignItems="center" mb={1}>
+                    <Typography variant="h6" fontWeight="bold">
+                        {ticket.vendor_service_name} {/* Display service name */}
+                    </Typography>
+                    <Chip
+                        label={ticket.status === "Active" ? "Open" : "Resolved"}
+                        color={ticket.status === "Active" ? "info" : "success"}
+                        variant="outlined"
+                        size="small"
+                        sx={{
+                            fontWeight: "bold",
+                            textTransform: "capitalize",
+                        }}
+                    />
+                </Stack>
+                <Typography variant="body2" color="textSecondary" mb={2}>
+                    {ticket.issue} {/* Display the issue */}
+                </Typography>
+                <Typography variant="caption" color="textSecondary">
+                    {new Date(ticket.raised_on).toLocaleString()} {/* Format the date */}
+                </Typography>
+            </CardContent>
+        </Card>
+    );
+};
+
 const RaiseTicket = () => {
+    const [listTickets, setListTickets] = useState([])
 
     const { accessToken, isLoading } = useSelector((state) => state.user);
     const dispatch = useDispatch()
@@ -90,6 +130,23 @@ const RaiseTicket = () => {
 
     }
 
+
+    useEffect(() => {
+        getVendorSupportTickets()
+    }, [])
+
+    const getVendorSupportTickets = async () => {
+        try {
+            const response = await api.get(`${BASE_URL}/list-vendor-tickets?current_page=1&limit=30`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            })
+            setListTickets(response?.data?.data)
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
 
     return (
@@ -164,6 +221,17 @@ const RaiseTicket = () => {
                                         )}
                                     </Formik>
                                 </div>
+
+
+                                {listTickets?.length > 0 && <div>
+                                    <h2 className="rt-heading mb-4 mt-5">My Tickets</h2>
+                                    {listTickets?.map((ticket) => (
+                                        <IssueCard key={ticket.id} ticket={ticket} />
+                                    ))}
+                                </div>}
+
+
+
                             </div>
                         </Grid>
                     </Grid>
