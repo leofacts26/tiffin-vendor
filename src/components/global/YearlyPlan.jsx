@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { calculateOrderTotal, fetchSubscriptionTypes, setDiscountedData, setSubscribeData } from '../../features/subscriptionSlice';
+import { calculateOrderTotal, fetchActiveSubscription, fetchSubscriptionTypes, setDiscountedData, setSubscribeData } from '../../features/subscriptionSlice';
 import { useEffect } from 'react';
 import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router-dom';
@@ -14,8 +14,12 @@ const YearlyPlan = () => {
     const navigate = useNavigate();
     const { subscriptionData, isLoading } = useSelector((state) => state.subscription);
     const dispatch = useDispatch();
+    const { activeSubscriptionList } = useSelector((state) => state.subscription)
 
-    console.log(subscriptionData, "subscriptionDatasubscriptionData");
+    // console.log(subscriptionData, "subscriptionDatasubscriptionData");
+    useEffect(() => {
+        dispatch(fetchActiveSubscription())
+    }, [])
 
 
     useEffect(() => {
@@ -50,7 +54,7 @@ const YearlyPlan = () => {
                         .map((item, index) => {
                             let color = '';
                             const subscriptionType = item?.subscriptionType?.toLowerCase();
-    
+
                             if (subscriptionType === 'normal') {
                                 color = 'normal-color';
                             } else if (subscriptionType === 'popular') {
@@ -58,7 +62,7 @@ const YearlyPlan = () => {
                             } else if (subscriptionType === 'branded') {
                                 color = 'branded-color';
                             }
-    
+
                             return (
                                 <Grid
                                     item
@@ -112,7 +116,7 @@ const YearlyPlan = () => {
                                                     style={{ backgroundColor: `${item.subscriptionTypeDisplayColor}` }}
                                                     onClick={() => onHandleSubscribe(item)}
                                                 >
-                                                    Subscribe Now
+                                                    {activeSubscriptionList?.activeSubscription ? "Upgrade Subscription" : "Subscribe Now"}
                                                 </Button>
                                             </Link>
                                             <br />
@@ -127,7 +131,7 @@ const YearlyPlan = () => {
             )}
         </>
     );
-    
+
 }
 
 export default YearlyPlan
