@@ -42,7 +42,8 @@ function App() {
 
             {/* <Route index element={<DashboardComponent />} /> */}
             <Route index element={<Inquiries />} />
-            <Route path='inquiries' element={<Inquiries />} />
+            <Route path="/dashboard/inquiries" element={<Inquiries />} />
+            {/* <Route path='inquiries' element={<Inquiries />} /> */}
             <Route path='reviews' element={<Reviews />} />
 
             <Route path='cuisines' element={<Cuisines />} />
