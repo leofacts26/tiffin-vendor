@@ -179,11 +179,24 @@ const MainBannerLogo = () => {
                                 Upload
                             </Button>
 
-                            <Button onClick={handleBrandClickOpen} variant="contained" component="span" className="cuisines-list-white-btn" startIcon={<DeleteIcon />}
+                            {!(gallery['vendor-banner']?.length && gallery['vendor-banner']?.length > 0) ? null : (
+                                <Button
+                                    onClick={handleBrandClickOpen}
+                                    variant="contained"
+                                    component="span"
+                                    className="cuisines-list-white-btn"
+                                    startIcon={<DeleteIcon />}
+                                    disabled={isLoading}
+                                >
+                                    Delete
+                                </Button>
+                            )}
+
+                            {/* <Button onClick={handleBrandClickOpen} variant="contained" component="span" className="cuisines-list-white-btn" startIcon={<DeleteIcon />}
                                 disabled={isLoading || !(gallery['vendor-banner']?.length && gallery['vendor-banner']?.length > 0)}
                             >
                                 Delete
-                            </Button>
+                            </Button> */}
                         </div>
 
                     </Stack>

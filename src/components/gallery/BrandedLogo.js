@@ -174,18 +174,30 @@ const BrandedLogo = () => {
                             </Button>
                         </label> */}
 
-                       <div>
-                       <Button variant="contained" component="span" className="cuisines-list-white-btn me-4" onClick={handleClickBoxOpen} startIcon={<UploadIcon />}>
-                            Upload
-                        </Button>
+                        <div>
+                            <Button variant="contained" component="span" className="cuisines-list-white-btn me-4" onClick={handleClickBoxOpen} startIcon={<UploadIcon />}>
+                                Upload
+                            </Button>
 
+                            {!(gallery['vendor-brand-logo']?.length && gallery['vendor-brand-logo']?.length > 0) ? null : (
+                                <Button
+                                    onClick={handleBrandClickOpen}
+                                    variant="contained"
+                                    component="span"
+                                    className="cuisines-list-white-btn"
+                                    startIcon={<DeleteIcon />}
+                                    disabled={isLoading}
+                                >
+                                    Delete
+                                </Button>
+                            )}
 
-                        <Button onClick={handleBrandClickOpen} variant="contained" component="span" className="cuisines-list-white-btn" startIcon={<DeleteIcon />}
+                            {/* <Button onClick={handleBrandClickOpen} variant="contained" component="span" className="cuisines-list-white-btn" startIcon={<DeleteIcon />}
                             disabled={isLoading || !(gallery['vendor-brand-logo']?.length && gallery['vendor-brand-logo']?.length > 0)}
                         >
                             Delete
-                        </Button>
-                       </div>
+                        </Button> */}
+                        </div>
 
                     </Stack>
                 </div>
