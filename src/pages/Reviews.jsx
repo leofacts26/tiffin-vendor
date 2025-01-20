@@ -33,7 +33,7 @@ const ReactSelect = ({ text1, selectedOption, handleSelectedChange }) => {
                     padding: '0px 0px',
                     margin: '0px',
                     border: `2px solid #e0e3e7`,
-                    outline: isFocused ? '2px solid #d9822b' : 'none', 
+                    outline: isFocused ? '2px solid #d9822b' : 'none',
                     width: '200px',
                     color: '#FFFFFF',
                     '&:hover': {
@@ -90,7 +90,9 @@ const Reviews = () => {
                                 ))
                             ) : (
                                 <>
-                                    <h2 className='text-center'>No Reviews Found</h2><br />
+                                    <div className="error-box">
+                                        <h2 className='text-center'>No Reviews Found</h2><br />
+                                    </div>
                                 </>
                             )
                         )}

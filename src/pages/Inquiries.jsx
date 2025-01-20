@@ -204,7 +204,9 @@ const Inquiries = () => {
                           <InquiryCard item={item} key={index} />
                         ))
                       ) : (
-                        <h2 className='text-center'>No Inquiries Found</h2>
+                        <div className="error-box">
+                          <h2 className='text-center'>No Inquiries Found</h2>
+                        </div>
                       )
                     )}
                 </>

@@ -852,6 +852,7 @@ code {
   color: var(--primarybg) !important;
   margin-right: 10px !important;
 }
+
 .ct-box-btn-profile-skip-step {
   background-color: var(--secondary) !important;
   font-size: 12px !important;
@@ -1181,6 +1182,7 @@ code {
   text-transform: capitalize !important;
   color: #fff !important;
 }
+
 .add-inquiries-btn {
   background-color: var(--accent3) !important;
   border-radius: var(--radiusOne) !important;
@@ -1188,6 +1190,7 @@ code {
   text-transform: capitalize !important;
   color: #fff !important;
 }
+
 .inquiries-red-btn {
   background-color: var(--accent3) !important;
   color: #fff !important;
@@ -2217,28 +2220,30 @@ textarea:-webkit-autofill:active {
 }
 
 .checkbox-enabled {
-  color: green !important; /* Color for enabled state */
+  color: green !important;
+  /* Color for enabled state */
 }
 
 .checkbox-disabled {
-  color: rgba(0, 0, 0, 0.26) !important; /* Color for disabled state */
+  color: rgba(0, 0, 0, 0.26) !important;
+  /* Color for disabled state */
 }
 
 
 .truncate-text {
-  display: inline-block;   
-  max-width: 17ch;         
-  white-space: nowrap;    
-  overflow: hidden;        
-  text-overflow: ellipsis; 
+  display: inline-block;
+  max-width: 17ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.due-date{
+.due-date {
   font-size: 10px !important;
   color: #57636c !important;
 }
 
-.text-gray{
+.text-gray {
   color: #57636c
 }
 
@@ -2246,7 +2251,7 @@ textarea:-webkit-autofill:active {
   font-size: 10px !important;
 }
 
-.sub-text{
+.sub-text {
   font-size: 14px !important;
 }
 
@@ -2274,8 +2279,15 @@ textarea:-webkit-autofill:active {
 .active-tab {
   color: black;
   border-color: #ff6347;
-  background-color: #ffffff  !important;
+  background-color: #ffffff !important;
   box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12);
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
   margin: 2px !important;
+}
+
+.error-box {
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
