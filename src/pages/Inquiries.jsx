@@ -192,7 +192,9 @@ const Inquiries = () => {
           <>
             {
               error !== null ? (
-                <h2 className='text-center'>{error}</h2>
+                <div className="error-box">
+                  <h2 className='text-center'>{error}</h2>
+                </div>
               ) : (
                 <>
                   {

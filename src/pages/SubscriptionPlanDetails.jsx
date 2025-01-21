@@ -268,7 +268,7 @@ const SubscriptionPlanDetails = () => {
                         <form className="search-wrapper cf mt-3" onSubmit={onCouponCodeSubmit}>
                           <input
                             name="couponCode" value={couponCode} onChange={(e) => dispatch(setCouponCode(e.target.value))}
-                            type="text" placeholder="Enter Coupon Code" required style={{ boxShadow: 'none', paddingLeft: '10px' }} />
+                            type="text" placeholder="Enter Coupon Code" required style={{ boxShadow: 'none', paddingLeft: '20px' }} />
                           <button type="submit">Apply</button>
                         </form>
 

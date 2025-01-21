@@ -5,13 +5,13 @@ import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Switch from '@mui/material/Switch';
 import { api, BASE_URL } from '../api/apiConfig';
 import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { datavalidationerror, successToast } from '../utils';
+import { Stack, Radio, FormControlLabel, RadioGroup } from "@mui/material";
 
 
 const CssTextField = styled(TextField)(({ theme }) => ({
@@ -258,8 +258,8 @@ const Packages = () => {
 
                             <Grid item xs={12} lg={6}>
                                 <Stack direction="row" justifyContent="center" flexDirection="column">
-                                    <h3 className='package-capacity mt-0'>Starting Price / Plate</h3>
-                                    <p className='max-min-capacity-para-green text-center mt-2 mb-2'>Enter Starting price / Plate</p>
+                                    <h3 className='package-capacity mt-0'>Starting Price / Month </h3>
+                                    <p className='max-min-capacity-para-green text-center mt-2 mb-2'>Enter Starting price / Month</p>
                                     <CssTextFieldSmall
                                         value={startPrice}
                                         onChange={(e) => setStartPrice(e.target.value)}
@@ -365,19 +365,32 @@ const Packages = () => {
                         <Stack direction="row" justifyContent="center" className="mt-4">
                             <div>
                                 <h3 className="package-capacity mt-3">Choose your Kitchen Type Below</h3>
-                                <p className="max-min-capacity-para text-center">Please Select Only One Kitchen Type below</p>
-                                {kitchenTypes.map((kitchen, index) => (
-                                    <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} className="mt-3" key={index}>
-                                        <p className="px-3 package-icon-title">{kitchen?.kitchen_type_name}</p>
-                                        <input
-                                            className='cursor-pointer'
-                                            type="radio"
-                                            name="kitchenType" // Ensures only one radio button can be selected
-                                            checked={kitchen?.selected === "1"}
-                                            onChange={() => handleKitchenRadioChange(index)}
-                                        />
-                                    </Stack>
-                                ))}
+                                <p className="max-min-capacity-para text-center">
+                                    Please Select Only One Kitchen Type below
+                                </p>
+                                <RadioGroup name="kitchenType">
+                                    {kitchenTypes.map((kitchen, index) => (
+                                        <Stack
+                                            key={index}
+                                            direction="row"
+                                            justifyContent="space-between"
+                                            alignItems="center"
+                                            spacing={2}
+                                            className="mt-3"
+                                            sx={{
+                                                padding: "2px 0",
+                                            }}
+                                        >
+                                            <p className="package-icon-title">{kitchen?.kitchen_type_name}</p>
+                                            <Radio
+                                                color="primary" // Theme-based color
+                                                checked={kitchen?.selected === "1"}
+                                                onChange={() => handleKitchenRadioChange(index)}
+                                                value={index}
+                                            />
+                                        </Stack>
+                                    ))}
+                                </RadioGroup>
                             </div>
                         </Stack>
 

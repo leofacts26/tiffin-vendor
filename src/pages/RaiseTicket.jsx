@@ -89,7 +89,7 @@ const RaiseTicket = () => {
                 border: '2px solid #e0e3e7',
             },
             '&.Mui-focused fieldset': {
-                border: '2px solid #a81e1e',
+                border: '2px solid #d9822b',
             },
         },
         '& input': {

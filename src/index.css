@@ -2123,11 +2123,10 @@ textarea:-webkit-autofill:active {
   color: #999;
   font-weight: normal;
   font-style: italic;
-  padding-left: 20px;
+  padding-left: 0px;
 }
 
 .search-wrapper input:-moz-placeholder {
-
   color: #999;
   font-weight: normal;
   font-style: italic;
@@ -2291,3 +2290,5 @@ textarea:-webkit-autofill:active {
   justify-content: center;
   align-items: center;
 }
+
+
