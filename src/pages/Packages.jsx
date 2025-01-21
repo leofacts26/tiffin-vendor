@@ -144,10 +144,11 @@ const Packages = () => {
         setMealTypes(updatedMealTypes);
     };
 
-    const handleKitchenSwitchToggle = (index) => {
-        const updatedKitchenTypes = kitchenTypes.map((kitchen, i) =>
-            i === index ? { ...kitchen, selected: kitchen.selected === "1" ? "0" : "1" } : kitchen
-        );
+    const handleKitchenRadioChange = (index) => {
+        const updatedKitchenTypes = kitchenTypes.map((kitchen, i) => ({
+            ...kitchen,
+            selected: i === index ? "1" : "0", // Only the selected kitchen gets "1"
+        }));
         setKitchenTypes(updatedKitchenTypes);
     };
 
@@ -363,21 +364,23 @@ const Packages = () => {
 
                         <Stack direction="row" justifyContent="center" className="mt-4">
                             <div>
-                                <h3 className='package-capacity mt-3'>Choose your Kitchen Type Below</h3>
-                                <p className='max-min-capacity-para text-center'>Please Select Only One Kitchen Type below</p>
-                                {
-                                    kitchenTypes.map((kitchen, index) => {
-                                        return (
-                                            <Stack direction="row" justifyContent="center" alignItems="center" spacing="2" className='mt-3' key={index}>
-                                                <p className='px-3 package-icon-title'>{kitchen?.kitchen_type_name}</p>
-                                                <Switch size="small" checked={kitchen?.selected === "1"} onChange={() => handleKitchenSwitchToggle(index)} />
-                                            </Stack>
-                                        )
-                                    }
-                                    )
-                                }
+                                <h3 className="package-capacity mt-3">Choose your Kitchen Type Below</h3>
+                                <p className="max-min-capacity-para text-center">Please Select Only One Kitchen Type below</p>
+                                {kitchenTypes.map((kitchen, index) => (
+                                    <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} className="mt-3" key={index}>
+                                        <p className="px-3 package-icon-title">{kitchen?.kitchen_type_name}</p>
+                                        <input
+                                            className='cursor-pointer'
+                                            type="radio"
+                                            name="kitchenType" // Ensures only one radio button can be selected
+                                            checked={kitchen?.selected === "1"}
+                                            onChange={() => handleKitchenRadioChange(index)}
+                                        />
+                                    </Stack>
+                                ))}
                             </div>
                         </Stack>
+
 
 
                         <Divider

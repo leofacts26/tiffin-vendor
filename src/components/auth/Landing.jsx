@@ -16,9 +16,14 @@ const Landing = () => {
                         </div>
                         <p className='text-center landing-para'>Please choose your service below</p>
                         <Stack direction="column" justifyContent="center" className='text-center'>
-                            <Link to="https://cateringvendor.cateringsandtiffins.com/create-account" className='mb-4 mt-5'> <Button variant="contained" className='ct-box-btn-catering'>Catering Service</Button> </Link>
-                            <Link to="https://tiffinvendor.cateringsandtiffins.com/create-account" className=''>  <Button variant="contained" className='ct-box-btn-tiffin'>Tiffin Service</Button> </Link>                   
-                             </Stack>
+
+                            <Link to="/create-account" className='mb-4 mt-5'>
+                                <Button variant="contained" className='ct-box-btn-catering'>Tiffin Service</Button> </Link>
+
+                            <Link to="https://cateringvendor.cateringsandtiffins.com/create-account" className='text-white'>
+                                <Button style={{ color: '#fff' }} variant="contained" className='ct-box-btn-tiffin'>Catering Service</Button> </Link>
+
+                        </Stack>
                     </div>
                 </Stack>
             </section>

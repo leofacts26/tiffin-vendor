@@ -222,18 +222,14 @@ const RaiseTicket = () => {
                                         )}
                                     </Formik>
                                 </div>
-
-
-                                {listTickets?.length > 0 && <div>
-                                    <h2 className="rt-heading mb-4 mt-5">My Tickets</h2>
-                                    {listTickets?.map((ticket) => (
-                                        <IssueCard key={ticket.id} ticket={ticket} />
-                                    ))}
-                                </div>}
-
-
-
                             </div>
+
+                            {listTickets?.length > 0 && <div>
+                                <h2 className="rt-heading mb-4 mt-5">My Tickets</h2>
+                                {listTickets?.map((ticket) => (
+                                    <IssueCard key={ticket.id} ticket={ticket} />
+                                ))}
+                            </div>}
                         </Grid>
                     </Grid>
                 </div>
