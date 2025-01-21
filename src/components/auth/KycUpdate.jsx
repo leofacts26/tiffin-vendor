@@ -91,7 +91,7 @@ const KycUpdate = ({ activeStep, setActiveStep }) => {
             toast.success(response?.data?.message);
             setLoading(false);
             if (response?.data) {
-                navigate("/");
+                navigate("/dashboard/inquiries");
             }
             toast.success('Login Details Sended to your mail...');
         } catch (error) {
