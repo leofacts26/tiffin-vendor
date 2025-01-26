@@ -242,7 +242,8 @@ const EnterLocationManually = () => {
         e.preventDefault()
         const data = {
             street_name: locationValues?.street_name?.long_name || "",
-            area: locationValues?.area?.long_name || "",
+            // area: locationValues?.area?.long_name || "",
+            area: locationValues?.address,
             pincode: locationValues?.pincode || "",
             latitude: locationValues?.latitude || "",
             longitude: locationValues?.longitude || "",
