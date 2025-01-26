@@ -8,9 +8,10 @@ import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import { Checkbox } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Button from '@mui/material/Button';
-import { calculateOrderTotal, createOneTimePayment, createRecurringTimePayment, setCouponCode, setDiscountedData } from "../features/subscriptionSlice";
+import { calculateOrderTotal, cancelOneTimePayment, cancelRecurringPayment, createOneTimePayment, createRecurringTimePayment, setCouponCode, setDiscountedData } from "../features/subscriptionSlice";
 import moment from 'moment';
 import toast from "react-hot-toast";
+import useGetVendor from "../hooks/useGetVendor";
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -20,8 +21,9 @@ const SubscriptionPlanDetails = () => {
   const { subscribeData, discoundedData, couponCode, calculaterOrderData } = useSelector((state) => state.subscription);
   const [loading, setLoading] = useState(false);
   const [recurringPayments, setRecurringPayments] = useState(true);
+  const { vendorBusinessProfile } = useGetVendor();
 
-  console.log(recurringPayments, "recurringPayments");
+  // console.log(recurringPayments, "recurringPayments");
 
 
   useEffect(() => {
@@ -159,9 +161,8 @@ const SubscriptionPlanDetails = () => {
           // Handle the post-payment logic for subscription
         },
         prefill: {
-          name: "Caterings And Tiffins",
-          email: "cateringsandtiffin@example.com",
-          contact: "9879879879",
+          name: `${vendorBusinessProfile?.vendor_service_name}`,
+          contact: `${vendorBusinessProfile.phone_number}`,
         },
         notes: {
           address: "Caterings And Tiffins Corporate Office",
@@ -174,6 +175,13 @@ const SubscriptionPlanDetails = () => {
         },
         theme: {
           color: "#a81e1e",
+        },
+        modal: {
+          ondismiss: async function () {
+            // Call cancel subscription API for recurring payment
+            await dispatch(cancelRecurringPayment({ razorpaySubscriptionId: subscriptionId }));
+            toast.error("Subscription payment was canceled.");
+          },
         },
       };
     } else {
@@ -200,15 +208,21 @@ const SubscriptionPlanDetails = () => {
           navigate('/dashboard/subscription');
         },
         prefill: {
-          name: "Caterings And Tiffins",
-          email: "cateringsandtiffin@example.com",
-          contact: "9879879879",
+          name: `${vendorBusinessProfile?.vendor_service_name}`,
+          contact: `${vendorBusinessProfile.phone_number}`,
         },
         notes: {
           address: "Caterings And Tiffins Corporate Office",
         },
         theme: {
           color: "#a81e1e",
+        },
+        modal: {
+          ondismiss: async function () {
+            // Call cancel subscription API for one-time payment
+            await dispatch(cancelOneTimePayment({ orderId: id }));
+            toast.error("One-time payment was canceled.");
+          },
         },
       };
     }

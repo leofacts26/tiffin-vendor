@@ -157,6 +157,47 @@ export const createRecurringTimePayment = createAsyncThunk(
 );
 
 
+export const cancelRecurringPayment = createAsyncThunk(
+  "homepage/cancelRecurringPayment",
+  async (data, thunkAPI) => {
+    console.log(data, "Sub data slice");
+    try {
+      const response = await api.post(`/rz-cancel-local-recurring-payment`, data, {
+        headers: {
+          authorization: `Bearer ${thunkAPI.getState()?.user?.accessToken}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error creating cancel subscription:", error.response?.data || error.message);
+      // Improved error message
+      toast.error(error.response?.data?.message || "Failed to create subscription");
+      return thunkAPI.rejectWithValue(error.response?.data);
+    }
+  }
+);
+
+export const cancelOneTimePayment = createAsyncThunk(
+  "homepage/cancelOneTimePayment",
+  async (data, thunkAPI) => {
+    console.log(data, "Sub data slice");
+    try {
+      const response = await api.post(`/rz-cancel-local-one-time-payment`, data, {
+        headers: {
+          authorization: `Bearer ${thunkAPI.getState()?.user?.accessToken}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error creating Cancel onetime:", error.response?.data || error.message);
+      // Improved error message
+      toast.error(error.response?.data?.message || "Failed to create onetime");
+      return thunkAPI.rejectWithValue(error.response?.data);
+    }
+  }
+);
+
+
 export const subscriptionSlice = createSlice({
   name: 'subscription',
   initialState,
