@@ -33,8 +33,8 @@ const ResetPasswordSettings = () => {
             .required('New Password is required.')
     });
 
-     // fetchPassword 
-     const fetchPassword = async () => {
+    // fetchPassword 
+    const fetchPassword = async () => {
         try {
             const response = await api.get(`${BASE_URL}/get-vendor-infos`, {
                 headers: {
@@ -94,7 +94,7 @@ const ResetPasswordSettings = () => {
         }
     }
 
-   
+
 
     return (
         <Formik enableReinitialize={true} initialValues={initialValues} validationSchema={schema} onSubmit={(values, { resetForm }) => handleSubmit(values, resetForm)}>
@@ -106,7 +106,8 @@ const ResetPasswordSettings = () => {
                             variant="outlined"
                             type={showPassword ? 'text' : 'password'}
                             placeholder="Password"
-                            value={values.new_password}
+                            // value={values.new_password}
+                            value="*************"
                             onChange={handleChange}
                             name="new_password"
                             className='mb-1'

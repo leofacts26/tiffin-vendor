@@ -119,7 +119,7 @@ const Subscription = () => {
                   <Stack direction="row" justifyContent="space-between" alignItems="center" className="mt-3">
                     <p className="subscription-type">Subscription Type:</p>
                     <h4 className="subscription-dark">
-                      {activeSubscriptionList?.activeSubscription?.subscription_pattern ? activeSubscriptionList?.activeSubscription?.subscription_pattern : 'N/A'}
+                      {activeSubscriptionList?.activeSubscription?.subscription_pattern_display_text ? activeSubscriptionList?.activeSubscription?.subscription_pattern_display_text : 'N/A'}
                     </h4>
                   </Stack>
 
