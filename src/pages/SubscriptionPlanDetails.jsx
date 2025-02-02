@@ -23,7 +23,9 @@ const SubscriptionPlanDetails = () => {
   const [recurringPayments, setRecurringPayments] = useState(true);
   const { vendorBusinessProfile } = useGetVendor();
 
-  // console.log(recurringPayments, "recurringPayments");
+  // console.log(subscribeData, "subscribeData");
+  // console.log(discoundedData, "discoundedData");
+  // console.log(calculaterOrderData, "calculaterOrderData");
 
 
   useEffect(() => {
@@ -42,7 +44,7 @@ const SubscriptionPlanDetails = () => {
   const onCouponCodeSubmit = async (e) => {
     e.preventDefault()
     await dispatch(setCouponCode(couponCode));
-    const subscriptionDuration = discoundedData?.subPlan;
+    const subscriptionDuration = "monthly";
     const newItem = {
       ...subscribeData,
       subscriptionDuration
@@ -111,7 +113,7 @@ const SubscriptionPlanDetails = () => {
       result = await dispatch(createRecurringTimePayment(recurringMonthlydata));
     } else {
       // Fallback to one-time payment
-      result = await dispatch(createOneTimePayment());
+      result = await dispatch(createOneTimePayment(calculaterOrderData));
     }
 
 
