@@ -42,7 +42,7 @@ const SubscriptionPlanDetails = () => {
   const onCouponCodeSubmit = async (e) => {
     e.preventDefault()
     await dispatch(setCouponCode(couponCode));
-    const subscriptionDuration = "monthly";
+    const subscriptionDuration = discoundedData?.subPlan;
     const newItem = {
       ...subscribeData,
       subscriptionDuration
