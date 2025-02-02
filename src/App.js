@@ -25,6 +25,7 @@ import RaiseTicket from './pages/RaiseTicket';
 import { Toaster } from 'react-hot-toast';
 import PhotoGalleryTest from "./pages/PhotoGalleryTest";
 import SubscriptionPlanDetails from "./pages/SubscriptionPlanDetails";
+import UpdatePhoneNumber from "./pages/UpdatePhoneNumber";
 
 function App() {
   return (
@@ -65,7 +66,7 @@ function App() {
             <Route path='faq' element={<Faq />} />
             <Route path='notification' element={<Notification />} />
             <Route path='raise-ticket' element={<RaiseTicket />} />
-
+            <Route path='update-phone-number' element={<UpdatePhoneNumber />} />
           </Route>
         </Routes>
         <Toaster />

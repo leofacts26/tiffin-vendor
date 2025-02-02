@@ -4,7 +4,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
@@ -36,6 +36,7 @@ const Settings = () => {
   const { isLoading } = useSelector((state) => state.user);
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate()
 
 
 
@@ -83,7 +84,9 @@ const Settings = () => {
   }));
 
   // console.log(settings, "gallery gallery gallery");  
-
+  const onHandleChangePassword = () => {
+    navigate('/dashboard/update-phone-number')
+  }
 
   return (
     <>
@@ -107,7 +110,7 @@ const Settings = () => {
                         <p className="settings-user-number"> {vendorBusinessProfile?.phone_number} </p>
                       </div>
                     </Stack>
-                    <EditIcon style={{ color: '#d9822b', fontSize: '18px' }} />
+                    <EditIcon style={{ color: '#d9822b', fontSize: '18px', cursor: 'pointer' }} onClick={onHandleChangePassword} />
                   </Stack>
 
                   <h2 className="company-id mt-3">Company ID - {vendorBusinessProfile?.company_id} </h2>

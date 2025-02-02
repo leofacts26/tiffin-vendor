@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import userReducer from '../features/user/userSlice';
 import subscriptionReducer from '../features/subscriptionSlice';
+import settingReducer from "../features/settingSlice";
 
 const persistConfig = {
   key: 'root',
@@ -15,6 +16,7 @@ export const store = configureStore({
   reducer: {
     user: persistedReducer,
     subscription: subscriptionReducer,
+    settings: settingReducer,
   },
 });
 
