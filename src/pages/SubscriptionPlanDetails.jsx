@@ -198,7 +198,7 @@ const SubscriptionPlanDetails = () => {
         // image: { logo },
         order_id: id,
         handler: async function (response) {
-          console.log(response, "response response");
+          // console.log(response, "response response");
           const data = {
             orderCreationId: id,
             razorpayPaymentId: response.razorpay_payment_id,
