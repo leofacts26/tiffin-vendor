@@ -2291,4 +2291,6 @@ textarea:-webkit-autofill:active {
   align-items: center;
 }
 
-
+.otp-input-fields-settings {
+  justify-content: center;
+}
