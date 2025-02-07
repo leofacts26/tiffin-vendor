@@ -92,7 +92,7 @@ const BusinesssProfile = () => {
       working_days_hours: data?.working_days_hours,
       working_since: data?.working_since || "",
       about_description: data?.about_description,
-      street_address: data?.street_address,
+      street_address: data?.street_address || "NA",
       business_email: data?.business_email,
       business_phone_number: data?.business_phone_number?.slice(4, 14),
       landline_number: data?.landline_number,
@@ -111,7 +111,7 @@ const BusinesssProfile = () => {
       latitude: data?.latitude,
       longitude: data?.longitude,
       area: data?.area,
-      street_name: data?.street_name,
+      street_name: data?.street_name || "NA",
       country: data?.country,
       state: data?.state,
       formatted_address: data?.formatted_address,
@@ -126,11 +126,11 @@ const BusinesssProfile = () => {
     point_of_contact_name: Yup.string().required('Contact person name is required.'),
     business_phone_number: Yup.string()
       .required('Business phone number is required')
-      .matches(/^[0-9]+$/, 'Phone number must contain only digits')
+      .matches(/^[+]?[0-9-]+$/, 'Phone number must contain only digits, +, or -')
       .min(10, 'Phone number must be at least 10 digits')
       .max(15, 'Phone number must not exceed 15 digits'),
     whatsapp_business_phone_number: Yup.string()
-      .matches(/^[0-9]+$/, 'Phone number must contain only digits')
+      .matches(/^[+]?[0-9-]+$/, 'Phone number must contain only digits, +, or -')
       .min(10, 'Phone number must be at least 10 digits')
       .max(10, 'Phone number must not exceed 15 digits'),
   });
@@ -502,31 +502,7 @@ const BusinesssProfile = () => {
 
 
 
-              <Grid container spacing={2} style={{ display: 'flex', justifyContent: 'center' }}>
-                <Grid item xs={8} >
-                  <div style={values.working_days_hours ? { marginTop: '50px' } : { marginTop: '50px' }}>
-                    <p className="business-profile-name">Street Address</p>
-                    <CssTextField
-                      value={values.street_address}
-                      onChange={handleChange}
-                      name="street_address"
-                      variant="outlined"
-                      placeholder="Enter Street Address"
-                      className='mt-0'
-                      style={{ width: '100%' }}
-                      InputLabelProps={{
-                        style: { color: '#777777', fontSize: '10px' },
-                      }}
-                      InputProps={{
-                        style: {
-                          borderRadius: '8px',
-                          backgroundColor: '#FFFFFF',
-                        }
-                      }}
-                    />
-                  </div>
-                </Grid>
-              </Grid>
+            
 
 
 
@@ -585,6 +561,33 @@ const BusinesssProfile = () => {
                       name="pincode"
                       variant="outlined"
                       placeholder="Enter Pincode"
+                      className='mt-0'
+                      style={{ width: '100%' }}
+                      InputLabelProps={{
+                        style: { color: '#777777', fontSize: '10px' },
+                      }}
+                      InputProps={{
+                        style: {
+                          borderRadius: '8px',
+                          backgroundColor: '#FFFFFF',
+                        }
+                      }}
+                    />
+                  </div>
+                </Grid>
+              </Grid>
+
+
+              <Grid container spacing={2} style={{ display: 'flex', justifyContent: 'center' }}>
+                <Grid item xs={8} >
+                  <div style={values.working_days_hours ? { marginTop: '50px' } : { marginTop: '50px' }}>
+                    <p className="business-profile-name">Street Address</p>
+                    <CssTextField
+                      value={values.street_address}
+                      onChange={handleChange}
+                      name="street_address"
+                      variant="outlined"
+                      placeholder="Enter Street Address"
                       className='mt-0'
                       style={{ width: '100%' }}
                       InputLabelProps={{
