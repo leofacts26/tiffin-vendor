@@ -1199,6 +1199,14 @@ code {
   text-transform: capitalize !important;
   padding: 9px 25px !important;
 }
+.inquiries-search-btn {
+  background-color: var(--secondary) !important;
+  color: #fff !important;
+  border-radius: var(--radiusOne) !important;
+  font-size: 12px !important;
+  text-transform: capitalize !important;
+  padding: 9px 25px !important;
+}
 
 .rdrDefinedRangesWrapper {
   display: none;
