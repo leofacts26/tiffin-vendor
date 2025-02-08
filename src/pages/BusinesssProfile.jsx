@@ -283,19 +283,19 @@ const BusinesssProfile = () => {
 
     setValues({
       ...values,
-      street_name: street_name?.long_name,
+      street_name: street_name?.long_name || "N/A",
       // area: area?.long_name,
-      area: name || "",
-      address: name,
-      pincode: pincode?.long_name,
-      latitude: lat(),
-      longitude: lng(),
-      address: name,
-      city: city?.long_name,
-      state: state?.long_name,
-      country: country?.long_name,
-      formatted_address: formatted_address,
-      place_id: locationPlaceId
+      area: name || "N/A",
+      address: name || "N/A",
+      pincode: pincode?.long_name || "N/A",
+      latitude: lat() || "N/A",
+      longitude: lng() || "N/A",
+      address: name || "N/A",
+      city: city?.long_name || "N/A",
+      state: state?.long_name || "N/A",
+      country: country?.long_name || "N/A",
+      formatted_address: formatted_address || "N/A",
+      place_id: locationPlaceId || "N/A"
     })
   }
 
@@ -503,7 +503,7 @@ const BusinesssProfile = () => {
 
 
 
-            
+
 
 
 
