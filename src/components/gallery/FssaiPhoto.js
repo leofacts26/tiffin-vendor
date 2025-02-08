@@ -28,6 +28,11 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UploadIcon from '@mui/icons-material/Upload';
 
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -41,6 +46,14 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 const FssaiPhoto = () => {
     const dispatch = useDispatch()
     const { isLoading } = useSelector((state) => state.user);
+
+    const [openBox, setOpenBox] = useState(false);
+    const handleClickBoxOpen = () => {
+        setOpenBox(true);
+    };
+    const handleBoxClose = () => {
+        setOpenBox(false);
+    };
 
     const {
         settings,
@@ -58,9 +71,12 @@ const FssaiPhoto = () => {
 
         // Fssai Photo
         onUploadFssai,
-        onReUploadFssai
+        onReUploadFssai,
+        onHandleRemoveFssaiLogo,
+        onReUploadFssaiBanner,
+        onUploadFssaiBanner
 
-    } = useFetchPhotoGallery()
+    } = useFetchPhotoGallery(handleBoxClose)
 
     // handleChange fn 
     const handleChange = (event) => {
@@ -154,9 +170,31 @@ const FssaiPhoto = () => {
                             )
                         }
 
+
                         {/* <p className="settings-small mt-1">Upload FSSAI license</p> */}
 
-                        <div className="mt-3 text-center">
+                        <Stack direction="row" justifyContent="center" spacing={2} className='mt-2'>
+                            <Button variant="contained" component="span" className="cuisines-list-white-btn-setting" onClick={handleClickBoxOpen}>
+                                <UploadIcon /> Upload
+                            </Button>
+
+                            {!(settings['vendor-encf']?.length && settings['vendor-encf']?.length > 0) ? null : (
+                                <Button
+                                    onClick={handleBrandClickOpen}
+                                    variant="contained"
+                                    component="span"
+                                    className="cuisines-list-white-btn-setting"
+                                    disabled={isLoading}
+                                >
+                                    <DeleteIcon style={{ fontSize: '18px' }} /> Delete
+                                </Button>
+                            )}
+
+                        </Stack>
+
+
+
+                        {/* <div className="mt-3 text-center">
                             <input
                                 accept="image/*"
                                 id="vendor-encf"
@@ -170,7 +208,7 @@ const FssaiPhoto = () => {
                                 <UploadIcon />  {settings['vendor-encf']?.length && settings['vendor-encf']?.length > 0 ? 'Re Upload' : 'Upload'}
                                 </Button>
                             </label>
-                        </div>
+                        </div> */}
 
                     </AccordionDetails>
                 </Accordion>
@@ -264,10 +302,98 @@ const FssaiPhoto = () => {
             </BootstrapDialog>
 
             {/* Delete Image Modal */}
-            {/* <DeleteModal
+            <DeleteModal
                 DeleteModalopen={BrandDeleteopen}
                 handleDeleteModalClose={handleBrandClose}
-                onHandleRemoveModalLogo={onHandleRemoveBrandLogo} /> */}
+                onHandleRemoveModalLogo={onHandleRemoveFssaiLogo} />
+
+
+            {/* open Box Modal  */}
+            <React.Fragment>
+                <BootstrapDialog
+                    onClose={handleBoxClose}
+                    aria-labelledby="customized-dialog-title"
+                    open={openBox}
+                >
+                    <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+                        Upload Image
+                    </DialogTitle>
+                    <IconButton
+                        aria-label="close"
+                        onClick={handleBoxClose}
+                        sx={{
+                            position: 'absolute',
+                            right: 8,
+                            top: 8,
+                            color: (theme) => theme.palette.grey[500],
+                        }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                    <DialogContent dividers>
+                        <Stack direction="row" alignItems="center" justifyContent="center" spacing={2} >
+
+                            <div className="text-center">
+                                {settings['vendor-encf']?.length && settings['vendor-encf']?.length > 0 ? (
+                                    <>
+                                        <input
+                                            accept="image/*"
+                                            id="onReUploadFssaiBanner"
+                                            multiple
+                                            type="file"
+                                            style={{ display: 'none' }}
+                                            onChange={onReUploadFssaiBanner}
+                                        />
+                                        <label htmlFor="onReUploadFssaiBanner">
+
+                                            <Button variant="contained" component="span" className="upload-btn" disabled={isLoading}>
+                                                <CloudUploadIcon style={{ fontSize: '14px' }} className="me-2" /> Re Upload Image </Button>
+                                        </label>
+                                    </>
+                                ) : (
+                                    <>
+                                        <input
+                                            accept="image/*"
+                                            id="onUploadFssaiBanner"
+                                            multiple
+                                            type="file"
+                                            style={{ display: 'none' }}
+                                            onChange={onUploadFssaiBanner}
+                                        />
+                                        <label htmlFor="onUploadFssaiBanner">
+                                            <Button variant="contained" component="span" className="upload-btn" disabled={isLoading}>
+                                                <CloudUploadIcon style={{ fontSize: '14px' }} className="me-2" />  Upload Image </Button>
+                                        </label>
+                                    </>
+                                )}
+                            </div>
+
+                            <div> OR </div>
+
+                            <div>
+                                <input
+                                    accept="image/*"
+                                    id="mainbannerlogo"
+                                    multiple
+                                    type="file"
+                                    style={{ display: 'none' }}
+                                    onChange={handleChange}
+                                />
+                                <label htmlFor="mainbannerlogo">
+                                    <Button variant="contained" component="span" className="cuisines-list-upload-btn" disabled={isLoading}>
+                                        {settings['vendor-encf']?.length && settings['vendor-encf']?.length > 0 ? 'Re Upload Crop Image' : 'Upload Crop Image'}
+                                    </Button>
+                                </label>
+                            </div>
+                        </Stack>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button autoFocus onClick={handleBoxClose}>
+                            Close
+                        </Button>
+                    </DialogActions>
+                </BootstrapDialog>
+            </React.Fragment>
 
         </>
     )

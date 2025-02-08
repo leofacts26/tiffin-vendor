@@ -34,7 +34,7 @@ const DeleteModal = ({ DeleteModalopen, handleDeleteModalClose, onHandleRemoveMo
                 open={DeleteModalopen}
             >
                 <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                   <h4>User Confirmation Needed</h4>
+                    <h4>User Confirmation Needed</h4>
                 </DialogTitle>
                 {/* <IconButton
                     aria-label="close"
@@ -53,7 +53,7 @@ const DeleteModal = ({ DeleteModalopen, handleDeleteModalClose, onHandleRemoveMo
                 </DialogContent>
                 <DialogActions>
                     <Box
-                    className="my-3"
+                        className="my-3"
                         sx={{
                             display: 'flex',
                             gap: 2,
@@ -68,6 +68,7 @@ const DeleteModal = ({ DeleteModalopen, handleDeleteModalClose, onHandleRemoveMo
                             Cancel
                         </Button>
                         <Button
+                            style={{ color: '#fff' }}
                             disabled={isLoading}
                             type='submit'
                             variant="contained"
