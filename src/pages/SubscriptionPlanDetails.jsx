@@ -231,7 +231,7 @@ const SubscriptionPlanDetails = () => {
     // console.log(options, "options");
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
-
+    await dispatch(setCouponCode(""));
     setLoading(false);
   }
 
