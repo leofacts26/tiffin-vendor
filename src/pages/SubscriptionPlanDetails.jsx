@@ -191,7 +191,7 @@ const SubscriptionPlanDetails = () => {
       const { amount, id, currency } = result?.payload?.data?.order;
       options = {
         key: "rzp_test_2M5D9mQwHZp8iP",
-        amount: amount.toString(),
+        amount: (discoundedData?.finalAmount * 100).toString(),
         currency: currency,
         name: "Caterings And Tiffins",
         description: "One Time Payments",

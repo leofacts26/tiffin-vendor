@@ -88,7 +88,7 @@ export const calculateOrderTotal = createAsyncThunk(
 export const createOneTimePayment = createAsyncThunk(
   "homepage/createOneTimePayment",
   async (data, thunkAPI) => {
-    const { couponCode } = thunkAPI.getState().subscription.discoundedData;
+    const couponCode  = thunkAPI.getState().subscription.couponCode;
     const { subscriptionTypeId } = thunkAPI.getState().subscription.subscribeData;
 
     const id = Number(subscriptionTypeId)
