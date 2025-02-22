@@ -12,15 +12,21 @@ import { useSelector } from 'react-redux'
 import useBusinessProfile from "../hooks/useBusinessProfile";
 import { vendor_type } from "../constant";
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
-import { Formik } from 'formik';
+import { format, parse, isValid } from 'date-fns';
+import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import { api, BASE_URL } from "../api/apiConfig";
 import LoaderSpinner from "../components/LoaderSpinner";
+import { useLocation } from "react-router-dom";
 import { MenuItem, Select } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import dayjs from 'dayjs';
+import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimeRangePicker } from '@mui/x-date-pickers-pro/DateTimeRangePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import dayjs from 'dayjs';
 
 
 const CssTextField = styled(TextField)(({ theme }) => ({
@@ -43,40 +49,6 @@ const CssTextField = styled(TextField)(({ theme }) => ({
 }));
 
 
-const initialState = {
-  vendor_service_name: "",
-  vendor_type: vendor_type,
-  point_of_contact_name: "",
-  working_days_hours: "",
-  working_since: "",
-  about_description: "",
-  street_address: "",
-  business_email: "",
-  business_phone_number: "",
-  landline_number: "",
-  whatsapp_business_phone_number: "",
-  website_link: "",
-  twitter_id: "",
-  instagram_link: "",
-  facebook_link: "",
-}
-
-
-const locationInitialState = {
-  // loc values 
-  street_name: "",
-  area: "",
-  pincode: "",
-  latitude: "",
-  longitude: "",
-  address: "",
-  city: "",
-  state: "",
-  country: "",
-  formatted_address: "",
-  place_id: ""
-}
-
 const formatPhoneNumber = (phoneNumber) => {
   let formatedNumber = "";
   if (phoneNumber.startsWith('+91-')) {
@@ -89,30 +61,27 @@ const formatPhoneNumber = (phoneNumber) => {
 };
 
 
-
 const BusinesssProfile = () => {
+  const [values, setValues] = useState({})
   const { accessToken } = useSelector((state) => state.user)
-  const [data, updateBusinessProfile, fetchBusinessProfile] = useBusinessProfile('/get-vendor-business-profile', accessToken)
   const { vendor_id } = useSelector((state) => state?.user?.vendorId)
-
-  console.log(data, "data");
-
-
-  const [values, setValues] = useState(initialState)
   const [loading, setLoading] = useState(false)
+  const [data, updateBusinessProfile, fetchBusinessProfile] = useBusinessProfile('/get-vendor-business-profile', accessToken)
 
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+
+
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
+  // const [formattedStartTime, setFormattedStartTime] = useState('');
+  // const [formattedEndTime, setFormattedEndTime] = useState('');
 
-  // location start
-  const [locationValues, setLocationValues] = useState(locationInitialState)
-  const [locationPlaceId, setLocationPlaceId] = useState(null)
-  const [manualLocation, setManualLocation] = useState("")
-  const [selectedLocation, setSelectedLocation] = useState(null);
-  // location end 
+  // const formatTime = (time) => {
+  //   return time ? dayjs(time).format('hh:mm:ss A') : null;
+  // };
 
+  // console.log(data, "data");
 
   useEffect(() => {
     setValues((prevValues) => ({
@@ -132,60 +101,24 @@ const BusinesssProfile = () => {
       twitter_id: data?.twitter_id,
       instagram_link: data?.instagram_link,
       facebook_link: data?.facebook_link,
+      start_day: data?.start_day,
+      working_days_end: data?.end_day,
+      working_hours_end: "10:00:00 AM",
+      working_hours_start: "10:22:22 PM",
+
+      city_id: data?.city_id,
+      pincode: data?.pincode,
+      latitude: data?.latitude,
+      longitude: data?.longitude,
+      area: data?.area,
+      street_name: data?.street_name || "NA",
+      country: data?.country,
+      state: data?.state,
+      formatted_address: data?.formatted_address,
+      city: data?.city,
+      place_id: data?.place_id,
     }));
   }, [data]);
-
-
-  useEffect(() => {
-    setLocationValues((prevValues) => ({
-      ...prevValues,
-      city_id: data?.city_id || "",
-      pincode: data?.pincode || "",
-      latitude: data?.latitude || "",
-      longitude: data?.longitude || "",
-      area: data?.area || "",
-      street_name: data?.street_name || "",
-      country: data?.country || "",
-      state: data?.state || "",
-      formatted_address: data?.formatted_address || "",
-      city: data?.city || "",
-      place_id: data?.place_id || "",
-    }));
-  }, [data])
-
-  useEffect(() => {
-    if (data) {
-      setStartDate(data?.start_day);
-      setEndDate(data?.end_day);
-      setStartTime(data.start_time ? dayjs(data.start_time, 'HH:mm:ss') : null);
-      setEndTime(data.end_time ? dayjs(data.end_time, 'HH:mm:ss') : null);
-    }
-  }, [data])
-
-  const handleLocationChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setLocationValues(values => ({ ...values, [name]: value }))
-  }
-
-
-  const handleStartChange = (event) => {
-    setStartDate(event.target.value);
-  };
-
-  const handleEndChange = (event) => {
-    setEndDate(event.target.value);
-  };
-
-  const handleStartTimeChange = (newValue) => {
-    setStartTime(newValue);
-  };
-
-  const handleEndTimeChange = (newValue) => {
-    setEndTime(newValue);
-  };
-
-
 
   // validation schema 
   const schema = Yup.object().shape({
@@ -203,7 +136,110 @@ const BusinesssProfile = () => {
       .max(15, 'Phone number must not exceed 15 characters')
   });
 
+  useEffect(() => {
+    if (data) {
+      setStartDate(data?.start_day);
+      setEndDate(data?.end_day);
+      setStartTime(data.start_time ? dayjs(data.start_time, 'HH:mm:ss') : null);
+      setEndTime(data.end_time ? dayjs(data.end_time, 'HH:mm:ss') : null);
+    }
+  }, [data])
 
+  const handleSubmit = async (values, resetForm) => {
+    // console.log(values, "values");
+    const formattedBusinessPhoneNumber = formatPhoneNumber(values.business_phone_number);
+    const formattedwhatsapp_business_phone_number = values.whatsapp_business_phone_number ? formatPhoneNumber(values.whatsapp_business_phone_number) : '';
+
+    try {
+      setLoading(true);
+      // if (values.whatsapp_business_phone_number) {
+      //   values.whatsapp_business_phone_number = formattedwhatsapp_business_phone_number;
+      // }
+      if (values.business_phone_number) {
+        values.business_phone_number = formattedBusinessPhoneNumber;
+      }
+
+      const formattedStartTime = startTime ? dayjs(startTime).format('hh:mm:ss A') : '';
+      const formattedEndTime = endTime ? dayjs(endTime).format('hh:mm:ss A') : '';
+
+
+      const data = {
+        ...values,
+        working_hours_start: formattedStartTime || startTime,
+        working_hours_end: formattedEndTime || endTime,
+        // working_hours_start: formattedStartTime || startTime,
+        // working_hours_end: formattedEndTime || endTime,
+        working_days_start: startDate,
+        working_days_end: endDate,
+      }
+      await updateBusinessProfile(data, vendor_id);
+      setLoading(false);
+      fetchBusinessProfile()
+    } catch (error) {
+      setLoading(false);
+      console.error('Error while updating business profile:', error);
+    }
+  }
+
+
+
+  // useEffect(() => {
+  //   if (data) {
+  //     setStartDate(data?.start_day);
+  //     setEndDate(data?.end_day);
+
+  //     const formatTime = (timeString) => {
+  //       const parsedTime = parse(timeString, 'hh:mm:ss a', new Date());
+  //       if (isValid(parsedTime)) {
+  //         return format(parsedTime, 'hh:mm:ss a');
+  //       } else {
+  //         console.error('Invalid time format', timeString);
+  //         return '';
+  //       }
+  //     };
+
+  //     if (data?.start_time) {
+  //       setStartTime(data?.start_time);
+  //       setFormattedStartTime(formatTime(data?.start_time));
+  //     } else {
+  //       setStartTime('');
+  //       setFormattedStartTime('');
+  //     }
+
+  //     if (data?.end_time) {
+  //       setEndTime(data?.end_time);
+  //       setFormattedEndTime(formatTime(data?.end_time));
+  //     } else {
+  //       setEndTime('');
+  //       setFormattedEndTime('');
+  //     }
+  //   }
+
+  // }, [data])
+
+  // location start
+  // const [locationValues, setLocationValues] = useState(initialState)
+  const [locationPlaceId, setLocationPlaceId] = useState(null)
+  const [manualLocation, setManualLocation] = useState("")
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  // location end 
+
+
+  const handleStartChange = (event) => {
+    setStartDate(event.target.value);
+  };
+
+  const handleEndChange = (event) => {
+    setEndDate(event.target.value);
+  };
+
+  const handleStartTimeChange = (newValue) => {
+    setStartTime(newValue);
+  };
+
+  const handleEndTimeChange = (newValue) => {
+    setEndTime(newValue);
+  };
 
 
   // loc start
@@ -236,7 +272,7 @@ const BusinesssProfile = () => {
 
     const country = address_components?.find(c => c?.types?.includes('country')) || {};
     const state = address_components?.find(c => c?.types?.includes('administrative_area_level_1')) || {};
-    const city = address_components?.find(c => c?.types?.includes('locality')) || {};
+    const city = address_components?.find(c => c?.types?.includes('administrative_area_level_3')) || {};
     const pincode = address_components?.find(c => c?.types?.includes('postal_code')) || {};
     const area = address_components?.find(c => c?.types?.includes('locality')) || {};
     const street_name = address_components?.find(c => c?.types?.includes('locality')) || {};
@@ -246,99 +282,72 @@ const BusinesssProfile = () => {
     const { geometry: { location } } = places;
     const { lat, lng } = location;
 
-    setLocationValues((prev) => ({
-      ...prev,
+    setValues({
+      ...values,
       street_name: street_name?.long_name || "N/A",
+      // area: area?.long_name,
       area: name || "N/A",
-      pincode: pincode?.long_name || "",
+      address: name || "N/A",
+      pincode: pincode?.long_name || "N/A",
       latitude: lat() || "N/A",
       longitude: lng() || "N/A",
       address: name || "N/A",
       city: city?.long_name || "N/A",
       state: state?.long_name || "N/A",
       country: country?.long_name || "N/A",
-      formatted_address: manualLocation || "N/A",
-      place_id: locationPlaceId
-    }))
+      formatted_address: formatted_address || "N/A",
+      place_id: locationPlaceId || "N/A"
+    })
   }
 
   const selectLocation = (item) => {
-    console.log(item, "Item");
     setSelectedLocation(item);
     setManualLocation(item.description);
     setLocationPlaceId(item?.place_id)
   }
-
-  const handleManualLocationChange = (evt) => {
-    const inputValue = evt.target.value;
-    setSelectedLocation(null);
-    setManualLocation(inputValue);
-    getPlacePredictions({ input: inputValue });
-  };
-
   // loc end 
 
+  // const handleStartTimeChange = (newValue, setTime) => {
+  //   if (newValue && newValue.isValid()) {
+  //     const formattedTime = formatTime(newValue);
+  //     setTime(formattedTime);
+  //   } else {
+  //     setTime(null); 
+  //   }
+  // };
 
+  // const handleEndTimeChange = (newValue, setTime) => {
+  //   if (newValue && newValue.isValid()) {
+  //     const formattedTime = formatTime(newValue);
+  //     setTime(formattedTime);
+  //   } else {
+  //     setTime(null); 
+  //   }
+  // };
 
-  const handleSubmit = async (values, resetForm) => {
-    console.log(values, "values");
-    console.log(locationValues, "locationValues");
+  // const handleStartChange = (event) => {
+  //   setStartDate(event.target.value);
+  // };
 
-
-
-
-    try {
-      setLoading(true);
-
-      const formattedBusinessPhoneNumber = formatPhoneNumber(values.business_phone_number);
-      const formattedStartTime = startTime ? dayjs(startTime).format('hh:mm:ss A') : '';
-      const formattedEndTime = endTime ? dayjs(endTime).format('hh:mm:ss A') : '';
-
-      const workingHoursData = {
-        working_hours_start: formattedStartTime || startTime,
-        working_hours_end: formattedEndTime || endTime,
-        working_days_start: startDate,
-        working_days_end: endDate,
-      }
-      console.log(workingHoursData, "workingHoursData");
-
-      if (values.business_phone_number) {
-        values.business_phone_number = formattedBusinessPhoneNumber;
-      }
-
-
-      const data = {
-        ...values,
-        ...locationValues,
-        ...workingHoursData,
-      }
-      console.log(data, "data 666");
-      await updateBusinessProfile(data, vendor_id);
-      setLoading(false);
-      fetchBusinessProfile()
-    } catch (error) {
-      setLoading(false);
-      console.error('Error while updating business profile:', error);
-    }
-
-
-  }
-
+  // const handleEndChange = (event) => {
+  //   setEndDate(event.target.value);
+  // };
 
   return (
     <>
       <TopHeader title="Business Profile" description="below is a business overview" />
 
       <Container maxWidth="lg">
+        {/*   */}
         <Formik enableReinitialize={true} initialValues={values} validationSchema={schema} onSubmit={(values, { resetForm }) => handleSubmit(values, resetForm)}>
           {({ values, errors, handleChange, handleSubmit }) => (
-            <form className='card-box-shadow px-5 py-4 mb-4' onSubmit={handleSubmit} autocomplete="off">
+            <form className='card-box-shadow px-5 py-4 mb-4' onSubmit={handleSubmit} autocomplete="false">
               <p className='cuisines-title text-center'>BUSINESS INFORMATION</p>
               <Divider
                 className='mt-2'
                 variant="middle"
                 style={{
-                  backgroundColor: '#c33332',
+                  backgroundColor: '#d9822b',
                   margin: '0px',
                   width: '35%',
                   margin: '0px auto'
@@ -349,13 +358,13 @@ const BusinesssProfile = () => {
               <Grid container spacing={2} className="mt-4">
                 <Grid item xs={6}>
                   <div>
-                    <p className="business-profile-name">Catering Name</p>
+                    <p className="business-profile-name">Tiffin Service Name</p>
                     <CssTextField
                       value={values.vendor_service_name}
                       onChange={handleChange}
                       name="vendor_service_name"
                       variant="outlined"
-                      placeholder="Enter Your Catering Service Name"
+                      placeholder="Enter Your Tiffin Service Name"
                       className='mt-0'
                       style={{ width: '100%' }}
                       InputLabelProps={{
@@ -370,15 +379,18 @@ const BusinesssProfile = () => {
                     />
                     {errors.vendor_service_name && <small className='text-danger mt-2 ms-1'>{errors.vendor_service_name}</small>}
                   </div>
+
+
                 </Grid>
+
 
                 <Grid item xs={6}>
                   <div className="mt-0">
-                    <p className="business-profile-name">Name</p>
+                    <p className="business-profile-name"> Name</p>
                     <CssTextField
                       value={values.point_of_contact_name}
                       onChange={handleChange}
-                      name="point_of_contact_name"
+                      name="point_of_contact_name "
                       variant="outlined"
                       placeholder="Enter Contact person name"
                       className='mt-0'
@@ -395,9 +407,9 @@ const BusinesssProfile = () => {
                     />
                     {errors.point_of_contact_name && <small className='text-danger mt-2 ms-1'>{errors.point_of_contact_name}</small>}
                   </div>
-
                 </Grid>
               </Grid>
+
 
 
               <Grid container spacing={2} style={{ display: 'flex', justifyContent: 'center' }}>
@@ -417,17 +429,6 @@ const BusinesssProfile = () => {
                             value={startDate}
                             // label="startDate"
                             onChange={handleStartChange}
-                            MenuProps={{
-                              anchorOrigin: {
-                                vertical: "top",
-                                horizontal: "left"
-                              },
-                              transformOrigin: {
-                                vertical: "bottom",
-                                horizontal: "left"
-                              },
-                              getContentAnchorEl: null, // Ensure the menu is not anchored to the input
-                            }}
                           >
                             <MenuItem value="Monday">Monday</MenuItem>
                             <MenuItem value="Tuesday">Tuesday</MenuItem>
@@ -441,17 +442,12 @@ const BusinesssProfile = () => {
                       </Box>
 
                       <Box sx={{ width: '150px' }}>
-                        <LocalizationProvider dateAdapter={AdapterDayjs} >
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <TimePicker
                             // label="Select Time"
                             value={startTime ? dayjs(startTime, 'hh:mm:ss A') : null}
                             onChange={(newValue) => {
                               handleStartTimeChange(newValue, setStartTime);
-                            }}
-                            slotProps={{
-                              popper: {
-                                placement: "top", // Forces the dropdown to appear on top
-                              },
                             }}
                             renderInput={(params) => <TextField
                               {...params}
@@ -472,17 +468,6 @@ const BusinesssProfile = () => {
                             value={endDate}
                             // label="endDate"
                             onChange={handleEndChange}
-                            MenuProps={{
-                              anchorOrigin: {
-                                vertical: "top",
-                                horizontal: "left"
-                              },
-                              transformOrigin: {
-                                vertical: "bottom",
-                                horizontal: "left"
-                              },
-                              getContentAnchorEl: null, // Ensure the menu is not anchored to the input
-                            }}
                           >
                             <MenuItem value="Monday">Monday</MenuItem>
                             <MenuItem value="Tuesday">Tuesday</MenuItem>
@@ -503,11 +488,6 @@ const BusinesssProfile = () => {
                             onChange={(newValue) => {
                               handleEndTimeChange(newValue, setEndTime);
                             }}
-                            slotProps={{
-                              popper: {
-                                placement: "top", // Forces the dropdown to appear on top
-                              },
-                            }}
                             renderInput={(params) => <TextField
                               {...params}
                               sx={{ gridColumn: "span 1" }}
@@ -523,46 +503,27 @@ const BusinesssProfile = () => {
 
 
 
-              <Grid container spacing={2} style={{ display: 'flex', justifyContent: 'center' }}>
-                <Grid item xs={8} >
-                  <div style={{ marginTop: '50px' }}>
-                    <p className="business-profile-name">Street Address</p>
 
-                    <CssTextField
-                      value={values.street_address}
-                      onChange={handleChange}
-                      name="street_address"
-                      variant="outlined"
-                      placeholder="E.g.. 15"
-                      className='mt-0'
-                      style={{ width: '100%' }}
-                      InputLabelProps={{
-                        style: { color: '#777777', fontSize: '10px' },
-                      }}
-                      InputProps={{
-                        style: {
-                          borderRadius: '8px',
-                          backgroundColor: '#FFFFFF',
-                        }
-                      }}
-                    />
-                  </div>
-                </Grid>
-              </Grid>
+
 
 
 
               <Grid container spacing={2} style={{ display: 'flex', justifyContent: 'center' }}>
                 <Grid item xs={8} style={{ zIndex: 9999 }}>
                   <div className="mt-5">
-                    <p className="business-profile-name">Select your Area</p>
+                    <p className="business-profile-name">Select Your Area</p>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                       <textarea
                         autocomplete="false"
                         required
                         style={{ height: '65px' }}
-                        onChange={handleManualLocationChange}
-                        value={manualLocation ? manualLocation : locationValues.formatted_address}
+                        onChange={(evt) => {
+                          setSelectedLocation(null);
+                          setManualLocation(evt.target.value);
+                          getPlacePredictions({ input: evt.target.value });
+                          handleChange(evt); // This line ensures Formik's handleChange is called
+                        }}
+                        value={values.formatted_address}
                         name="formatted_address" // Make sure the name matches the field name in initialValues
                         rows="20" id="comment_text" cols="40"
                         className="job-textarea" autoComplete="off" role="textbox"
@@ -584,6 +545,9 @@ const BusinesssProfile = () => {
                       ))
                     )
                   )}
+
+
+
                 </Grid>
               </Grid>
 
@@ -591,11 +555,11 @@ const BusinesssProfile = () => {
 
               <Grid className="mb-4" container spacing={2} style={{ display: 'flex', justifyContent: 'center' }}>
                 <Grid item xs={8} >
-                  <div style={{ marginTop: '50px' }}>
+                  <div style={values.working_days_hours ? { marginTop: '50px' } : { marginTop: '50px' }}>
                     <p className="business-profile-name">Pincode</p>
                     <CssTextField
-                      value={locationValues.pincode}
-                      onChange={handleLocationChange}
+                      value={values.pincode}
+                      onChange={handleChange}
                       name="pincode"
                       variant="outlined"
                       placeholder="Enter Pincode"
@@ -615,6 +579,35 @@ const BusinesssProfile = () => {
                 </Grid>
               </Grid>
 
+
+              <Grid container spacing={2} style={{ display: 'flex', justifyContent: 'center' }}>
+                <Grid item xs={8} >
+                  <div style={values.working_days_hours ? { marginTop: '50px' } : { marginTop: '50px' }}>
+                    <p className="business-profile-name">Street Address</p>
+                    <CssTextField
+                      value={values.street_address}
+                      onChange={handleChange}
+                      name="street_address"
+                      variant="outlined"
+                      placeholder="Enter Street Address"
+                      className='mt-0'
+                      style={{ width: '100%' }}
+                      InputLabelProps={{
+                        style: { color: '#777777', fontSize: '10px' },
+                      }}
+                      InputProps={{
+                        style: {
+                          borderRadius: '8px',
+                          backgroundColor: '#FFFFFF',
+                        }
+                      }}
+                    />
+                  </div>
+                </Grid>
+              </Grid>
+
+
+
               <Grid container spacing={2} style={{ display: 'flex', justifyContent: 'center' }} className={`${!selectedLocation && 'mt-5'}`}>
                 <Grid item xs={8} >
                   <div className={selectedLocation ? 'mt-4' : 'mt-0'}>
@@ -626,7 +619,7 @@ const BusinesssProfile = () => {
                         className="job-textarea" autoComplete="off" role="textbox"
                         aria-autocomplete="list" aria-haspopup="true"></textarea>
                     </Box>
-                    {/* {errors.about_description && <small className='text-danger mt-2 ms-1'>{errors.about_description}</small>} */}
+                    {errors.about_description && <small className='text-danger mt-2 ms-1'>{errors.about_description}</small>}
                   </div>
                 </Grid>
               </Grid>
@@ -662,7 +655,7 @@ const BusinesssProfile = () => {
                         }
                       }}
                     />
-                    {/* {errors.working_since && <small className='text-danger mt-2 ms-1'>{errors.working_since}</small>} */}
+                    {errors.working_since && <small className='text-danger mt-2 ms-1'>{errors.working_since}</small>}
                   </div>
                 </Grid>
               </Grid>
@@ -673,7 +666,7 @@ const BusinesssProfile = () => {
                 className='mt-2 mb-5'
                 variant="middle"
                 style={{
-                  backgroundColor: '#c33332',
+                  backgroundColor: '#d9822b',
                   margin: '0px',
                   width: '35%',
                   margin: '0px auto'
@@ -701,7 +694,7 @@ const BusinesssProfile = () => {
                         }
                       }}
                     />
-                    {/* {errors.business_email && <small className='text-danger mt-2 ms-1'>{errors.business_email}</small>} */}
+                    {errors.business_email && <small className='text-danger mt-2 ms-1'>{errors.business_email}</small>}
                   </div>
 
                   <div className="mt-3">
@@ -717,6 +710,7 @@ const BusinesssProfile = () => {
                       InputLabelProps={{
                         style: { color: '#777777', fontSize: '10px' },
                       }}
+                      inputProps={{ maxLength: 10 }}
                       InputProps={{
                         style: {
                           borderRadius: '8px',
@@ -777,8 +771,21 @@ const BusinesssProfile = () => {
 
               <p className='cuisines-title text-center mt-5'>OTHERS</p>
 
+              <Divider
+                className='mt-2 mb-5'
+                variant="middle"
+                style={{
+                  backgroundColor: '#d9822b',
+                  margin: '0px',
+                  width: '35%',
+                  margin: '0px auto'
+                }}
+              />
+
               <Grid container spacing={2} style={{ display: 'flex', justifyContent: 'center' }}>
                 <Grid item xs={8}>
+
+
                   <div>
                     <p className="business-profile-name">Website link(optional)</p>
                     <CssTextField
@@ -866,16 +873,10 @@ const BusinesssProfile = () => {
               </Grid>
 
 
-
-
-
-
-
               <Stack direction="row" justifyContent="center" className="mt-4">
                 <Button type="submit" variant="contained" className="inquiries-red-btn" disabled={loading}>
                   {loading ? 'Loading...' : 'Update'}  </Button>
               </Stack>
-
 
             </form>
           )}
@@ -884,4 +885,5 @@ const BusinesssProfile = () => {
     </>
   )
 }
+
 export default BusinesssProfile
