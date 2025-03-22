@@ -26,6 +26,7 @@ import { Toaster } from 'react-hot-toast';
 import PhotoGalleryTest from "./pages/PhotoGalleryTest";
 import SubscriptionPlanDetails from "./pages/SubscriptionPlanDetails";
 import UpdatePhoneNumber from "./pages/UpdatePhoneNumber";
+import SubscriptionQuickCreate from "./pages/SubscriptionQuickCreate";
 
 function App() {
   return (
@@ -59,6 +60,7 @@ function App() {
             <Route path='subscription' element={<Subscription />} />
             <Route path='subscription-plan' element={<SubscriptionPlan />} />
             <Route path='subscription-plan-details' element={<SubscriptionPlanDetails />} />
+            <Route path='subscription-quick-create' element={<SubscriptionQuickCreate />} />
 
 
             <Route path='settings' element={<Settings />} />

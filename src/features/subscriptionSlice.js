@@ -11,7 +11,8 @@ const initialState = {
   subscribeData: null,
   couponCode: '',
   calculaterOrderData: {},
-  cancelSubData: {}
+  cancelSubData: {},
+  listVendorQuickCreateData: []
 }
 
 
@@ -197,6 +198,58 @@ export const cancelOneTimePayment = createAsyncThunk(
   }
 );
 
+export const createQuickOneTimePayment = createAsyncThunk(
+  "homepage/createQuickOneTimePayment",
+  async (data, thunkAPI) => {
+    const couponCode = thunkAPI.getState().subscription.couponCode;
+    // const { subscriptionTypeId } = thunkAPI.getState().subscription.subscribeData;
+
+    const id = Number(data.subscription_type_id)
+    const subscriptionDuration = data?.subType;
+    const updatedData = {
+      quickLinkId: data.id,
+      subscriptionTypeId: id,
+      subscriptionDuration,
+      couponCode: data.couponCode
+    }
+    // console.log(updatedData, "updatedDataupdatedDataupdatedData"); 
+
+    try {
+      const response = await api.post(`/rz-create-one-time-payment`, updatedData, {
+        headers: {
+          authorization: `Bearer ${thunkAPI.getState()?.user?.accessToken}`,
+        },
+      });
+      toast.success(`${response.data.status ? response.data.status : response.data.couponCode !== null && 'Coupon Code Applied'} `)
+      // console.log(response, "responseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponse");
+      return response;
+    } catch (error) {
+      console.log(error);
+      toast.error(datavalidationerror(error))
+    }
+  }
+);
+
+
+export const listVendorQuickCreate = createAsyncThunk(
+  "homepage/listVendorQuickCreate",
+  async (data, thunkAPI) => {
+    try {
+      const response = await api.get(
+        `${BASE_URL}/list-vendor-quick-create`,
+        {
+          headers: {
+            authorization: `Bearer ${thunkAPI.getState()?.user?.accessToken}`,
+          },
+        }
+      );
+      return response?.data.data[0];
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
 
 export const subscriptionSlice = createSlice({
   name: 'subscription',
@@ -259,6 +312,18 @@ export const subscriptionSlice = createSlice({
         state.calculaterOrderData = payload;
       })
       .addCase(calculateOrderTotal.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(datavalidationerror(payload));
+      })
+       // listVendorQuickCreate 
+       .addCase(listVendorQuickCreate.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(listVendorQuickCreate.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.listVendorQuickCreateData = payload;
+      })
+      .addCase(listVendorQuickCreate.rejected, (state, { payload }) => {
         state.isLoading = false;
         toast.error(datavalidationerror(payload));
       })
