@@ -220,6 +220,11 @@ const LoginVendor = () => {
     //     fetchLoginCreds();
     // }, []);
 
+    const onHandleForgotPassword = () => {
+        navigate('/login-reset-vendor-creds')
+    }
+
+
 
     return (
         <div>
@@ -295,6 +300,16 @@ const LoginVendor = () => {
                                         style={{ textTransform: 'capitalize', margin: '0px auto', display: 'block' }}>
                                         {loading ? 'Loading...' : 'Get Otp'}
                                     </Button>
+                                    <button
+                                        style={{
+                                            color: "#000000",
+                                            margin: '0px auto', textAlign: 'center', border: 'none', width: '100%',
+                                            background: '#fff', cursor: 'pointer'
+                                        }}
+                                        onClick={onHandleForgotPassword}
+                                    >
+                                        Forgot Password
+                                    </button>
                                 </div>
                                 {/* </Link> */}
                             </form>
