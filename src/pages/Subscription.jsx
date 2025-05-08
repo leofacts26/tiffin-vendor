@@ -102,7 +102,7 @@ const Subscription = () => {
                     <p className="subscription-type">Subscription Status:</p>
                     <Stack direction="row" spacing={1} alignItems="center">
                       {activeSubscriptionList?.activeSubscription?.status ? <DoneIcon style={{ fontSize: '18px', color: '#459412' }} /> :
-                        <CloseIcon style={{ fontSize: '18px', color: '#a81e1e' }} />}
+                        <CloseIcon style={{ fontSize: '18px', color: '#d9822b' }} />}
 
                       <h4 className={activeSubscriptionList?.activeSubscription?.status ? 'subscription-green' : 'subscription-red'}>
                         {activeSubscriptionList?.activeSubscription?.status ? activeSubscriptionList?.activeSubscription?.status : 'InActive'} </h4>
@@ -207,7 +207,7 @@ const Subscription = () => {
                               <p className="subscription-type">Status:</p>
                               <Stack direction="row" spacing={1} alignItems="center">
                                 {itemData?.status ? <DoneIcon style={{ fontSize: '18px', color: '#459412' }} /> :
-                                  <CloseIcon style={{ fontSize: '18px', color: '#a81e1e' }} />}
+                                  <CloseIcon style={{ fontSize: '18px', color: '#d9822b' }} />}
 
                                 <h4 className={itemData?.status ? 'subscription-green' : 'subscription-red'}>
                                   {itemData?.status ? itemData?.status : 'InActive'} </h4>
@@ -264,7 +264,7 @@ const Subscription = () => {
                               <p className="subscription-type"> Status:</p>
                               <Stack direction="row" spacing={1} alignItems="center">
                                 {itemData?.status ? <DoneIcon style={{ fontSize: '18px', color: '#459412' }} /> :
-                                  <CloseIcon style={{ fontSize: '18px', color: '#a81e1e' }} />}
+                                  <CloseIcon style={{ fontSize: '18px', color: '#d9822b' }} />}
 
                                 <h4 className={itemData?.status ? 'subscription-green' : 'subscription-red'}>
                                   {itemData?.status ? itemData?.status : 'InActive'} </h4>

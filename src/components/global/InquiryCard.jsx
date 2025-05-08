@@ -30,9 +30,9 @@ const InquiryCard = ({ item }) => {
                         </p>
 
 
-                        <p className="inquiries-desc mb-1">
+                        {/* <p className="inquiries-desc mb-1">
                             {item?.cuisines.length > 0 && item?.cuisines.map((cuisine) => cuisine.cuisine_name).join(", ")}
-                        </p>
+                        </p> */}
 
 
                         <p className="inquiries-desc mb-1">
@@ -40,9 +40,9 @@ const InquiryCard = ({ item }) => {
                         </p>
 
 
-                        <p className="inquiries-desc mb-1">
+                        {/* <p className="inquiries-desc mb-1">
                             {item?.occasions.length > 0 && item?.occasions.map((occasion) => occasion.occasion_name).join(", ")}
-                        </p>
+                        </p> */}
 
 
                         <p className="inquiries-date">  {moment(item?.enquiry_date).format("DD MMM, YYYY")}</p>

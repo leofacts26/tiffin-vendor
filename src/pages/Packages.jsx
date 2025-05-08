@@ -265,7 +265,7 @@ const Packages = () => {
                                         onChange={(e) => setStartPrice(e.target.value)}
                                         id="outlined-number"
                                         variant="outlined"
-                                        placeholder="Eg. 125"
+                                        placeholder="Eg. 2500"
                                         className='text-center mx-auto'
                                         style={{ width: '50%' }}
                                         InputLabelProps={{

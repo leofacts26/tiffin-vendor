@@ -194,7 +194,7 @@ const UpdatePhoneNumber = () => {
 
     return (
         <>
-            <TopHeader title="Chane Phone Number" description="" />
+            <TopHeader title="Change Phone Number" description="" />
 
             <Container maxWidth="lg">
                 <div className='card-box-shadow px-5 py-4 mb-4'>
@@ -205,7 +205,7 @@ const UpdatePhoneNumber = () => {
                             <div className="ct-box ct-box-padding">
                                 <div className="px-4">
                                     <Stack direction="row" alignItems="center" className="mb-3">
-                                        <ArrowBackIcon className="cursor-pointer" style={{ fontSize: '18px', color: '#c33332' }} onClick={handleBack} /> <h3 className="faq-heading ms-2">Update Phone Number</h3>
+                                        <ArrowBackIcon className="cursor-pointer" style={{ fontSize: '18px', color: '#d9822b' }} onClick={handleBack} /> <h3 className="faq-heading ms-2">Update Phone Number</h3>
                                     </Stack>
                                     {/* <h2 className="rt-heading mb-4 mt-5">Update Phone Number</h2> */}
                                     {
