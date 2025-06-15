@@ -118,11 +118,28 @@ const SubscriptionPlanDetails = () => {
 
 
     // Error handling for API response
-    if (!result || result.payload.error || result.payload.status === "failure") {
-      toast.error("Server error: " + (result.payload?.error?.message || result.payload.message || "Unknown error occurred."));
+    // if (!result || result.payload.error || result.payload.status === "failure") {
+    //   toast.error("Server error: " + (result.payload?.error?.message || result.payload.message || "Unknown error occurred."));
+    //   setLoading(false);
+    //   return;
+    // }
+    if (!result || result.payload?.status === "failure" || result.payload?.error) {
+      const message =
+        result.payload?.message ||
+        result.payload?.error?.message ||
+        "Unknown error occurred.";
+
+      // Specific case for CNT100 already used
+      if (message.includes("This coupon code (CNT100) has already been used")) {
+        toast.error("This coupon has already been used. Please try a different one.");
+      } else {
+        toast.error("Server error: " + message);
+      }
+
       setLoading(false);
       return;
     }
+
 
     // console.log(result, "result");
 
@@ -183,12 +200,28 @@ const SubscriptionPlanDetails = () => {
             // Call cancel subscription API for recurring payment
             await dispatch(cancelRecurringPayment({ razorpaySubscriptionId: subscriptionId }));
             toast.error("Subscription payment was canceled.");
+             setLoading(false);
           },
         },
       };
     } else {
+      if (result?.payload?.data.is_local === 1 && result?.payload?.data.status === "success") {
+        await dispatch(setCouponCode(""));
+        setLoading(false);
+        navigate("/dashboard/subscription");
+        return;
+      }
+
+      const order = result?.payload?.data?.order;
+
+      if (!order) {
+        toast.error("Order details missing. Please try again.");
+        setLoading(false);
+        return;
+      }
+
       // One-time payment case
-      const { amount, id, currency } = result?.payload?.data?.order;
+      const { id, currency } = result?.payload?.data?.order;
       options = {
         key: "rzp_test_2M5D9mQwHZp8iP",
         amount: (discoundedData?.finalAmount * 100).toString(),
@@ -207,6 +240,7 @@ const SubscriptionPlanDetails = () => {
           };
           // console.log(data);
           await dispatch(setCouponCode(""));
+          setLoading(false);
           navigate('/dashboard/subscription');
         },
         prefill: {
