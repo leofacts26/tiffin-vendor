@@ -159,7 +159,7 @@ const SubscriptionPlanDetails = () => {
       } = result.payload;
 
       options = {
-        key: "rzp_live_IXvMLZcvtKA1O2",
+        key: process.env.REACT_APP_RAZORPAY_KEY,
         subscription_id: subscriptionId,
         amount: discoundedData.finalAmount, // Set a predefined amount or calculate based on the plan
         currency: "INR", // Assuming INR as currency
@@ -223,7 +223,7 @@ const SubscriptionPlanDetails = () => {
       // One-time payment case
       const { id, currency } = result?.payload?.data?.order;
       options = {
-        key: "rzp_live_IXvMLZcvtKA1O2",
+        key: process.env.REACT_APP_RAZORPAY_KEY,
         amount: (discoundedData?.finalAmount * 100).toString(),
         currency: currency,
         name: "Caterings And Tiffins",
