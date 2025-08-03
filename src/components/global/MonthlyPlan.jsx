@@ -14,7 +14,7 @@ const MonthlyPlan = () => {
     const { subscriptionData, isLoading } = useSelector((state) => state.subscription);
     const dispatch = useDispatch();
     const { activeSubscriptionList } = useSelector((state) => state.subscription)
-    
+
     useEffect(() => {
         dispatch(fetchSubscriptionTypes());
     }, []);
@@ -127,7 +127,8 @@ const MonthlyPlan = () => {
                         })}
                 </Grid>
             ) : (
-                <p>No subscription plans available at the moment.</p>
+                // <p>No subscription plans available at the moment.</p>
+                <LoadingAnimation reviewHeight="review-height" />
             )}
         </>
     );
