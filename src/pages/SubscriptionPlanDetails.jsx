@@ -95,14 +95,27 @@ const SubscriptionPlanDetails = () => {
     const { plans = [] } = subscribeData || {};
 
     // Determine the correct plan index based on the subscription type
-    const planIndex = discoundedData?.subType?.toLowerCase() === 'monthly' ? 1 : 0;
+    // const planIndex = discoundedData?.subType?.toLowerCase() === 'monthly' ? 1 : 0;
 
     // Construct recurringMonthlydata based on the selected plan
+    // const recurringMonthlydata = {
+    //   subscription_type_id: plans[planIndex]?.subscriptionTypeId || null,
+    //   subscription_duration: plans[planIndex]?.durations?.[0] || null,
+    //   plan_id: plans[planIndex]?.id || null,
+    // };
+
+    const targetPeriod = discoundedData?.subType?.toLowerCase();
+
+    const matchedPlan = plans.find(
+      (plan) => plan.durations?.includes(targetPeriod)
+    );
+
     const recurringMonthlydata = {
-      subscription_type_id: plans[planIndex]?.subscriptionTypeId || null,
-      subscription_duration: plans[planIndex]?.durations?.[0] || null,
-      plan_id: plans[planIndex]?.id || null,
+      subscription_type_id: matchedPlan?.subscriptionTypeId || null,
+      subscription_duration: matchedPlan?.durations?.[0] || null,
+      plan_id: matchedPlan?.id || null,
     };
+
 
     // Declare result variable
     let result;
@@ -200,7 +213,7 @@ const SubscriptionPlanDetails = () => {
             // Call cancel subscription API for recurring payment
             await dispatch(cancelRecurringPayment({ razorpaySubscriptionId: subscriptionId }));
             toast.error("Subscription payment was canceled.");
-             setLoading(false);
+            setLoading(false);
           },
         },
       };
