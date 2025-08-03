@@ -448,11 +448,12 @@ const BusinesssProfile = () => {
                             onChange={(newValue) => {
                               handleStartTimeChange(newValue, setStartTime);
                             }}
-                            slotProps={{
-                              popper: {
-                                placement: "top", // Forces the dropdown to appear on top
-                              },
-                            }}
+                            // slotProps={{
+                            //   popper: {
+                            //     placement: "top", // Forces the dropdown to appear on top
+                            //   },
+                            // }}
+                            
                             renderInput={(params) => <TextField
                               {...params}
                             />}
@@ -553,7 +554,7 @@ const BusinesssProfile = () => {
 
 
               <Grid container spacing={2} style={{ display: 'flex', justifyContent: 'center' }}>
-                <Grid item xs={8} style={{ zIndex: 9999 }}>
+                <Grid item xs={8} style={{ zIndex: 9 }}>
                   <div className="mt-5">
                     <p className="business-profile-name">Select your Area</p>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
