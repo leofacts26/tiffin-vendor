@@ -109,7 +109,7 @@ const ProfileSteps = () => {
     const handleSubmit = async (values, { resetForm }) => {
         dispatch(setIsLoading(true))
         try {
-            const { vendor_service_name, 
+            const { vendor_service_name,
                 // point_of_contact_name, 
                 business_phone_number, landline_number, whatsapp_business_phone_number } = values;
 
@@ -119,7 +119,7 @@ const ProfileSteps = () => {
 
             const data = {
                 vendor_service_name,
-               // point_of_contact_name,
+                // point_of_contact_name,
                 business_phone_number: formattedPhoneNumber,
                 landline_number: formattedlandline_number,
                 whatsapp_business_phone_number: formattedwhatsapp_business_phone_number
@@ -169,7 +169,15 @@ const ProfileSteps = () => {
                                         const labelProps = {};
                                         return (
                                             <Step key={label} {...stepProps} className='steps-box'>
-                                                <StepLabel {...labelProps} className='step-label'>{label}</StepLabel>
+                                                <StepLabel {...labelProps} className='step-label' StepIconProps={{
+                                                    sx: {
+                                                        '& .MuiStepIcon-text': {
+                                                            fill: '#fff',
+                                                        }
+                                                    }
+                                                }}>
+                                                    {label}
+                                                </StepLabel>
                                             </Step>
                                         );
                                     })}
