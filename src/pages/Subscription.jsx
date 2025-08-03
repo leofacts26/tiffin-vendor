@@ -12,6 +12,7 @@ import moment from 'moment';
 import CloseIcon from '@mui/icons-material/Close';
 import Box from '@mui/material/Box';
 import toast from "react-hot-toast";
+import { CircularProgress } from '@mui/material'; // import loader
 
 
 const Subscription = () => {
@@ -76,6 +77,13 @@ const Subscription = () => {
     }
 
   }
+
+
+  const isLoading = activeSubscriptionList === undefined || activeSubscriptionList === null;
+
+  const isPending = activeSubscriptionList?.pendingSubscriptions?.length !== 0;
+  const activeSub = activeSubscriptionList?.activeSubscription;
+  const pattern = activeSub?.subscription_pattern?.toLowerCase();
 
 
   return (
@@ -144,7 +152,53 @@ const Subscription = () => {
                   </Stack>
 
 
-                  {activeSubscriptionList?.activeSubscription === null ? (
+                  {isLoading ? (
+                    <Button
+                      variant="contained"
+                      className="inquiries-btn mx-auto text-center"
+                      disabled
+                    >
+                      <CircularProgress size={20} sx={{ color: '#fff' }} />
+                    </Button>
+                  ) : activeSub === null ? (
+                    <Link
+                      to={isPending ? 'javascript:void(0)' : '/dashboard/subscription-plan'}
+                      className="text-decoration-none"
+                    >
+                      <Button
+                        variant="contained"
+                        className="inquiries-btn mx-auto text-center"
+                        disabled={isPending}
+                      >
+                        Get Subscription
+                      </Button>
+                    </Link>
+                  ) : pattern === 'one_time_monthly' || pattern === 'one_time_yearly' ? (
+                    <Link
+                      to="/dashboard/subscription-plan"
+                      className="text-decoration-none"
+                    >
+                      <Button
+                        variant="contained"
+                        className="inquiries-btn mx-auto text-center"
+                      >
+                        Upgrade Subscription
+                      </Button>
+                    </Link>
+                  ) : pattern === 'subscription-monthly' || pattern === 'subscription-yearly' ? (
+                    <Button
+                      variant="contained"
+                      className="inquiries-btn mx-auto text-center"
+                      onClick={() =>
+                        onHandleCancelSubscription(activeSub?.razorpay_subscription_id)
+                      }
+                    >
+                      Cancel Subscription
+                    </Button>
+                  ) : null}
+
+
+                  {/* {activeSubscriptionList?.activeSubscription === null ? (
                     <Link
                       to={
                         activeSubscriptionList?.pendingSubscriptions?.length !== 0
@@ -181,7 +235,7 @@ const Subscription = () => {
                     >
                       Cancel Subscription
                     </Button>
-                  ) : null}
+                  ) : null} */}
 
 
 
