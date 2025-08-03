@@ -19,7 +19,7 @@ const useBusinessProfile = (url, accessToken) => {
             setData(response?.data?.data[0] ? response?.data?.data[0] : response?.data?.data)
         } catch (error) {
             console.log(error);
-            toast.error(datavalidationerror(error))
+            toast.error(datavalidationerror(error), { duration: 5000 })
         }
     }
 
@@ -30,10 +30,10 @@ const useBusinessProfile = (url, accessToken) => {
                     Authorization: `Bearer ${accessToken}`,
                 }
             })
-            toast.success(successToast(response));
+            toast.success(successToast(response), { duration: 5000 });
         } catch (error) {
             console.log(error);
-            toast.error(datavalidationerror(error))
+            toast.error(datavalidationerror(error), { duration: 5000 })
         }
     }
 

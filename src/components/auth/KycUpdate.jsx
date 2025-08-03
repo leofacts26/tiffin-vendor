@@ -73,13 +73,13 @@ const KycUpdate = ({ activeStep, setActiveStep }) => {
     const handleSubmit = async (values) => {
         try {
             setLoading(true);
-            const { 
-              //  aadhar_card_number, pan_number, gstin_number, 
+            const {
+                //  aadhar_card_number, pan_number, gstin_number, 
                 fssai_number } = values;
             const data = {
-               // aadhar_card_number,
-               // pan_number,
-               // gstin_number,
+                // aadhar_card_number,
+                // pan_number,
+                // gstin_number,
                 fssai_number
             };
             const response = await api.post('/register-vendor-kyc-update', data, {
@@ -88,12 +88,12 @@ const KycUpdate = ({ activeStep, setActiveStep }) => {
                     Authorization: `Bearer ${accessToken}`
                 }
             });
-            toast.success(response?.data?.message);
+            toast.success(`${response?.data?.message}. Login Details have been sent to the registered Phone number`, { duration: 5000 });
             setLoading(false);
             if (response?.data) {
                 navigate("/dashboard/inquiries");
             }
-            toast.success('Login Details Sended to your mail...');
+            // toast.success('Login Details Sended to your mail...');
         } catch (error) {
             setLoading(false);
             console.log(error, " error");
@@ -103,7 +103,7 @@ const KycUpdate = ({ activeStep, setActiveStep }) => {
     };
 
 
-    const handleBack = () =>{
+    const handleBack = () => {
         navigate('/dashboard/inquiries')
     }
 
@@ -207,7 +207,7 @@ const KycUpdate = ({ activeStep, setActiveStep }) => {
                                 Skip
                             </Button> */}
                             <Button className='ct-box-btn-profile-skip-step' onClick={handleBack}>
-                               Skip
+                                Skip
                             </Button>
                             <Box sx={{ flex: '1 1 auto' }} />
 

@@ -21,10 +21,10 @@ const useRegistration = () => {
             dispatch(setData(registerData));
             setShowOtp(false);
             setLoading(false);
-            toast.success(successToast(response));
+            toast.success(successToast(response), { duration: 5000 });
         } catch (error) {
             setLoading(false);
-            toast.error(datavalidationerror(error));
+            toast.error(datavalidationerror(error), { duration: 5000 });
         }
     };
 
@@ -43,12 +43,12 @@ const useRegistration = () => {
             dispatch(setRefreshToken(response?.data?.data?.refreshToken));
             navigate('/create-account', { state: { tab: '2' } });
             setValue('2')
-            toast.success(response?.data?.message);
+            toast.success(response?.data?.message, { duration: 5000 });
             setLoading(false);
             setOtp(['', '', '', '', '', '']);
         } catch (error) {
             setLoading(false);
-            toast.error(datavalidationerror(error));
+            toast.error(datavalidationerror(error), { duration: 5000 });
         }
     };
 
@@ -62,10 +62,10 @@ const useRegistration = () => {
             dispatch(setData(registerData));
             setShowOtp(false);
             setLoading(false);
-            toast.success(successToast(response));
+            toast.success(successToast(response), { duration: 5000 });
         } catch (error) {
             setLoading(false);
-            toast.error(datavalidationerror(error));
+            toast.error(datavalidationerror(error), { duration: 5000 });
         }
     };
 
@@ -82,12 +82,12 @@ const useRegistration = () => {
             dispatch(setAccessToken(response?.data?.data?.accessToken));
             dispatch(setRefreshToken(response?.data?.data?.refreshToken));
             navigate('/profile-steps')
-            toast.success(successToast(response));
+            toast.success(successToast(response), { duration: 5000 });
             setLoading(false);
             setOtp(['', '', '', '', '', '']);
         } catch (error) {
             setLoading(false);
-            toast.error(datavalidationerror(error));
+            toast.error(datavalidationerror(error), { duration: 5000 });
         }
     };
 
@@ -100,10 +100,10 @@ const useRegistration = () => {
                 vendor_type: user?.vendor_type
             }
             const response = await api.post('register-vendor-resend-otp', data)
-            toast.success(successToast(response));
+            toast.success(successToast(response), { duration: 5000 });
         } catch (error) {
             console.log(error);
-            toast.error(datavalidationerror(error));
+            toast.error(datavalidationerror(error), { duration: 5000 });
         }
     }
 

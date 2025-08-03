@@ -77,11 +77,11 @@ export const calculateOrderTotal = createAsyncThunk(
         },
       });
       // console.log(response, "response SLice");
-      toast.success(response.data.status)
+      toast.success(response.data.status, { duration: 5000 })
       return response.data;
     } catch (error) {
       console.log(error);
-      toast.error(datavalidationerror(error))
+      toast.error(datavalidationerror(error), { duration: 5000 })
     }
   }
 );
@@ -105,12 +105,12 @@ export const createOneTimePayment = createAsyncThunk(
           authorization: `Bearer ${thunkAPI.getState()?.user?.accessToken}`,
         },
       });
-      toast.success(`${response.data.status ? response.data.status : response.data.couponCode !== null && 'Coupon Code Applied'} `)
+      toast.success(`${response.data.status ? response.data.status : response.data.couponCode !== null && 'Coupon Code Applied'} `, { duration: 5000 })
       // console.log(response, "responseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponse");
       return response;
     } catch (error) {
       console.log(error);
-      toast.error(datavalidationerror(error))
+      toast.error(datavalidationerror(error), { duration: 5000 })
     }
   }
 );
@@ -220,12 +220,12 @@ export const createQuickOneTimePayment = createAsyncThunk(
           authorization: `Bearer ${thunkAPI.getState()?.user?.accessToken}`,
         },
       });
-      toast.success(`${response.data.status ? response.data.status : response.data.couponCode !== null && 'Coupon Code Applied'} `)
+      toast.success(`${response.data.status ? response.data.status : response.data.couponCode !== null && 'Coupon Code Applied'} `, { duration: 5000 })
       // console.log(response, "responseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponse");
       return response;
     } catch (error) {
       console.log(error);
-      toast.error(datavalidationerror(error))
+      toast.error(datavalidationerror(error), { duration: 5000 })
     }
   }
 );
@@ -289,7 +289,7 @@ export const subscriptionSlice = createSlice({
       })
       .addCase(fetchSubscriptionTypes.rejected, (state, { payload }) => {
         state.isLoading = false;
-        toast.error(datavalidationerror(payload));
+        toast.error(datavalidationerror(payload), { duration: 5000 });
       })
       // createOneTimePayment 
       .addCase(createOneTimePayment.pending, (state) => {
@@ -297,11 +297,11 @@ export const subscriptionSlice = createSlice({
       })
       .addCase(createOneTimePayment.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        toast.success(successToast(payload));
+        toast.success(successToast(payload), { duration: 5000 });
       })
       .addCase(createOneTimePayment.rejected, (state, { payload }) => {
         state.isLoading = false;
-        toast.error(datavalidationerror(payload));
+        toast.error(datavalidationerror(payload), { duration: 5000 });
       })
       // calculateOrderTotal 
       .addCase(calculateOrderTotal.pending, (state) => {
@@ -325,7 +325,7 @@ export const subscriptionSlice = createSlice({
       })
       .addCase(listVendorQuickCreate.rejected, (state, { payload }) => {
         state.isLoading = false;
-        toast.error(datavalidationerror(payload));
+        toast.error(datavalidationerror(payload), { duration: 5000 });
       })
       // createRecurringTimePayment 
       .addCase(createRecurringTimePayment.pending, (state) => {
@@ -333,11 +333,11 @@ export const subscriptionSlice = createSlice({
       })
       .addCase(createRecurringTimePayment.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        toast.success(successToast(payload));
+        toast.success(successToast(payload), { duration: 5000 });
       })
       .addCase(createRecurringTimePayment.rejected, (state, { payload }) => {
         state.isLoading = false;
-        toast.error(datavalidationerror(payload));
+        toast.error(datavalidationerror(payload), { duration: 5000 });
       })
       // cancelRecurringTimePayment 
       .addCase(cancelRecurringTimePayment.pending, (state) => {
@@ -349,7 +349,7 @@ export const subscriptionSlice = createSlice({
       })
       .addCase(cancelRecurringTimePayment.rejected, (state, { payload }) => {
         state.isLoading = false;
-        toast.error(datavalidationerror(payload));
+        toast.error(datavalidationerror(payload), { duration: 5000 });
       });
   },
 })
