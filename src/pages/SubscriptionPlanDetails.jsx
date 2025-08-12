@@ -45,7 +45,7 @@ const SubscriptionPlanDetails = () => {
   const onCouponCodeSubmit = async (e) => {
     e.preventDefault()
     await dispatch(setCouponCode(couponCode));
-    const subscriptionDuration = "monthly";
+    const subscriptionDuration = discoundedData?.subType.toLowerCase();
     const newItem = {
       ...subscribeData,
       subscriptionDuration
@@ -346,11 +346,19 @@ const SubscriptionPlanDetails = () => {
 
                       {recurringPayments === false && <>
                         <Stack direction="row" justifyContent="start">
-                          <p
-                            className={`coupon-small ms-2 mt-3 me-2 text-gray`}
-                          >
-                            'Use "CNT100" to claim free subscription for a year'
-                          </p>
+                          {discoundedData?.subType.toLowerCase() === "monthly" ? (
+                            <p
+                              className={`coupon-small ms-2 mt-3 me-2 text-gray`}
+                            >
+                              'Use "CNT100" to claim free subscription for 3 months'
+                            </p>
+                          ) : (
+                            <p
+                              className={`coupon-small ms-2 mt-3 me-2 text-gray`}
+                            >
+                            </p>
+                          )
+                          }
                         </Stack>
                         {/* <form className="search-wrapper cf mt-3" onSubmit={onCouponCodeSubmit}>
                           <input
