@@ -73,6 +73,22 @@ const SubscriptionPlanDetails = () => {
   }
 
 
+  const onHandleClearCouponCode = async () => {
+    await dispatch(setCouponCode(""));
+    const subscriptionDuration = discoundedData?.subType.toLowerCase();
+    const newItem = {
+      ...subscribeData,
+      subscriptionDuration
+    }
+    const response = await dispatch(calculateOrderTotal(newItem));
+    if (response.payload.status === "success") {
+      await dispatch(setDiscountedData(response?.payload));
+    }
+    dispatch(setCouponCode(''))
+  }
+
+
+
   async function displayRazorpay() {
     setLoading(true);
 
@@ -362,7 +378,7 @@ const SubscriptionPlanDetails = () => {
 
                             {couponCode && (
                               <CloseIcon
-                                onClick={() => dispatch(setCouponCode(''))}
+                                onClick={onHandleClearCouponCode}
                                 fontSize="small"
                                 style={{
                                   position: 'absolute',
