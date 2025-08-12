@@ -77,7 +77,7 @@ export const calculateOrderTotal = createAsyncThunk(
         },
       });
       // console.log(response, "response SLice");
-      toast.success(response.data.status, { duration: 5000 })
+      // toast.success(response.data.status, { duration: 5000 })
       return response.data;
     } catch (error) {
       console.log(error);
