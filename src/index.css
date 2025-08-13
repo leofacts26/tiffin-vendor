@@ -2208,7 +2208,7 @@ textarea:-webkit-autofill:active {
   display: flex;
   justify-content: end;
   align-items: center;
-  margin-bottom: 8px;
+  /* margin-bottom: 8px; */
 }
 
 .coupon-text {
