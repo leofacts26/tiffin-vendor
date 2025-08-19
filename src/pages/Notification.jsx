@@ -33,8 +33,8 @@ const Notification = () => {
           {notificationList?.length > 0 ? (
             notificationList.map((item) => (
               <div key={item.id} style={{ padding: '0px 10px' }}>
-                <Stack direction="row" justifyContent="space-between">
-                  <Stack direction="row" alignItems="center" spacing={1}>
+                <Stack direction="row" justifyContent="space-between" spacing={0}>
+                  {/* <Stack direction="row" alignItems="center" spacing={1}>
                     <Avatar
                       alt={item.vendor_service_name || "Notification"}
                       src="https://mui.com/static/images/avatar/1.jpg" // You can replace this with dynamic image if available
@@ -44,9 +44,20 @@ const Notification = () => {
                       <p className='text-dark notification-name'>{item.vendor_service_name}</p>
                       <p className='notification-username'>@{item.vendor_type}</p>
                     </Stack>
+                  </Stack> */}
+
+                  <Stack sx={{ width: '80%' }}>
+                    <p className='notification-para'>
+                      <strong>{item.title}</strong>
+                    </p>
+
+                    <p className='notification-para'>
+                      {item.message}
+                    </p>
                   </Stack>
 
-                  <Stack direction="row" alignItems="center" spacing={1}>
+
+                  <Stack direction="row" alignItems="center" spacing={1} sx={{ width: '10%' }}>
                     <p className='notification-date'>
                       {new Date(item.created_at).toLocaleString('en-US', {
                         month: 'short',
@@ -60,9 +71,6 @@ const Notification = () => {
                   </Stack>
                 </Stack>
 
-                <p className='notification-para'>
-                  <strong>{item.title}:</strong> {item.message}
-                </p>
 
                 <div className='mb-3' style={{ marginTop: '20px', borderTop: '1px solid #e0e3e7' }}>
                   <Divider />
