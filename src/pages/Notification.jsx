@@ -47,8 +47,8 @@ const Notification = () => {
                   </Stack> */}
 
                   <Stack sx={{ width: '80%' }}>
-                    <p className='notification-para'>
-                      <strong>{item.title}</strong>
+                    <p className='notification-heading'>
+                      {item.title}
                     </p>
 
                     <p className='notification-para'>

@@ -1199,6 +1199,7 @@ code {
   text-transform: capitalize !important;
   padding: 9px 25px !important;
 }
+
 .inquiries-search-btn {
   background-color: var(--secondary) !important;
   color: #fff !important;
@@ -1826,6 +1827,7 @@ code {
   font-weight: 500 !important;
   min-width: 15px !important;
 }
+
 .cuisines-list-white-btn-setting {
   background-color: #ffffff !important;
   border-radius: var(--radiusOne) !important;
@@ -1872,6 +1874,14 @@ code {
   margin-top: 2px;
   font-size: 12px;
   color: #969595;
+  margin: 4px 0px 0px 15px;
+  font-family: var(--fontSecondary) !important;
+}
+
+.notification-heading {
+  margin-top: 2px;
+  font-size: 14px;
+  color: #d9822b;
   margin: 4px 0px 0px 15px;
   font-family: var(--fontSecondary) !important;
 }
