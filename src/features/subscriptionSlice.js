@@ -89,7 +89,7 @@ export const calculateOrderTotal = createAsyncThunk(
 export const createOneTimePayment = createAsyncThunk(
   "homepage/createOneTimePayment",
   async (data, thunkAPI) => {
-    const couponCode  = thunkAPI.getState().subscription.couponCode;
+    const couponCode = thunkAPI.getState().subscription.couponCode;
     const { subscriptionTypeId } = thunkAPI.getState().subscription.subscribeData;
 
     const id = Number(subscriptionTypeId)
@@ -224,8 +224,9 @@ export const createQuickOneTimePayment = createAsyncThunk(
       // console.log(response, "responseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponseresponse");
       return response;
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error(datavalidationerror(error), { duration: 5000 })
+      return thunkAPI.rejectWithValue(error.response?.data || { message: error.message });
     }
   }
 );
@@ -315,8 +316,8 @@ export const subscriptionSlice = createSlice({
         state.isLoading = false;
         toast.error(datavalidationerror(payload));
       })
-       // listVendorQuickCreate 
-       .addCase(listVendorQuickCreate.pending, (state) => {
+      // listVendorQuickCreate 
+      .addCase(listVendorQuickCreate.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(listVendorQuickCreate.fulfilled, (state, { payload }) => {

@@ -178,13 +178,35 @@ const SubscriptionQuickCreate = () => {
         },
       };
     } else {
-      // console.log("onetime Payment in if Condition",);
-      // console.log("result onetime Payment in if Condition",);
-      const { amount, id, currency } = result?.payload?.data?.order;
-      // console.log("discoundedData:", discoundedData);
-      // console.log("Razorpay Order Response:", result?.payload?.data?.order);
-      // console.log("Final Amount (INR):", discoundedData?.finalAmount);
-      // console.log("Final Amount (Paise):", discoundedData?.finalAmount * 100);
+
+      const apiResponse = result?.payload?.data;
+
+      if (!apiResponse) {
+        // toast.error(result?.payload?.message || "Failed to create order");
+        setLoading(false);
+        return;
+      }
+
+      // CASE 1: Local subscription created successfully (no Razorpay needed)
+      if (apiResponse.status === "success" && apiResponse.is_local === 1) {
+        toast.success(apiResponse.message || "Subscription created successfully");
+        await dispatch(setCouponCode(""));
+        navigate("/dashboard/subscription");
+        setLoading(false);
+        return;
+      }
+
+
+      const order = result?.payload?.data?.order;
+      if (!order) {
+        setLoading(false);
+        return;
+      }
+
+      const { id, currency } = order;
+
+      // const { amount, id, currency } = result?.payload?.data?.order;
+
 
       options = {
         key: process.env.REACT_APP_RAZORPAY_KEY,
