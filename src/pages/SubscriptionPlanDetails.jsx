@@ -292,6 +292,17 @@ const SubscriptionPlanDetails = () => {
           ondismiss: async function () {
             // Call cancel subscription API for one-time payment
             await dispatch(cancelOneTimePayment({ orderId: id }));
+
+            // 🚫 Reset coupon in Redux & UI
+            await dispatch(setCouponCode(""));
+            await dispatch(setDiscountedData({
+              ...discoundedData,
+              couponDetails: null,
+              couponStatus: null,
+              discountAmount: 0,
+              finalAmount: discoundedData?.subAmount, // reset back to original
+            }));
+
             toast.error("One-time payment was canceled.");
           },
         },
@@ -438,16 +449,16 @@ const SubscriptionPlanDetails = () => {
                       {recurringPayments === false && (
                         <>
 
-                          <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} className="mb-1 mt-3">
+                          <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} className="mb-1 mt-2">
                             <p className="sub-text">Coupon Code:</p> <p className="sub-text"> {discoundedData?.couponDetails?.code ? discoundedData?.couponDetails?.code : 'N/A'} </p>
                           </Stack>
                           <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} className="mb-3 mt-2">
                             <p className="sub-text">Discount Percent:</p> <p className="sub-text"> {discoundedData?.couponDetails?.discountPercent ? discoundedData?.couponDetails?.discountPercent : 'N/A'}</p>
                           </Stack>
+                          <hr />
                         </>
                       )}
 
-                      <hr />
 
                       <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} className="mb-1 mt-3">
                         <p className="sub-text">Sub Amount:</p> <p className="sub-text"> {discoundedData?.subAmount ? discoundedData?.subAmount : 'N/A'} </p>
@@ -497,7 +508,7 @@ const SubscriptionPlanDetails = () => {
                                     finalAmount: discoundedData?.subAmount, // show full amount for recurring
                                   }));
                                 }
-                                
+
                               }}
                               className={recurringPayments ? 'checkbox-enabled' : 'checkbox-disabled'}
                             />
