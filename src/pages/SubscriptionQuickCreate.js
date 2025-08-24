@@ -23,7 +23,7 @@ const SubscriptionQuickCreate = () => {
   // const [recurringPayments, setRecurringPayments] = useState(true);
   const [recurringPayments, setRecurringPayments] = useState(false);
   const { vendorBusinessProfile } = useGetVendor();
-  console.log(listVendorQuickCreateData, "listVendorQuickCreateData");
+  // console.log(listVendorQuickCreateData, "listVendorQuickCreateData");
 
   // useEffect(() => {
   //   if (discoundedData?.is_one_recurring_subscription_already_present === true) {
@@ -52,20 +52,20 @@ const SubscriptionQuickCreate = () => {
     });
   }
 
-  const onCouponCodeSubmit = async (e) => {
-    e.preventDefault()
-    await dispatch(setCouponCode(couponCode));
-    const subscriptionDuration = listVendorQuickCreateData?.subType.toLowerCase();
-    const newItem = {
-      ...subscribeData,
-      subscriptionDuration
-    }
-    const response = await dispatch(calculateOrderTotal(newItem));
-    if (response.payload.status === "success") {
-      await dispatch(setDiscountedData(response?.payload));
-    }
+  // const onCouponCodeSubmit = async (e) => {
+  //   e.preventDefault()
+  //   await dispatch(setCouponCode(couponCode));
+  //   const subscriptionDuration = listVendorQuickCreateData?.subType.toLowerCase();
+  //   const newItem = {
+  //     ...subscribeData,
+  //     subscriptionDuration
+  //   }
+  //   const response = await dispatch(calculateOrderTotal(newItem));
+  //   if (response.payload.status === "success") {
+  //     await dispatch(setDiscountedData(response?.payload));
+  //   }
 
-  }
+  // }
 
   // displayRazorpay 
   async function displayRazorpay() {
@@ -329,7 +329,7 @@ const SubscriptionQuickCreate = () => {
                         <p className="sub-text">Coupon Code:</p> <p className="sub-text"> {listVendorQuickCreateData?.couponCode ? listVendorQuickCreateData?.couponCode : 'N/A'} </p>
                       </Stack>
                       <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} className="mb-3 mt-2">
-                        <p className="sub-text">Discount Percent:</p> <p className="sub-text"> {listVendorQuickCreateData?.discountPercent ? listVendorQuickCreateData?.discountPercent : 'N/A'}</p>
+                        <p className="sub-text">Discount Percent:</p> <p className="sub-text"> {listVendorQuickCreateData?.discountpercent ? listVendorQuickCreateData?.discountpercent : 'N/A'}</p>
                       </Stack>
 
                       <hr />
@@ -345,7 +345,7 @@ const SubscriptionQuickCreate = () => {
                         <p className="sub-text">Final Amount:</p>
                         <Stack direction="row" alignItems="center">
                           <CurrencyRupeeIcon className="text-success mt-1" style={{ fontSize: '14px' }} />
-                          <p className="sub-text">{listVendorQuickCreateData?.finalAmount ? listVendorQuickCreateData?.finalAmount : 'N/A'}</p>
+                          <p className="sub-text">{listVendorQuickCreateData?.finalAmount ?? 'N/A'}</p>
                         </Stack>
                       </Stack>
 
